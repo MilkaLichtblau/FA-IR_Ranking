@@ -7,3 +7,4 @@ contains global constants for ranking creation and evaluation
 '''
 
 ESSENTIALLY_ZERO = 0.000000000001
+ESSENTIALLY_ONE = 0.999999999999
