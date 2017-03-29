@@ -54,6 +54,7 @@ def createFeldmanRanking(protectedCandidates, nonProtectedCandidates, k):
         score = scoreatpercentile(nonProtectedQualifications, p)
         candidate.qualification = score
 
+    # create a colorblind ranking
     return createFairRanking(k, protectedCandidates, nonProtectedCandidates, ESSENTIALLY_ZERO, 0.1)
 
 
