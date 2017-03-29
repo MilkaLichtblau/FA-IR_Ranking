@@ -11,7 +11,8 @@ from utils_and_constants.constants import ESSENTIALLY_ZERO
 
 def createFeldmanRanking(protectedCandidates, nonProtectedCandidates, k):
     """
-    creates a ranking that promotes the protected candidates
+    creates a ranking that promotes the protected candidates by adjusting the distribution of the
+    qualifications of the protected and non-protected group
 
     steps:
         1. take a protected candidate x
