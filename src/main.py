@@ -4,9 +4,9 @@ Created on Mar 29, 2017
 @author: meike.zehlike
 '''
 import os
-from read_write_rankings.read_and_write_rankings import writePickleToDisk
+from readWriteRankings.read_and_write_rankings import writePickleToDisk
 from ranker import createRankings
-from utils_and_constants.constants import ESSENTIALLY_ZERO
+from utilsAndConstants.constants import ESSENTIALLY_ZERO
 from datasetCreator import compasData, germanCreditData, satData, xingProfilesReader
 
 
