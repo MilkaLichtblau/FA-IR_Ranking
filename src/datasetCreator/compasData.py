@@ -24,7 +24,7 @@ def createGender(filename, *columnsToRead):
             else:
                 protected.append(Candidate(1 - row[3], ["male"]))
 
-    # sort candidates by decile scores in COMPAS
+    # sort candidates by recidivism scores in COMPAS
     protected.sort(key=lambda candidate: candidate.qualification, reverse=True)
     nonProtected.sort(key=lambda candidate: candidate.qualification, reverse=True)
 
