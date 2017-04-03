@@ -14,7 +14,7 @@ import pickle
 from dataset_creator.candidate import Candidate
 
 
-class XingProfilesReader(object):
+class Reader(object):
     """
     reads profiles collected from Xing on certain job description queries
     profiles are available in JSON format

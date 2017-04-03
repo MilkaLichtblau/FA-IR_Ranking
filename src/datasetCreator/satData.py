@@ -15,7 +15,7 @@ Created on Jan 5, 2017
 """
 import PyPDF2 as pypdf
 from utils_and_constants.utils import Switch, normalizeQualifications
-from dataset_creator.candidate import Candidate
+from datasetCreator.candidate import Candidate
 
 
 class Creator(object):
@@ -39,7 +39,7 @@ class Creator(object):
         self.__writeContentIntoClassMembers(tableContent)
 
 
-    def createSetOfCandidates(self):
+    def create(self):
         print("creating actual SAT candidate set")
         """
         creates the actual candidate objects such that the data set has the same distribution as

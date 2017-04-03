@@ -31,7 +31,7 @@ class TestSATDataSetSimulation(unittest.TestCase):
             contain the first table entry of the SAT file")
 
     def test_createSetOfCandidates(self):
-        protected, nonProtected = self.creator.createSetOfCandidates()
+        protected, nonProtected = self.creator.create()
 
         self.assertEqual(888825, len(protected), "should have created same number of female candidates \
             as in the SAT file")

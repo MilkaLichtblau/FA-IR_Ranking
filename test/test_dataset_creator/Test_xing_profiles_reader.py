@@ -3,13 +3,13 @@ Created on Mar 15, 2017
 '''
 
 import unittest
-from dataset_creator.xing_profiles_reader import XingProfilesReader
+from dataset_creator.xing_profiles_reader import Reader
 
 
 class Test(unittest.TestCase):
 
     def testReadFemaleDominant(self):
-        data = XingProfilesReader('femaleDominant.json')
+        data = Reader('femaleDominant.json')
         df = data.entireDataSet
 
         # check shape is 1 row, 3 columns
@@ -40,7 +40,7 @@ class Test(unittest.TestCase):
 
 
     def testReadMaleDominant(self):
-        data = XingProfilesReader('maleDominant.json')
+        data = Reader('maleDominant.json')
         df = data.entireDataSet
 
         # check shape is 1 row, 3 columns
@@ -71,7 +71,7 @@ class Test(unittest.TestCase):
 
 
     def testReadGenderNeutral(self):
-        data = XingProfilesReader('genderNeutral.json')
+        data = Reader('genderNeutral.json')
         df = data.entireDataSet
 
         # check shape is 1 row, 3 columns
@@ -102,7 +102,7 @@ class Test(unittest.TestCase):
 
 
     def testReadAll(self):
-        data = XingProfilesReader('*.json')
+        data = Reader('*.json')
         df = data.entireDataSet
 
         # check shape is 3 row, 3 columns

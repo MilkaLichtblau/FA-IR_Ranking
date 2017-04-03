@@ -5,10 +5,10 @@ Created on Jan 24, 2017
 '''
 
 import pandas as pd
-from dataset_creator.candidate import Candidate
+from datasetCreator.candidate import Candidate
 
 
-def createCompasGenderDataSet(filename, *columnsToRead):
+def createGender(filename, *columnsToRead):
     """
     currently working with recidivism score as qualification attribute in candidates. Change index
     to try with other columns
@@ -31,7 +31,7 @@ def createCompasGenderDataSet(filename, *columnsToRead):
     return protected, nonProtected
 
 
-def createCompasRaceDataSet(filename, *columnsToRead):
+def createRace(filename, *columnsToRead):
     """
     currently working with recidivism score as qualification attribute in candidates. Change index
     to try with other columns

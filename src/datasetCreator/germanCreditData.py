@@ -5,10 +5,10 @@ Created on Apr 3, 2017
 '''
 
 import pandas as pd
-from dataset_creator.candidate import Candidate
+from datasetCreator.candidate import Candidate
 
 
-def createGermanCreditDataSet(filename, *columnsToRead, protectedAttribute):
+def create(filename, *columnsToRead, protectedAttribute):
     """
     currently working with credit worthiness score as qualification attribute in candidates. Change column index in data frame
     to try with other columns

@@ -5,13 +5,9 @@ Created on Mar 29, 2017
 '''
 import os
 from read_write_rankings.read_and_write_rankings import writePickleToDisk
-from ranker.create_FAIR_ranking import createFairRanking
-from ranker.create_feldman_ranking import createFeldmanRanking
+from ranker import *
 from utils_and_constants.constants import ESSENTIALLY_ZERO
-from dataset_creator.xing_profiles_reader import XingProfilesReader
-from dataset_creator.german_credit_data import createGermanCreditDataSet
-from dataset_creator.compas_data import createCompasGenderDataSet, createCompasRaceDataSet
-from dataset_creator.sat_data import Creator
+from datasetCreator import *
 
 
 def main():
@@ -36,7 +32,7 @@ def createXingData(k):
                         (0.8, 0.0328),
                         (0.9, 0.0375)]
 
-    xingReader = XingProfilesReader('../raw_data/Xing/*.json')  # glob gets abs/rel paths matching the regex
+    xingReader = xingProfilesReader.Reader('../rawData/Xing/*.json')  # glob gets abs/rel paths matching the regex
     for queryString, candidates in xingReader.entireDataSet.iterrows():
         dumpRankingsToDisk(candidates['protected'], candidates['nonProtected'], k, queryString,
                            "../results/rankingDumps/Xing" + '/' + queryString + '/', pairsOfPAndAlpha)
@@ -56,26 +52,27 @@ def createGermanCreditData(k):
                         (0.8, 0.0216),
                         (0.9, 0.0256)]
 
-    protectedGermanCreditGender, nonProtectedGermanCreditGender = createGermanCreditDataSet(
-        "../raw_data/GermanCredit/GermanCredit_sex.csv", "DurationMonth", "CreditAmount",
+    protectedGermanCreditGender, nonProtectedGermanCreditGender = germanCreditData.create(
+        "../rawData/GermanCredit/GermanCredit_sex.csv", "DurationMonth", "CreditAmount",
         "score", "sex", protectedAttribute=["female"])
     dumpRankingsToDisk(protectedGermanCreditGender, nonProtectedGermanCreditGender, k,
                        "GermanCreditGender", "../results/rankingDumps/German Credit/Gender",
                        pairsOfPAndAlpha)
 
-    protectedGermanCreditAge25, nonProtectedGermanCreditAge25 = createGermanCreditDataSet(
-        "../raw_data/GermanCredit/GermanCredit_age25.csv", "DurationMonth", "CreditAmount",
+    protectedGermanCreditAge25, nonProtectedGermanCreditAge25 = germanCreditData.create(
+        "../rawData/GermanCredit/GermanCredit_age25.csv", "DurationMonth", "CreditAmount",
         "score", "age25", protectedAttribute=["younger25"])
     dumpRankingsToDisk(protectedGermanCreditAge25, nonProtectedGermanCreditAge25, k,
                        "GermanCreditAge25", "../results/rankingDumps/German Credit/Age25",
                        pairsOfPAndAlpha)
 
-    protectedGermanCreditAge35, nonProtectedGermanCreditAge35 = createGermanCreditDataSet(
-        "../raw_data/GermanCredit/GermanCredit_age35.csv", "DurationMonth", "CreditAmount",
+    protectedGermanCreditAge35, nonProtectedGermanCreditAge35 = germanCreditData.create(
+        "../rawData/GermanCredit/GermanCredit_age35.csv", "DurationMonth", "CreditAmount",
         "score", "age35", protectedAttribute=["younger35"])
     dumpRankingsToDisk(protectedGermanCreditAge35, nonProtectedGermanCreditAge35, k,
                        "GermanCreditAge35", "../results/rankingDumps/German Credit/Age35",
                        pairsOfPAndAlpha)
+
 
 def createCOMPASData(k):
 
@@ -89,14 +86,14 @@ def createCOMPASData(k):
                         (0.8, 0.0095),
                         (0.9, 0.0100)]
 
-    protectedCompasRace, nonProtectedCompasRace = createCompasRaceDataSet(
-       "../raw_data/COMPAS/ProPublica_race.csv", "race", "Violence_rawscore", "Recidivism_rawscore",
+    protectedCompasRace, nonProtectedCompasRace = compasData.createRace(
+       "../rawData/COMPAS/ProPublica_race.csv", "race", "Violence_rawscore", "Recidivism_rawscore",
        "priors_count")
     dumpRankingsToDisk(protectedCompasRace, nonProtectedCompasRace, k, "CompasRace",
                        "../results/rankingDumps/Compas/Race", pairsOfPAndAlpha)
 
-    protectedCompasGender, nonProtectedCompasGender = createCompasGenderDataSet(
-       "../raw_data/COMPAS/ProPublica_sex.csv", "sex", "Violence_rawscore", "Recidivism_rawscore",
+    protectedCompasGender, nonProtectedCompasGender = compasData.createGender(
+       "../rawData/COMPAS/ProPublica_sex.csv", "sex", "Violence_rawscore", "Recidivism_rawscore",
        "priors_count")
     dumpRankingsToDisk(protectedCompasGender, nonProtectedCompasGender, k, "CompasGender",
                       "../results/rankingDumps/Compas/Gender", pairsOfPAndAlpha)
@@ -104,7 +101,7 @@ def createCOMPASData(k):
 
 def createSATData(k):
 
-    SATFile = '../raw_data/SAT/sat_data.pdf'
+    SATFile = '../rawData/SAT/sat_data.pdf'
 
     pairsOfPAndAlpha = [(0.1, 0.0122),
                         (0.2, 0.0101),
@@ -116,8 +113,8 @@ def createSATData(k):
                         (0.8, 0.0084),
                         (0.9, 0.0096)]
 
-    satSetCreator = Creator(SATFile)
-    protectedSAT, nonProtectedSAT = satSetCreator.createSetOfCandidates()
+    satSetCreator = satData.Creator(SATFile)
+    protectedSAT, nonProtectedSAT = satSetCreator.create()
     dumpRankingsToDisk(protectedSAT, nonProtectedSAT, k, "SAT", "../results/rankingDumps/SAT", pairsOfPAndAlpha)
 
 
@@ -147,32 +144,32 @@ def dumpRankingsToDisk(protected, nonProtected, k, dataSetName, directory, pairs
         os.makedirs(os.getcwd() + '/' + directory + '/')
 
     print("colorblind ranking", end='', flush=True)
-    colorblindRanking, colorblindNotSelected = createFairRanking(k, protected, nonProtected, ESSENTIALLY_ZERO, 0.1)
+    colorblindRanking, colorblindNotSelected = createRankings.createFairRanking(k, protected, nonProtected, ESSENTIALLY_ZERO, 0.1)
     print(" [Done]")
 
     print("feldman ranking", end='', flush=True)
-    feldmanRanking, feldmanNotSelected = createFeldmanRanking(protected, nonProtected, k)
+    feldmanRanking, feldmanNotSelected = createRankings.createFeldmanRanking(protected, nonProtected, k)
     print(" [Done]")
 
     print("fair rankings", end='', flush=True)
     pair01 = [item for item in pairsOfPAndAlpha if item[0] == 0.1][0]
-    fairRanking01, fair01NotSelected = createFairRanking(k, protected, nonProtected, pair01[0], pair01[1])
+    fairRanking01, fair01NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair01[0], pair01[1])
     pair02 = [item for item in pairsOfPAndAlpha if item[0] == 0.2][0]
-    fairRanking02, fair02NotSelected = createFairRanking(k, protected, nonProtected, pair02[0], pair02[1])
+    fairRanking02, fair02NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair02[0], pair02[1])
     pair03 = [item for item in pairsOfPAndAlpha if item[0] == 0.3][0]
-    fairRanking03, fair03NotSelected = createFairRanking(k, protected, nonProtected, pair03[0], pair03[1])
+    fairRanking03, fair03NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair03[0], pair03[1])
     pair04 = [item for item in pairsOfPAndAlpha if item[0] == 0.4][0]
-    fairRanking04, fair04NotSelected = createFairRanking(k, protected, nonProtected, pair04[0], pair04[1])
+    fairRanking04, fair04NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair04[0], pair04[1])
     pair05 = [item for item in pairsOfPAndAlpha if item[0] == 0.5][0]
-    fairRanking05, fair05NotSelected = createFairRanking(k, protected, nonProtected, pair05[0], pair05[1])
+    fairRanking05, fair05NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair05[0], pair05[1])
     pair06 = [item for item in pairsOfPAndAlpha if item[0] == 0.6][0]
-    fairRanking06, fair06NotSelected = createFairRanking(k, protected, nonProtected, pair06[0], pair06[1])
+    fairRanking06, fair06NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair06[0], pair06[1])
     pair07 = [item for item in pairsOfPAndAlpha if item[0] == 0.7][0]
-    fairRanking07, fair07NotSelected = createFairRanking(k, protected, nonProtected, pair07[0], pair07[1])
+    fairRanking07, fair07NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair07[0], pair07[1])
     pair08 = [item for item in pairsOfPAndAlpha if item[0] == 0.8][0]
-    fairRanking08, fair08NotSelected = createFairRanking(k, protected, nonProtected, pair08[0], pair08[1])
+    fairRanking08, fair08NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair08[0], pair08[1])
     pair09 = [item for item in pairsOfPAndAlpha if item[0] == 0.9][0]
-    fairRanking09, fair09NotSelected = createFairRanking(k, protected, nonProtected, pair09[0], pair09[1])
+    fairRanking09, fair09NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair09[0], pair09[1])
     print(" [Done]")
 
     print("Write rankings to disk", end='', flush=True)
