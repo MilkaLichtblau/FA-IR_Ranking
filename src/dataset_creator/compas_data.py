@@ -17,14 +17,12 @@ def createCompasGenderDataSet(filename, *columnsToRead):
     protected = []
     with open(filename) as csvfile:
         data = pd.read_csv(csvfile, usecols=columnsToRead)
-        identifier = 0
         for row in data.itertuples():
             # change to different index in row[.] to access other columns from csv file
             if row[4] == 1:
-                nonProtected.append(Candidate(1 - row[3], [], identifier))
+                nonProtected.append(Candidate(1 - row[3], []))
             else:
-                protected.append(Candidate(1 - row[3], ["male"], identifier))
-            identifier += 1
+                protected.append(Candidate(1 - row[3], ["male"]))
 
     # sort candidates by decile scores in COMPAS
     protected.sort(key=lambda candidate: candidate.qualification, reverse=True)
@@ -42,14 +40,12 @@ def createCompasRaceDataSet(filename, *columnsToRead):
     protected = []
     with open(filename) as csvfile:
         data = pd.read_csv(csvfile, usecols=columnsToRead)
-        identifier = 0
         for row in data.itertuples():
             # change to different index in row[.] to access other columns from csv file
             if row[4] == 0:
-                nonProtected.append(Candidate(1 - row[3], [], identifier))
+                nonProtected.append(Candidate(1 - row[3], []))
             else:
-                protected.append(Candidate(1 - row[3], ["black"], identifier))
-            identifier += 1
+                protected.append(Candidate(1 - row[3], ["black"]))
 
     # sort candidates by decile scores in COMPAS
     protected.sort(key=lambda candidate: candidate.qualification, reverse=True)

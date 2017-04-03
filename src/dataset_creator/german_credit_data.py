@@ -10,7 +10,7 @@ from dataset_creator.candidate import Candidate
 
 def createGermanCreditDataSet(filename, *columnsToRead, protectedAttribute):
     """
-    currently working with pure score as qualification attribute in candidates. Change index
+    currently working with credit worthiness score as qualification attribute in candidates. Change column index in data frame
     to try with other columns
 
     dataset already normalized, therefore no normalization done
@@ -19,14 +19,12 @@ def createGermanCreditDataSet(filename, *columnsToRead, protectedAttribute):
     nonProtected = []
     with open(filename) as csvfile:
         data = pd.read_csv(csvfile, usecols=columnsToRead)
-        identifier = 0
         for row in data.itertuples():
             # change to different index in row[.] to access other columns from csv file
             if row[4] == 0:
-                nonProtected.append(Candidate(row['score'], [], identifier))
+                nonProtected.append(Candidate(row[3], []))
             else:
-                protected.append(Candidate(row['score'], protectedAttribute, identifier))
-            identifier += 1
+                protected.append(Candidate(row[3], protectedAttribute))
 
     # sort candidates by credit scores in German Credit
     protected.sort(key=lambda candidate: candidate.qualification, reverse=True)
