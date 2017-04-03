@@ -11,7 +11,7 @@ import math
 import pandas as pd
 import pickle
 
-from dataset_creator.Candidate import Candidate
+from dataset_creator.candidate import Candidate
 
 
 class XingProfilesReader(object):
@@ -38,21 +38,6 @@ class XingProfilesReader(object):
     EDUCATION_OR_JOB_WITH_NO_DATES = 3  # months count if you had a job that has no associated dates
     EDUCATION_OR_JOB_WITH_SAME_YEAR = 6  # months count if you had a job that started and finished in the same year
     EDUCATION_OR_JOB_WITH_UNDEFINED_DATES = 1  # month given that the person entered the job
-
-    @property
-    def protectedCandidates(self):
-        return self.__protected
-
-
-    @property
-    def nonProtectedCandidates(self):
-        return self.__nonProtectedCandidates
-
-
-    @property
-    def originalOrdering(self):
-        return self.__originalOrdering
-
 
     @property
     def entireDataSet(self):
