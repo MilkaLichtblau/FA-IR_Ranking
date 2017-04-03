@@ -5,9 +5,9 @@ Created on Mar 29, 2017
 '''
 import os
 from read_write_rankings.read_and_write_rankings import writePickleToDisk
-from ranker import *
+from ranker import createRankings
 from utils_and_constants.constants import ESSENTIALLY_ZERO
-from datasetCreator import *
+from datasetCreator import compasData, germanCreditData, satData, xingProfilesReader
 
 
 def main():
