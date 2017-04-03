@@ -4,8 +4,8 @@ Created on Feb 2, 2017
 @author: meike.zehlike
 '''
 import unittest
-from ranker.Candidate import Candidate
-from ranker.create_feldman_ranking import createFeldmanRanking
+from datasetCreator.candidate import Candidate
+from ranker.createRankings import createFeldmanRanking
 
 
 class Test_create_feldman_rankings(unittest.TestCase):

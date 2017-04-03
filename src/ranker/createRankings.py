@@ -7,7 +7,7 @@ Created on Jan 17, 2017
 from ranker.testFairnessInRankings import FairnessInRankingsTester
 from scipy.stats.stats import percentileofscore
 from scipy.stats.stats import scoreatpercentile
-from utils_and_constants.constants import ESSENTIALLY_ZERO
+from utilsAndConstants.constants import ESSENTIALLY_ZERO
 
 
 def createFeldmanRanking(protectedCandidates, nonProtectedCandidates, k):

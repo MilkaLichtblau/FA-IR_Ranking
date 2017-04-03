@@ -4,10 +4,10 @@ Created on Jan 18, 2017
 @author: meike.zehlike
 '''
 import unittest
-from ranker.Candidate import Candidate
-from ranker.create_FAIR_ranking import createFairRanking
-from ranker.test_fairness_in_rankings import FairnessInRankingsTester
-from utils_and_constants import constants
+from datasetCreator.candidate import Candidate
+from ranker.createRankings import createFairRanking
+from ranker.testFairnessInRankings import FairnessInRankingsTester
+from utilsAndConstants import constants
 
 
 class Test_create_FAIR_ranking(unittest.TestCase):

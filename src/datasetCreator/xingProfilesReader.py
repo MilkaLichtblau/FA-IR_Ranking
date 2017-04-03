@@ -11,7 +11,7 @@ import math
 import pandas as pd
 import pickle
 
-from dataset_creator.candidate import Candidate
+from datasetCreator.candidate import Candidate
 
 
 class Reader(object):

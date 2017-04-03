@@ -4,8 +4,8 @@ Created on Jan 11, 2017
 @author: meike.zehlike
 '''
 from scipy.stats import binom
-from utils_and_constants.utils import countProtected
-from ranker.alpha_correction import Alpha_Correction
+from utilsAndConstants.utils import countProtected
+from ranker.alphaCorrection import Alpha_Correction
 
 class FairnessInRankingsTester():
     """

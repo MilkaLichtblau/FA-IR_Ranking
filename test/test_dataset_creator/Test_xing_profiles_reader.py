@@ -3,7 +3,7 @@ Created on Mar 15, 2017
 '''
 
 import unittest
-from dataset_creator.xing_profiles_reader import Reader
+from datasetCreator.xingProfilesReader import Reader
 
 
 class Test(unittest.TestCase):
