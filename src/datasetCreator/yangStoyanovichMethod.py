@@ -9,14 +9,16 @@ import random
 def create(fairnessProbability, k, numProtected, numNonProtected):
     """
     creates a set of protected candidates and a set of unprotected candidates
-    merges those together into one ranked output that contains protected and unprotected candidates
+    merges those together into one ranked output that contains protected and unprotected candidates.
 
-    Parameters
-    ----------
-    fairnessProbability : float
+    This method was described in "Ke Yang and Julia Stoyanovich. "Measuring Fairness in Ranked Outputs."
+    arXiv preprint arXiv:1610.08559 (2016)."
+
+
+    @param fairnessProbability : float
         the probability that a protected candidate is chosen as the next element in rankedOutput
 
-    k : int
+    @param k : int
         the size of the ranked output list
 
     Returns
