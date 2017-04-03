@@ -41,25 +41,25 @@ class XingProfilesReader(object):
 
     @property
     def entireDataSet(self):
-        return self.entireDataSet
+        return self.__entireDataSet
 
 
     def __init__(self, path):
         """
         @param path: path to JSON files with Xing data
         """
-        self.entireDataSet = pd.DataFrame(columns=['protected', 'nonProtected', 'originalOrdering'])
+        self.__entireDataSet = pd.DataFrame(columns=['protected', 'nonProtected', 'originalOrdering'])
 
         files = glob.glob(path)
 
         for filename in files:
             key, protected, nonProtected, origOrder = self.__readFileOfQuery(filename)
-            self.entireDataSet.loc[key] = [protected, nonProtected, origOrder]
+            self.__entireDataSet.loc[key] = [protected, nonProtected, origOrder]
 
 
     def dumpDataSet(self, pathToFile):
         with open(pathToFile, 'wb') as handle:
-            pickle.dump(self.entireDataSet, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(self.__entireDataSet, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
     def __readFileOfQuery(self, filename):
