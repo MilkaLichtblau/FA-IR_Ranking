@@ -47,6 +47,7 @@ class FairnessInRankingsTester():
             the expected length of the ranked output
 
         @param correctedAlpha : bool
+        FIXME: guck nochmal, warum man die Korrektur überhaupt nicht wollen würde
             tells if model adjustment shall be used or not
         """
         self.__minProp = minProp

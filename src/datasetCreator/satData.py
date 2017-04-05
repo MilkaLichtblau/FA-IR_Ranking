@@ -14,7 +14,7 @@ Created on Jan 5, 2017
 
 """
 import PyPDF2 as pypdf
-from utils_and_constants.utils import Switch, normalizeQualifications
+from utilsAndConstants.utils import Switch, normalizeQualifications
 from datasetCreator.candidate import Candidate
 
 

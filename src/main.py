@@ -4,14 +4,18 @@ Created on Mar 29, 2017
 @author: meike.zehlike
 '''
 import os
-from readWriteRankings.read_and_write_rankings import writePickleToDisk
+from readWriteRankings.readAndWriteRankings import writePickleToDisk
 from ranker import createRankings
 from utilsAndConstants.constants import ESSENTIALLY_ZERO
 from datasetCreator import compasData, germanCreditData, satData, xingProfilesReader
+from evaluator.evaluator import Evaluator
 
 
 def main():
-    createRankingsAndWriteToDisk()
+    # createRankingsAndWriteToDisk()
+    evaluator = Evaluator()
+    evaluator.transposeResults()
+    printResults(evaluator)
 
 
 def createRankingsAndWriteToDisk():
@@ -19,6 +23,37 @@ def createRankingsAndWriteToDisk():
     createCOMPASData(1000)
     createGermanCreditData(100)
     createXingData(40)
+
+
+def printResults(evaluator):
+    print("COMPAS Gender Results:")
+    print(evaluator.compasGenderResults)
+    print("========================================================================================")
+    print("COMPAS race results")
+    print(evaluator.compasRaceResults)
+    print("========================================================================================")
+    print("GERMAN CREDIT gender results")
+    print(evaluator.germanCreditGenderResults)
+    print("========================================================================================")
+    print("GERMAN CREDIT age 25 results")
+    print(evaluator.germanCreditAge25Results)
+    print("========================================================================================")
+    print("GERMAN CREDIT age 35 results")
+    print(evaluator.germanCreditAge35Results)
+    print("========================================================================================")
+    print("SAT results")
+    print(evaluator.SATResults)
+    print("========================================================================================")
+    print("Xing results")
+    printDictAsTable(evaluator.xingResults)
+    print("========================================================================================")
+
+
+def printDictAsTable(dict):
+    for rankingType, allMetrics in dict.items():
+        for metricsType, result in allMetrics.items():
+            print("{0}        {1}\n{2}".format(rankingType, metricsType, result))
+        print("--------------------------------------------------------")
 
 
 def createXingData(k):
