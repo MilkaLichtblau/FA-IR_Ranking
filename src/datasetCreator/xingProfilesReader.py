@@ -12,6 +12,7 @@ import pandas as pd
 import pickle
 
 from datasetCreator.candidate import Candidate
+from utilsAndConstants.utils import normalizeQualifications
 
 
 class Reader(object):
@@ -111,20 +112,11 @@ class Reader(object):
         protected.sort(key=lambda candidate: candidate.qualification, reverse=True)
         nonProtected.sort(key=lambda candidate: candidate.qualification, reverse=True)
 
-        self.__normalizeQualifications(protected + nonProtected)
-        self.__normalizeQualifications(originalOrdering)
+        normalizeQualifications(protected + nonProtected)
+        normalizeQualifications(originalOrdering)
 
         currentfile.close()
         return xingSearchQuery, protected, nonProtected, originalOrdering
-
-
-    def __normalizeQualifications(self, ranking):
-        # find highest qualification of candidate
-        qualifications = [ranking[i].qualification for i in range(len(ranking))]
-        highest = max(qualifications)
-        for candidate in ranking:
-            candidate.qualification = candidate.qualification / highest
-            candidate.originalQualification = candidate.originalQualification / highest
 
 
     def __determineIfProtected(self, r, protAttr):

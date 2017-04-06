@@ -6,6 +6,8 @@ provides basic utilities for candidate rankings
 @author: meike.zehlike
 '''
 
+import resource
+
 def countProtected(ranking):
     result = 0
     for candidate in ranking:
@@ -23,6 +25,15 @@ def normalizeQualifications(ranking):
         candidate.qualification = candidate.qualification / highest
         candidate.originalQualification = candidate.originalQualification / highest
 
+
+def setMemoryLimit(maxMem):
+    if maxMem is None:
+        maxMem = -1
+    try:
+        resource.setrlimit(resource.RLIMIT_MEMLOCK, (1, maxMem))
+        return True
+    except ValueError:
+        return False
 
 
 class Switch(object):

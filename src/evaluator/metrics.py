@@ -5,6 +5,7 @@ Created on Jan 23, 2017
 '''
 import numpy as np
 from utilsAndConstants.utils import countProtected
+from plainbox.impl import color
 
 
 def selectionUnfairness(ranking, notSelected):
@@ -40,16 +41,16 @@ def selectionUnfairness(ranking, notSelected):
 
 def orderingUnfairness(ranking):
     """
-    calculates the maximum positional difference between a protected candidate that was rated higher
-    than a non-protected candidate due to their protected status. Hence the protected candidate is
+    calculates the maximum positional difference between a protected currentCandidate that was rated higher
+    than a non-protected currentCandidate due to their protected status. Hence the protected currentCandidate is
     put onto a higher position, even though their qualification is lower.
 
     Return
     ------
     maxRankDrop : int
-        The maximum of which a candidate was ranked down
+        The maximum of which a currentCandidate was ranked down
 
-    highestScoreDiff : float
+    highestScoreInv : float
         The maximal score inversion, i.e. finds the maximum quality difference between someone who was
         ranked higher but actually has a lower score
 
@@ -76,59 +77,57 @@ def orderingUnfairness(ranking):
 
 
     """
-    colorblind = sorted(ranking, key=lambda candidate: candidate.originalQualification, reverse=True)
+    colorblind = sorted(ranking, key=lambda currentCandidate: currentCandidate.originalQualification, reverse=True)
     maxRankDrop = 0
-    highestScoreDiff = 0
-    for i, candidate in enumerate(ranking):
-        if not candidate is colorblind[i]:
-            # some order inversion found
-            colorblindOrigQual = colorblind[i].originalQualification
-            if candidate.originalQualification < colorblindOrigQual:
-                # the candidate from the ranking has a higher position even though their qualification
-                # is worse than the one that should appear here --> find the actual position of the
-                # one that should appear here if rated by qualification
-                actualIdxOfColorblind = __findIndexOfCandidateByID(ranking, colorblind[i].uuid)
-                # the protected candidate right above the non-protected, that was rated down should have the lowest
-                # score above the non-protected, otherwise in-group monotonicity would be violated
-                indexOfWorstAboveMe = __findFirstWorseCandidateAboveMe(ranking,
-                                                                       colorblindOrigQual,
-                                                                       actualIdxOfColorblind)
-                currentScoreDiff = colorblindOrigQual - ranking[indexOfWorstAboveMe].originalQualification
-                highestScoreDiff = max(highestScoreDiff, currentScoreDiff)
-                maxRankDrop = max(maxRankDrop, actualIdxOfColorblind - i)
+    highestScoreInv = 0
+    for i, currentCandidate in enumerate(ranking):
+        if not currentCandidate.uuid == colorblind[i].uuid:
+            # the candidate was ranked somewhere else from their position in a colorblind ranking
+            # is worse than the one that should appear here --> find the actual position of the
+            # one that should appear here if rated by qualification
+            idxInColorblindRanking = __findIndexOfCandidateByID(colorblind, currentCandidate.uuid)
+            # the protected candidate right above the non-protected, that was rated down should have the lowest
+            # score above the non-protected, otherwise in-group monotonicity would be violated
+            indexOfWorstAboveMe = __findFirstWorseCandidateAboveMe(ranking,
+                                                                   currentCandidate.originalQualification,
+                                                                   i)
+            # this number is only positive, if someone above the current candidate has a lower qualification
+            currentScoreInv = currentCandidate.originalQualification - ranking[indexOfWorstAboveMe].originalQualification
+            highestScoreInv = max(highestScoreInv, currentScoreInv)
+            maxRankDrop = max(maxRankDrop, i - idxInColorblindRanking)
 
-    return maxRankDrop, highestScoreDiff
+    return maxRankDrop, highestScoreInv
 
 
-def feldmanOrderingUnfairness(ranking):
-    """
-    a feldman ranking is a special case because it changes the scores into both directions, i.e.
-    it's not only increasing but also decreasing the scores, if necessary to adjust the qualification
-    distribution of the protected and non-protected group
-    That means that protected candidates can be rated up in the first half and rated down in the second
-    half of the created ranking
-    """
-    colorblind = sorted(ranking, key=lambda candidate: candidate.originalQualification, reverse=True)
-    highestPosDiff = 0
-    highestScoreDiff = 0
-    for i, candidate in enumerate(ranking):
-        if candidate.qualification != candidate.originalQualification:
-            # the candidates qualification was changed to put them into a different position
-            colorblindOrigQual = colorblind[i].originalQualification
-            if candidate.originalQualification < colorblindOrigQual:
-                # the candidate from the ranking has a higher position even though their qualification
-                # is worse than the one that should appear here --> find the actual position of the
-                # one that should appear here if rated by qualification
-                actualIdxOfColorblind = __findIndexOfCandidateByID(ranking, colorblind[i].uuid)
-                # the protected candidate right above the non-protected, that was rated down should have the lowest
-                # score above the non-protected, otherwise in-group monotonicity would be violated
-                indexOfWorstAboveMe = __findFirstWorseCandidateAboveMe(ranking,
-                                                                       colorblindOrigQual,
-                                                                       actualIdxOfColorblind)
-                highestScoreDiff = max(highestScoreDiff, abs(ranking[indexOfWorstAboveMe].originalQualification - colorblindOrigQual))
-                highestPosDiff = max(highestPosDiff, abs(actualIdxOfColorblind - i))
-
-    return highestPosDiff, highestScoreDiff
+# def feldmanOrderingUnfairness(ranking):
+#     """
+#     a feldman ranking is a special case because it changes the scores into both directions, i.e.
+#     it's not only increasing but also decreasing the scores, if necessary to adjust the qualification
+#     distribution of the protected and non-protected group
+#     That means that protected candidates can be rated up in the first half and rated down in the second
+#     half of the created ranking
+#     """
+#     colorblind = sorted(ranking, key=lambda currentCandidate: currentCandidate.originalQualification, reverse=True)
+#     highestPosDiff = 0
+#     highestScoreInv = 0
+#     for i, currentCandidate in enumerate(ranking):
+#         if currentCandidate.qualification != currentCandidate.originalQualification:
+#             # the candidates qualification was changed to put them into a different position
+#             colorblindOrigQual = colorblind[i].originalQualification
+#             if currentCandidate.originalQualification < colorblindOrigQual:
+#                 # the currentCandidate from the ranking has a higher position even though their qualification
+#                 # is worse than the one that should appear here --> find the actual position of the
+#                 # one that should appear here if rated by qualification
+#                 actualIdxOfColorblind = __findIndexOfCandidateByID(ranking, colorblind[i].uuid)
+#                 # the protected currentCandidate right above the non-protected, that was rated down should have the lowest
+#                 # score above the non-protected, otherwise in-group monotonicity would be violated
+#                 indexOfWorstAboveMe = __findFirstWorseCandidateAboveMe(ranking,
+#                                                                        colorblindOrigQual,
+#                                                                        actualIdxOfColorblind)
+#                 highestScoreInv = max(highestScoreInv, abs(ranking[indexOfWorstAboveMe].originalQualification - colorblindOrigQual))
+#                 highestPosDiff = max(highestPosDiff, abs(actualIdxOfColorblind - i))
+#
+#     return highestPosDiff, highestScoreInv
 
 
 def __findIndexOfCandidateByID(ranking, ident):
