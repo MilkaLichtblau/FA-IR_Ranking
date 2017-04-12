@@ -15,6 +15,11 @@ def createFeldmanRanking(protectedCandidates, nonProtectedCandidates, k):
     creates a ranking that promotes the protected candidates by adjusting the distribution of the
     qualifications of the protected and non-protected group
 
+    IMPORTANT: THIS METHOD MODIFIES THE ORIGINAL LIST OF PROTECTED CANDIDATES!
+    I.e. it modifies the qualification of the
+    protected candidates. If the original list has to be preserved, it has to be deep-copied into a
+    new data structure, before handed over into this method.
+
     steps:
         1. take a protected candidate x
         2. determine the percentile of that candidate within their group percentile(x)
@@ -37,7 +42,6 @@ def createFeldmanRanking(protectedCandidates, nonProtectedCandidates, k):
     # ensure candidates are sorted by descending qualificiations
     protectedCandidates.sort(key=lambda candidate: candidate.qualification, reverse=True)
     nonProtectedCandidates.sort(key=lambda candidate: candidate.qualification, reverse=True)
-
 
     protectedQualifications = [protectedCandidates[i].qualification for i in range(len(protectedCandidates))]
     nonProtectedQualifications = [nonProtectedCandidates[i].qualification for i in range(len(nonProtectedCandidates))]

@@ -14,7 +14,7 @@ from evaluator.evaluator import Evaluator
 
 def main():
     setMemoryLimit(10000000000)
-    # createRankingsAndWriteToDisk()
+    createRankingsAndWriteToDisk()
     evaluator = Evaluator()
     evaluator.transposeResults()
     printResults(evaluator)
@@ -184,10 +184,6 @@ def dumpRankingsToDisk(protected, nonProtected, k, dataSetName, directory, pairs
     colorblindRanking, colorblindNotSelected = createRankings.createFairRanking(k, protected, nonProtected, ESSENTIALLY_ZERO, 0.1)
     print(" [Done]")
 
-    print("feldman ranking", end='', flush=True)
-    feldmanRanking, feldmanNotSelected = createRankings.createFeldmanRanking(protected, nonProtected, k)
-    print(" [Done]")
-
     print("fair rankings", end='', flush=True)
     pair01 = [item for item in pairsOfPAndAlpha if item[0] == 0.1][0]
     fairRanking01, fair01NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair01[0], pair01[1])
@@ -207,6 +203,10 @@ def dumpRankingsToDisk(protected, nonProtected, k, dataSetName, directory, pairs
     fairRanking08, fair08NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair08[0], pair08[1])
     pair09 = [item for item in pairsOfPAndAlpha if item[0] == 0.9][0]
     fairRanking09, fair09NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair09[0], pair09[1])
+    print(" [Done]")
+
+    print("feldman ranking", end='', flush=True)
+    feldmanRanking, feldmanNotSelected = createRankings.createFeldmanRanking(protected, nonProtected, k)
     print(" [Done]")
 
     print("Write rankings to disk", end='', flush=True)

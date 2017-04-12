@@ -242,35 +242,6 @@ class Evaluator(object):
                 return pd.Series({'util':util, 'selectUnfair':0, 'orderUnfair':orderUnfair,
                                   'percentProt':percentProt, 'percentProt_dataset':percentProt})
 
-#
-#     def __evaluateFeldman(self, rankings):
-#         """
-#         performs the actual measurements for a pair of rankings of a given type, e.g. for the
-#         color-blind ranking and the color-blind not selected candidates
-#         """
-#
-#         print("current ranking name: {0}".format(self.FELDMAN), end='', flush=True)
-#
-#         # not-selected candidates are needed for determining selection unfairness
-#         ranking, notSelected, percProtDataset = self.__findFilePair(self.FELDMAN, rankings)
-#         ids, protectedIds = self.__getCandidateRankingByIDs(ranking)
-#         gf_ND = float('nan')  # this number only makes sense if we actually have protected elements in the list
-#         gf_KL = float('nan')  # same here
-#
-#         if len(protectedIds) > 0:
-#             gf_ND, gf_KL = self.__applyStoyanovichMetrics(ids, protectedIds)
-#
-#         util = metrics.utility(ranking, self.LAMBDA)
-#         selectUnfair = metrics.selectionUnfairness(ranking, notSelected)
-#         orderUnfair = metrics.orderingUnfairness(ranking)
-#         percentProt = metrics.percentageOfProtected(ranking)
-#         print(" [Done]")
-#
-#         return pd.Series({'util':util, 'selectUnfair':selectUnfair, 'orderUnfair':orderUnfair,
-#                           'percentProt':percentProt, 'percentProt_dataset':percProtDataset,
-#                           'gf_ND':gf_ND, 'gf_KL':gf_KL})
-
-
 
     def __evaluatePairwiseRanking(self, rankings, rankingType):
         """
