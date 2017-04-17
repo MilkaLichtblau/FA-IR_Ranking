@@ -4,6 +4,7 @@ Created on Mar 29, 2017
 @author: meike.zehlike
 '''
 import os
+import argparse
 from readWriteRankings.readAndWriteRankings import writePickleToDisk
 from ranker import createRankings
 from utilsAndConstants.constants import ESSENTIALLY_ZERO
@@ -14,10 +15,91 @@ from evaluator.evaluator import Evaluator
 
 def main():
     setMemoryLimit(10000000000)
-    createRankingsAndWriteToDisk()
-    evaluator = Evaluator()
-    evaluator.transposeResults()
-    printResults(evaluator)
+
+    def run_whole_prog(args):
+        createRankingsAndWriteToDisk()
+        evaluator = Evaluator()
+        evaluator.transposeResults()
+        printResults(evaluator)
+
+    # create the top-level parser
+    parser = argparse.ArgumentParser(prog='FA*IR', description='a fair Top-k ranking algorithm',
+                                     epilog="=== === === end === === ===")
+                                     # argument_default="-a")
+    parser.add_argument("-c", "--create", nargs='*', help="creates a ranking and dumps it to disk")
+    parser.add_argument("-e", "--evaluate", nargs='*', help="evaluates and transposes results")
+    parser.add_argument("-r", "--rank", nargs='*', help="ranks")
+    # parser.add_argument("-a", "--all", nargs='*', help="runs the full program")
+    # parser.set_defaults(func='run_whole_prog')
+    subparsers = parser.add_subparsers(help='sub-command help')
+
+    # create the parser for the "create" command
+    parser_create = subparsers.add_parser('dataset_create', help='choose a dataset to generate')
+    parser_create.add_argument(dest='dataset_to_create', choices=["all", "sat", "xing"
+                                                                  "compas_gender",  "compas_race",
+                                                                  "germancredit_age25", "germancredit_age35"], default="all")
+    parser_create.set_defaults(func=createRankingsAndWriteToDisk)
+
+    # create the parser for the "evaluate" command
+    parser_evaluate = subparsers.add_parser('dataset_evaluate', help='choose a dataset to evaluate')
+    parser_evaluate.add_argument(dest='dataset_to_evaluate', choices=["all", "sat", "compas", "germancredit", "xing"], default="all")
+
+
+    # create the parser for the "rank" command
+    parser_evaluate = subparsers.add_parser('dataset_rank', help='choose a dataset to rank')
+    parser_evaluate.add_argument("-d", "--dataset", choices=["sat", "compas", "germancredit", "xing"])
+
+    # parse some argument lists
+    # parser.parse_args(['create', 'xing'])
+    #
+    # parser.parse_args(['--foo', 'b', '--baz', 'Z'])
+
+    args = parser.parse_args()
+    # args.func(args)
+
+    create_dataset(args)
+    if args.create == []:
+        # create_dataset(args.dataset)
+        if args == ['sat']:
+            createSATData(1500)
+        elif args == ['compas']:
+            createCOMPASData(1000)
+        elif args == ['germancredit']:
+            createGermanCreditData(100)
+        elif args == ['xing']:
+            createXingData(40)
+        else:
+            print("creating rankings for all datasets...")
+            createRankingsAndWriteToDisk()
+    elif args == ['evaluate']:
+        if args == ['sat']:
+            createSATData(1500)
+        elif args == ['compas']:
+            createCOMPASData(1000)
+        elif args == ['germancredit']:
+            createGermanCreditData(100)
+        elif args == ['xing']:
+            createXingData(40)
+        else:
+            evaluator = Evaluator()
+            evaluator.transposeResults()
+            printResults(evaluator)
+    else:
+        print(args.create)
+        # createRankingsAndWriteToDisk()
+        # evaluator = Evaluator()
+        # evaluator.transposeResults()
+        # printResults(evaluator)
+
+#
+# def create_dataset(name):
+#     return {
+#         ['sat']: createSATData(1500),
+#         ['sat']: createSATData(1500),
+#         ['compas']: createCOMPASData(1000),
+#         ['germancredit']: createGermanCreditData(100),
+#         ['xing']: createXingData(40)
+#     }.get(name, print("Invalid Dataset."))
 
 
 def createRankingsAndWriteToDisk():
@@ -78,7 +160,6 @@ def createXingData(k):
 
 
 def createGermanCreditData(k):
-
     pairsOfPAndAlpha = [(0.1, 0.1),  # no real results, skip in evaluation
                         (0.2, 0.1),  # no real results, skip in evaluation
                         (0.3, 0.0220),
@@ -112,7 +193,6 @@ def createGermanCreditData(k):
 
 
 def createCOMPASData(k):
-
     pairsOfPAndAlpha = [(0.1, 0.0140),
                         (0.2, 0.0115),
                         (0.3, 0.0103),
@@ -124,20 +204,19 @@ def createCOMPASData(k):
                         (0.9, 0.0100)]
 
     protectedCompasRace, nonProtectedCompasRace = compasData.createRace(
-       "../rawData/COMPAS/ProPublica_race.csv", "race", "Violence_rawscore", "Recidivism_rawscore",
-       "priors_count")
+        "../rawData/COMPAS/ProPublica_race.csv", "race", "Violence_rawscore", "Recidivism_rawscore",
+        "priors_count")
     dumpRankingsToDisk(protectedCompasRace, nonProtectedCompasRace, k, "CompasRace",
                        "../results/rankingDumps/Compas/Race", pairsOfPAndAlpha)
 
     protectedCompasGender, nonProtectedCompasGender = compasData.createGender(
-       "../rawData/COMPAS/ProPublica_sex.csv", "sex", "Violence_rawscore", "Recidivism_rawscore",
-       "priors_count")
+        "../rawData/COMPAS/ProPublica_sex.csv", "sex", "Violence_rawscore", "Recidivism_rawscore",
+        "priors_count")
     dumpRankingsToDisk(protectedCompasGender, nonProtectedCompasGender, k, "CompasGender",
-                      "../results/rankingDumps/Compas/Gender", pairsOfPAndAlpha)
+                       "../results/rankingDumps/Compas/Gender", pairsOfPAndAlpha)
 
 
 def createSATData(k):
-
     SATFile = '../rawData/SAT/sat_data.pdf'
 
     pairsOfPAndAlpha = [(0.1, 0.0122),
@@ -181,28 +260,38 @@ def dumpRankingsToDisk(protected, nonProtected, k, dataSetName, directory, pairs
         os.makedirs(os.getcwd() + '/' + directory + '/')
 
     print("colorblind ranking", end='', flush=True)
-    colorblindRanking, colorblindNotSelected = createRankings.createFairRanking(k, protected, nonProtected, ESSENTIALLY_ZERO, 0.1)
+    colorblindRanking, colorblindNotSelected = createRankings.createFairRanking(k, protected, nonProtected,
+                                                                                ESSENTIALLY_ZERO, 0.1)
     print(" [Done]")
 
     print("fair rankings", end='', flush=True)
     pair01 = [item for item in pairsOfPAndAlpha if item[0] == 0.1][0]
-    fairRanking01, fair01NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair01[0], pair01[1])
+    fairRanking01, fair01NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair01[0],
+                                                                        pair01[1])
     pair02 = [item for item in pairsOfPAndAlpha if item[0] == 0.2][0]
-    fairRanking02, fair02NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair02[0], pair02[1])
+    fairRanking02, fair02NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair02[0],
+                                                                        pair02[1])
     pair03 = [item for item in pairsOfPAndAlpha if item[0] == 0.3][0]
-    fairRanking03, fair03NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair03[0], pair03[1])
+    fairRanking03, fair03NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair03[0],
+                                                                        pair03[1])
     pair04 = [item for item in pairsOfPAndAlpha if item[0] == 0.4][0]
-    fairRanking04, fair04NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair04[0], pair04[1])
+    fairRanking04, fair04NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair04[0],
+                                                                        pair04[1])
     pair05 = [item for item in pairsOfPAndAlpha if item[0] == 0.5][0]
-    fairRanking05, fair05NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair05[0], pair05[1])
+    fairRanking05, fair05NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair05[0],
+                                                                        pair05[1])
     pair06 = [item for item in pairsOfPAndAlpha if item[0] == 0.6][0]
-    fairRanking06, fair06NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair06[0], pair06[1])
+    fairRanking06, fair06NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair06[0],
+                                                                        pair06[1])
     pair07 = [item for item in pairsOfPAndAlpha if item[0] == 0.7][0]
-    fairRanking07, fair07NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair07[0], pair07[1])
+    fairRanking07, fair07NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair07[0],
+                                                                        pair07[1])
     pair08 = [item for item in pairsOfPAndAlpha if item[0] == 0.8][0]
-    fairRanking08, fair08NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair08[0], pair08[1])
+    fairRanking08, fair08NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair08[0],
+                                                                        pair08[1])
     pair09 = [item for item in pairsOfPAndAlpha if item[0] == 0.9][0]
-    fairRanking09, fair09NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair09[0], pair09[1])
+    fairRanking09, fair09NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair09[0],
+                                                                        pair09[1])
     print(" [Done]")
 
     print("feldman ranking", end='', flush=True)
@@ -211,29 +300,48 @@ def dumpRankingsToDisk(protected, nonProtected, k, dataSetName, directory, pairs
 
     print("Write rankings to disk", end='', flush=True)
     writePickleToDisk(colorblindRanking, os.getcwd() + '/' + directory + '/' + dataSetName + 'ColorblindRanking.pickle')
-    writePickleToDisk(colorblindNotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'ColorblindRankingNotSelected.pickle')
+    writePickleToDisk(colorblindNotSelected,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'ColorblindRankingNotSelected.pickle')
     writePickleToDisk(feldmanRanking, os.getcwd() + '/' + directory + '/' + dataSetName + 'FeldmanRanking.pickle')
-    writePickleToDisk(feldmanNotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FeldmanRankingNotSelected.pickle')
-    writePickleToDisk(fairRanking01, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking01PercentProtected.pickle')
-    writePickleToDisk(fair01NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking01NotSelected.pickle')
-    writePickleToDisk(fairRanking02, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking02PercentProtected.pickle')
-    writePickleToDisk(fair02NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking02NotSelected.pickle')
-    writePickleToDisk(fairRanking03, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking03PercentProtected.pickle')
-    writePickleToDisk(fair03NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking03NotSelected.pickle')
-    writePickleToDisk(fairRanking04, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking04PercentProtected.pickle')
-    writePickleToDisk(fair04NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking04NotSelected.pickle')
-    writePickleToDisk(fairRanking05, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking05PercentProtected.pickle')
-    writePickleToDisk(fair05NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking05NotSelected.pickle')
-    writePickleToDisk(fairRanking06, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking06PercentProtected.pickle')
-    writePickleToDisk(fair06NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking06NotSelected.pickle')
-    writePickleToDisk(fairRanking07, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking07PercentProtected.pickle')
-    writePickleToDisk(fair07NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking07NotSelected.pickle')
-    writePickleToDisk(fairRanking08, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking08PercentProtected.pickle')
-    writePickleToDisk(fair08NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking08NotSelected.pickle')
-    writePickleToDisk(fairRanking09, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking09PercentProtected.pickle')
-    writePickleToDisk(fair09NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking09NotSelected.pickle')
+    writePickleToDisk(feldmanNotSelected,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FeldmanRankingNotSelected.pickle')
+    writePickleToDisk(fairRanking01,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking01PercentProtected.pickle')
+    writePickleToDisk(fair01NotSelected,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking01NotSelected.pickle')
+    writePickleToDisk(fairRanking02,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking02PercentProtected.pickle')
+    writePickleToDisk(fair02NotSelected,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking02NotSelected.pickle')
+    writePickleToDisk(fairRanking03,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking03PercentProtected.pickle')
+    writePickleToDisk(fair03NotSelected,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking03NotSelected.pickle')
+    writePickleToDisk(fairRanking04,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking04PercentProtected.pickle')
+    writePickleToDisk(fair04NotSelected,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking04NotSelected.pickle')
+    writePickleToDisk(fairRanking05,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking05PercentProtected.pickle')
+    writePickleToDisk(fair05NotSelected,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking05NotSelected.pickle')
+    writePickleToDisk(fairRanking06,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking06PercentProtected.pickle')
+    writePickleToDisk(fair06NotSelected,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking06NotSelected.pickle')
+    writePickleToDisk(fairRanking07,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking07PercentProtected.pickle')
+    writePickleToDisk(fair07NotSelected,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking07NotSelected.pickle')
+    writePickleToDisk(fairRanking08,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking08PercentProtected.pickle')
+    writePickleToDisk(fair08NotSelected,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking08NotSelected.pickle')
+    writePickleToDisk(fairRanking09,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking09PercentProtected.pickle')
+    writePickleToDisk(fair09NotSelected,
+                      os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking09NotSelected.pickle')
     print(" [Done]")
-
 
 
 if __name__ == '__main__':
