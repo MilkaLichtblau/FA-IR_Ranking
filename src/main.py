@@ -16,12 +16,6 @@ from evaluator.evaluator import Evaluator
 def main():
     setMemoryLimit(10000000000)
 
-    def run_whole_prog(args):
-        createRankingsAndWriteToDisk()
-        evaluator = Evaluator()
-        evaluator.transposeResults()
-        printResults(evaluator)
-
     # create the top-level parser
     parser = argparse.ArgumentParser(prog='FA*IR', description='a fair Top-k ranking algorithm',
                                      epilog="=== === === end === === ===")
@@ -35,71 +29,71 @@ def main():
 
     # create the parser for the "create" command
     parser_create = subparsers.add_parser('dataset_create', help='choose a dataset to generate')
-    parser_create.add_argument(dest='dataset_to_create', choices=["all", "sat", "xing"
-                                                                  "compas_gender",  "compas_race",
-                                                                  "germancredit_age25", "germancredit_age35"], default="all")
-    parser_create.set_defaults(func=createRankingsAndWriteToDisk)
+    parser_create.add_argument(dest='dataset_to_evaluate', choices=["sat", "compas", "germancredit", "xing"])
 
     # create the parser for the "evaluate" command
     parser_evaluate = subparsers.add_parser('dataset_evaluate', help='choose a dataset to evaluate')
-    parser_evaluate.add_argument(dest='dataset_to_evaluate', choices=["all", "sat", "compas", "germancredit", "xing"], default="all")
-
+    parser_evaluate.add_argument(dest='dataset_to_create', choices=["sat", "xing"
+                                                                  "compas_gender",  "compas_race",
+                                                                  "germancredit_25", "germancredit_35"])
 
     # create the parser for the "rank" command
-    parser_evaluate = subparsers.add_parser('dataset_rank', help='choose a dataset to rank')
-    parser_evaluate.add_argument("-d", "--dataset", choices=["sat", "compas", "germancredit", "xing"])
-
-    # parse some argument lists
-    # parser.parse_args(['create', 'xing'])
-    #
-    # parser.parse_args(['--foo', 'b', '--baz', 'Z'])
+    # parser_evaluate = subparsers.add_parser('dataset_to_rank', help='choose a dataset to rank')
+    # parser_evaluate.add_argument("-d", "--dataset", choices=["sat", "compas", "germancredit", "xing"])
 
     args = parser.parse_args()
-    # args.func(args)
 
-    create_dataset(args)
     if args.create == []:
-        # create_dataset(args.dataset)
-        if args == ['sat']:
-            createSATData(1500)
-        elif args == ['compas']:
+        print("creating rankings for all datasets...")
+        createRankingsAndWriteToDisk()
+    elif args.create == ['sat']:
+        createSATData(1500)
+    elif args.create == ['compas']:
             createCOMPASData(1000)
-        elif args == ['germancredit']:
+    elif args.create == ['germancredit']:
             createGermanCreditData(100)
-        elif args == ['xing']:
+    elif args.create == ['xing']:
             createXingData(40)
-        else:
-            print("creating rankings for all datasets...")
-            createRankingsAndWriteToDisk()
-    elif args == ['evaluate']:
-        if args == ['sat']:
-            createSATData(1500)
-        elif args == ['compas']:
-            createCOMPASData(1000)
-        elif args == ['germancredit']:
-            createGermanCreditData(100)
-        elif args == ['xing']:
-            createXingData(40)
-        else:
-            evaluator = Evaluator()
-            evaluator.transposeResults()
-            printResults(evaluator)
-    else:
-        print(args.create)
-        # createRankingsAndWriteToDisk()
-        # evaluator = Evaluator()
+    elif args.evaluate == []:
+        evaluator = Evaluator()
         # evaluator.transposeResults()
-        # printResults(evaluator)
+    elif args.evaluate ==['compas_gender']:
+        evaluator = Evaluator.compasGenderResults
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate ==['compas_race']:
+        evaluator = Evaluator.compasRaceResults
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate == ['germancredit_25']:
+        evaluator = Evaluator.germanCreditAge25Results
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate == ['germancredit_35']:
+        evaluator = Evaluator.germanCreditAge35Results
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate == ['germancredit_gender']:
+        evaluator = Evaluator.germanCreditGenderResults
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate == ['xing']:
+        evaluator = Evaluator.xingResults
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate == ['sat']:
+        evaluator = Evaluator.SATResults
+        # evaluator.transposeResults()
+        print(evaluator)
 
-#
-# def create_dataset(name):
-#     return {
-#         ['sat']: createSATData(1500),
-#         ['sat']: createSATData(1500),
-#         ['compas']: createCOMPASData(1000),
-#         ['germancredit']: createGermanCreditData(100),
-#         ['xing']: createXingData(40)
-#     }.get(name, print("Invalid Dataset."))
+
+
+    else:
+        print("FA*IR \n running the full program \n Press ctrl+c to abort \n \n")
+        createRankingsAndWriteToDisk()
+        evaluator = Evaluator()
+        evaluator.transposeResults()
+        printResults(evaluator)
 
 
 def createRankingsAndWriteToDisk():
