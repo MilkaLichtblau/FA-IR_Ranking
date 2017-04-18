@@ -24,7 +24,6 @@ def main():
     parser.add_argument("-c", "--create", nargs='*', help="creates a ranking and dumps it to disk")
     parser.add_argument("-e", "--evaluate", nargs='*', help="evaluates and transposes results")
     parser.add_argument("-r", "--rank", nargs='*', help="ranks")
-    # parser.add_argument("-a", "--all", nargs='*', help="runs the full program")
     # parser.set_defaults(func='run_whole_prog')
     subparsers = parser.add_subparsers(help='sub-command help')
 
