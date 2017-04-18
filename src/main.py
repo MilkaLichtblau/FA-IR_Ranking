@@ -10,14 +10,16 @@ from utilsAndConstants.constants import ESSENTIALLY_ZERO
 from utilsAndConstants.utils import setMemoryLimit
 from datasetCreator import compasData, germanCreditData, satData, xingProfilesReader
 from evaluator.evaluator import Evaluator
+from evaluator.failProbabilityYangStoyanovich import determineFailProbOfGroupFairnessTesterForStoyanovichRanking
 
 
 def main():
     setMemoryLimit(10000000000)
-    createRankingsAndWriteToDisk()
-    evaluator = Evaluator()
-    evaluator.transposeResults()
-    printResults(evaluator)
+    determineFailProbOfGroupFairnessTesterForStoyanovichRanking()
+#     createRankingsAndWriteToDisk()
+#     evaluator = Evaluator()
+#     evaluator.transposeResults()
+#     printResults(evaluator)
 
 
 def createRankingsAndWriteToDisk():
