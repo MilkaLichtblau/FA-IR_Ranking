@@ -4,6 +4,7 @@ Created on Mar 29, 2017
 @author: meike.zehlike
 '''
 import os
+import argparse
 from readWriteRankings.readAndWriteRankings import writePickleToDisk
 from ranker import createRankings
 from utilsAndConstants.constants import ESSENTIALLY_ZERO
@@ -15,11 +16,86 @@ from evaluator.failProbabilityYangStoyanovich import determineFailProbOfGroupFai
 
 def main():
     setMemoryLimit(10000000000)
-#     determineFailProbOfGroupFairnessTesterForStoyanovichRanking()
-    createRankingsAndWriteToDisk()
-    evaluator = Evaluator()
-    evaluator.transposeResults()
-    printResults(evaluator)
+
+    # create the top-level parser
+    parser = argparse.ArgumentParser(prog='FA*IR', description='a fair Top-k ranking algorithm',
+                                     epilog="=== === === end === === ===")
+                                     # argument_default="-a")
+    parser.add_argument("-c", "--create", nargs='*', help="creates a ranking and dumps it to disk")
+    parser.add_argument("-e", "--evaluate", nargs='*', help="evaluates and transposes results")
+    parser.add_argument("-r", "--rank", nargs='*', help="ranks")
+    # parser.set_defaults(func='run_whole_prog')
+    subparsers = parser.add_subparsers(help='sub-command help')
+
+    # create the parser for the "create" command
+    parser_create = subparsers.add_parser('dataset_create', help='choose a dataset to generate')
+    parser_create.add_argument(dest='dataset_to_evaluate', choices=["sat", "compas", "germancredit", "xing"])
+
+    # create the parser for the "evaluate" command
+    parser_evaluate = subparsers.add_parser('dataset_evaluate', help='choose a dataset to evaluate')
+    parser_evaluate.add_argument(dest='dataset_to_create', choices=["sat", "xing"
+                                                                  "compas_gender",  "compas_race",
+                                                                  "germancredit_25", "germancredit_35"])
+
+    # create the parser for the "rank" command
+    # parser_evaluate = subparsers.add_parser('dataset_to_rank', help='choose a dataset to rank')
+    # parser_evaluate.add_argument("-d", "--dataset", choices=["sat", "compas", "germancredit", "xing"])
+
+    args = parser.parse_args()
+
+    if args.create == []:
+        print("creating rankings for all datasets...")
+        createRankingsAndWriteToDisk()
+    elif args.create == ['sat']:
+        createSATData(1500)
+    elif args.create == ['compas']:
+            createCOMPASData(1000)
+    elif args.create == ['germancredit']:
+            createGermanCreditData(100)
+    elif args.create == ['xing']:
+            createXingData(40)
+    elif args.evaluate == []:
+        evaluator = Evaluator()
+        # evaluator.transposeResults()
+    elif args.evaluate ==['compas_gender']:
+        evaluator = Evaluator.compasGenderResults
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate ==['compas_race']:
+        evaluator = Evaluator.compasRaceResults
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate == ['germancredit_25']:
+        evaluator = Evaluator.germanCreditAge25Results
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate == ['germancredit_35']:
+        evaluator = Evaluator.germanCreditAge35Results
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate == ['germancredit_gender']:
+        evaluator = Evaluator.germanCreditGenderResults
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate == ['xing']:
+        evaluator = Evaluator.xingResults
+        # evaluator.transposeResults()
+        printResults(evaluator)
+    elif args.evaluate == ['sat']:
+        evaluator = Evaluator.SATResults
+        # evaluator.transposeResults()
+        print(evaluator)
+
+
+
+    else:
+        print("FA*IR \n running the full program \n Press ctrl+c to abort \n \n")
+        createRankingsAndWriteToDisk()
+        evaluator = Evaluator()
+        evaluator.transposeResults()
+        printResults(evaluator)
+#       in between commits
+        determineFailProbOfGroupFairnessTesterForStoyanovichRanking()
 
 
 def createRankingsAndWriteToDisk():
