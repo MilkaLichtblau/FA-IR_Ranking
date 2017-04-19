@@ -40,7 +40,7 @@ class Creator(object):
 
 
     def create(self):
-        print("creating actual SAT candidate set")
+        print("creating SAT candidate set")
         """
         creates the actual candidate objects such that the data set has the same distribution as
         given in the SAT table

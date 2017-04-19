@@ -22,8 +22,8 @@ def normalizeQualifications(ranking):
     qualifications = [ranking[i].qualification for i in range(len(ranking))]
     highest = max(qualifications)
     for candidate in ranking:
-        candidate.qualification = candidate.qualification / highest
         candidate.originalQualification = candidate.originalQualification / highest
+        candidate.qualification = candidate.qualification / highest
 
 
 def setMemoryLimit(maxMem):

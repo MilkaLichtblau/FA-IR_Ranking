@@ -83,7 +83,7 @@ def orderingUnfairness(ranking):
     for i, currentCandidate in enumerate(ranking):
         if not currentCandidate.uuid == colorblind[i].uuid:
             # the candidate was ranked somewhere else from their position in a colorblind ranking
-            # is worse than the one that should appear here --> find the actual position of the
+            # --> find the actual position of the
             # one that should appear here if rated by qualification
             idxInColorblindRanking = __findIndexOfCandidateByID(colorblind, currentCandidate.uuid)
             # the protected candidate right above the non-protected, that was rated down should have the lowest

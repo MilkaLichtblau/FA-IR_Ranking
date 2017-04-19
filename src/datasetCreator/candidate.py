@@ -45,7 +45,7 @@ class Candidate(object):
 
     @originalQualification.setter
     def originalQualification(self, value):
-        self.__qualification = value
+        self.__originalQualification = value
 
 
     @property
