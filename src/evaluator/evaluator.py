@@ -130,7 +130,7 @@ class Evaluator(object):
         """
         return self.__xingResults
 
-
+    # init generisch für den ganzen pfad
     def __init__(self):
         self.__compasGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/Compas/Gender/')
         self.__compasRaceResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/Compas/Race/')

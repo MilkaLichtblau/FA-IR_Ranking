@@ -35,7 +35,7 @@ def main():
     parser_evaluate = subparsers.add_parser('dataset_evaluate', help='choose a dataset to evaluate')
     parser_evaluate.add_argument(dest='dataset_to_create', choices=["sat", "xing"
                                                                   "compas_gender",  "compas_race",
-                                                                  "germancredit_25", "germancredit_35"])
+                                                                  "germancredit_25", "germancredit_35", "germancredit_gender"])
 
     # create the parser for the "rank" command
     # parser_evaluate = subparsers.add_parser('dataset_to_rank', help='choose a dataset to rank')
@@ -85,8 +85,6 @@ def main():
         evaluator = Evaluator.SATResults
         # evaluator.transposeResults()
         print(evaluator)
-
-
 
     else:
         print("FA*IR \n running the full program \n Press ctrl+c to abort \n \n")
