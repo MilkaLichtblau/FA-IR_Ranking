@@ -15,11 +15,11 @@ from evaluator.failProbabilityYangStoyanovich import determineFailProbOfGroupFai
 
 def main():
     setMemoryLimit(10000000000)
-    determineFailProbOfGroupFairnessTesterForStoyanovichRanking()
-#     createRankingsAndWriteToDisk()
-#     evaluator = Evaluator()
-#     evaluator.transposeResults()
-#     printResults(evaluator)
+#     determineFailProbOfGroupFairnessTesterForStoyanovichRanking()
+    createRankingsAndWriteToDisk()
+    evaluator = Evaluator()
+    evaluator.transposeResults()
+    printResults(evaluator)
 
 
 def createRankingsAndWriteToDisk():

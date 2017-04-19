@@ -132,33 +132,33 @@ class Evaluator(object):
 
 
     def __init__(self):
-#         self.__compasGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/Compas/Gender/')
-#         self.__compasRaceResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/Compas/Race/')
-#         self.__germanCreditAge25Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/German Credit/Age25/')
-#         self.__germanCreditAge35Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/German Credit/Age35/')
-#         self.__germanCreditGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/German Credit/Gender/')
+        self.__compasGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/Compas/Gender/')
+        self.__compasRaceResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/Compas/Race/')
+        self.__germanCreditAge25Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/German Credit/Age25/')
+        self.__germanCreditAge35Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/German Credit/Age35/')
+        self.__germanCreditGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/German Credit/Gender/')
         self.__SATResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/SAT/')
         self.__xingResults = self.evaluateXing(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/Xing/')
         self.__normalizeUtilities()
 
 
     def __normalizeUtilities(self):
-#         self.__normalizeUtility(self.__compasGenderResults)
-#         self.__normalizeUtility(self.__compasRaceResults)
-#         self.__normalizeUtility(self.__germanCreditAge25Results)
-#         self.__normalizeUtility(self.__germanCreditAge35Results)
-#         self.__normalizeUtility(self.__germanCreditGenderResults)
+        self.__normalizeUtility(self.__compasGenderResults)
+        self.__normalizeUtility(self.__compasRaceResults)
+        self.__normalizeUtility(self.__germanCreditAge25Results)
+        self.__normalizeUtility(self.__germanCreditAge35Results)
+        self.__normalizeUtility(self.__germanCreditGenderResults)
         self.__normalizeUtility(self.__SATResults)
         for jobDescription, metricsResults in self.__xingResults.items():
             self.__normalizeUtility(self.xingResults[jobDescription])
 
 
     def transposeResults(self):
-#         self.__compasGenderResults = self.__compasGenderResults.T
-#         self.__compasRaceResults = self.__compasRaceResults.T
-#         self.__germanCreditAge25Results = self.__germanCreditAge25Results.T
-#         self.__germanCreditAge35Results = self.__germanCreditAge35Results.T
-#         self.__germanCreditGenderResults = self.__germanCreditGenderResults.T
+        self.__compasGenderResults = self.__compasGenderResults.T
+        self.__compasRaceResults = self.__compasRaceResults.T
+        self.__germanCreditAge25Results = self.__germanCreditAge25Results.T
+        self.__germanCreditAge35Results = self.__germanCreditAge35Results.T
+        self.__germanCreditGenderResults = self.__germanCreditGenderResults.T
         self.__SATResults = self.__SATResults.T
         for jobDescription, metricsResults in self.__xingResults.items():
             self.xingResults[jobDescription] = self.xingResults[jobDescription].T
