@@ -19,10 +19,10 @@ def createGender(filename, *columnsToRead):
         data = pd.read_csv(csvfile, usecols=columnsToRead)
         for row in data.itertuples():
             # change to different index in row[.] to access other columns from csv file
-            if row[4] == 1:
+            if row[4] == 0:
                 nonProtected.append(Candidate(1 - row[3], []))
             else:
-                protected.append(Candidate(1 - row[3], ["male"]))
+                protected.append(Candidate(1 - row[3], ["female"]))
 
     # sort candidates by recidivism scores in COMPAS
     protected.sort(key=lambda candidate: candidate.qualification, reverse=True)
