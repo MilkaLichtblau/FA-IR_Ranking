@@ -8,6 +8,7 @@ import pandas as pd
 from readWriteRankings.readAndWriteRankings import loadPicklesFromDirectory, loadPicklesFromSubDirs, \
     writePickleToDisk
 from evaluator import metrics
+from utilsAndConstants.utils import Switch
 
 
 class Evaluator(object):
@@ -54,7 +55,7 @@ class Evaluator(object):
     FELDMAN = 'feldman'
     ORIGINAL = 'original'
 
-    LAMBDA = 8
+    LAMBDA = 0.00001
 
 
     @property
@@ -130,38 +131,78 @@ class Evaluator(object):
         """
         return self.__xingResults
 
+    @property
+    def whichDataset(self):
+        return self.__whichDataset
+
+
     # init generisch für den ganzen pfad
-    def __init__(self):
-        self.__compasGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/Compas/Gender/')
-        self.__compasRaceResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/Compas/Race/')
-        self.__germanCreditAge25Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/German Credit/Age25/')
-        self.__germanCreditAge35Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/German Credit/Age35/')
-        self.__germanCreditGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/German Credit/Gender/')
-        self.__SATResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/SAT/')
-        self.__xingResults = self.evaluateXing(self.CURRENT_WORKING_DIR + '/' + '../results/rankingDumps/Xing/')
-        self.__normalizeUtilities()
+    def __init__(self, dataset=None):
+        if dataset is None:
+            self.__compasGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Compas/Gender/')
+            self.__compasRaceResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Compas/Race/')
+            self.__germanCreditAge25Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Age25/')
+            self.__germanCreditAge35Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Age35/')
+            self.__germanCreditGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Gender/')
+            self.__SATResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/SAT/')
+            self.__xingResults = self.evaluateXing(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Xing/')
 
+            self.__normalizeUtility(self.compasGenderResults)
+            self.__normalizeUtility(self.compasRaceResults)
+            self.__normalizeUtility(self.germanCreditAge25Results)
+            self.__normalizeUtility(self.germanCreditAge35Results)
+            self.__normalizeUtility(self.germanCreditGenderResults)
+            self.__normalizeUtility(self.SATResults)
+            for jobDescription, metricsResults in self.xingResults.items():
+                self.__normalizeUtility(self.xingResults[jobDescription])
 
-    def __normalizeUtilities(self):
-        self.__normalizeUtility(self.__compasGenderResults)
-        self.__normalizeUtility(self.__compasRaceResults)
-        self.__normalizeUtility(self.__germanCreditAge25Results)
-        self.__normalizeUtility(self.__germanCreditAge35Results)
-        self.__normalizeUtility(self.__germanCreditGenderResults)
-        self.__normalizeUtility(self.__SATResults)
-        for jobDescription, metricsResults in self.__xingResults.items():
-            self.__normalizeUtility(self.xingResults[jobDescription])
-
-
-    def transposeResults(self):
-        self.__compasGenderResults = self.__compasGenderResults.T
-        self.__compasRaceResults = self.__compasRaceResults.T
-        self.__germanCreditAge25Results = self.__germanCreditAge25Results.T
-        self.__germanCreditAge35Results = self.__germanCreditAge35Results.T
-        self.__germanCreditGenderResults = self.__germanCreditGenderResults.T
-        self.__SATResults = self.__SATResults.T
-        for jobDescription, metricsResults in self.__xingResults.items():
-            self.xingResults[jobDescription] = self.xingResults[jobDescription].T
+            self.compasGenderResults = self.compasGenderResults.T
+            self.compasRaceResults = self.compasRaceResults.T
+            self.germanCreditAge25Results = self.germanCreditAge25Results.T
+            self.germanCreditAge35Results = self.germanCreditAge35Results.T
+            self.germanCreditGenderResults = self.germanCreditGenderResults.T
+            self.SATResults = self.SATResults.T
+            for jobDescription, metricsResults in self.xingResults.items():
+                self.xingResults[jobDescription] = self.xingResults[jobDescription].T
+        else:
+            self.__whichDataset = dataset
+            for case in Switch(self.whichDataset):
+                if case('compas_gender'):
+                    self.__compasGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Compas/Gender/')
+                    self.__normalizeUtility(self.compasGenderResults)
+                    self.compasGenderResults = self.compasGenderResults.T
+                    break
+                if case('compas_race'):
+                    self.__compasRaceResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Compas/Race/')
+                    self.__normalizeUtility(self.compasRaceResults)
+                    self.compasRaceResults = self.compasRaceResults.T
+                    break
+                if case('germancredit_25'):
+                    self.__germanCreditAge25Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Age25/')
+                    self.__normalizeUtility(self.germanCreditAge25Results)
+                    self.germanCreditAge25Results = self.germanCreditAge25Results.T
+                    break
+                if case('germancredit_35'):
+                    self.__germanCreditAge35Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Age35/')
+                    self.__normalizeUtility(self.germanCreditAge35Results)
+                    self.germanCreditAge35Results = self.germanCreditAge35Results.T
+                    break
+                if case('germancredit_gender'):
+                    self.__germanCreditGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Gender/')
+                    self.__normalizeUtility(self.germanCreditGenderResults)
+                    self.germanCreditGenderResults = self.germanCreditGenderResults.T
+                    break
+                if case('sat'):
+                    self.__SATResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/SAT/')
+                    self.__normalizeUtility(self.SATResults)
+                    self.SATResults = self.SATResults.T
+                    break
+                if case('xing'):
+                    self.__xingResults = self.evaluateXing(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Xing/')
+                    for jobDescription, metricsResults in self.xingResults.items():
+                        self.__normalizeUtility(self.xingResults[jobDescription])
+                        self.xingResults[jobDescription] = self.xingResults[jobDescription].T
+                    break
 
 
     def evaluate(self, path):
@@ -317,10 +358,76 @@ class Evaluator(object):
         writePickleToDisk(self.xingResults, directory + 'XingResults.pickle')
 
 
-
-
-
-
+    def printResults(self):
+        if self.whichDataset is not None:
+            if self.whichDataset == 'compas_gender':
+                print("========================================================================================")
+                print("COMPAS Gender Results")
+                print(self.compasGenderResults)
+                print("========================================================================================")
+            elif self.whichDataset == 'compas_race':
+                print("========================================================================================")
+                print("COMPAS race results")
+                print(self.compasRaceResults)
+                print("========================================================================================")
+            elif self.whichDataset == 'germancredit_gender':
+                print("========================================================================================")
+                print("GERMAN CREDIT gender results")
+                print(self.germanCreditGenderResults)
+                print("========================================================================================")
+            elif self.whichDataset == 'germancredit_25':
+                print("GERMAN CREDIT age 25 results")
+                print(self.germanCreditAge25Results)
+                print("========================================================================================")
+            elif self.whichDataset == 'germancredit_35':
+                print("========================================================================================")
+                print("GERMAN CREDIT age 35 results")
+                print(self.germanCreditAge35Results)
+                print("========================================================================================")
+            elif self.whichDataset == 'sat':
+                print("========================================================================================")
+                print("SAT results")
+                print(self.SATResults)
+                print("========================================================================================")
+            elif self.whichDataset == 'xing':
+                print("========================================================================================")
+                print("Xing results")
+                for rankingType, allMetrics in self.xingResults.items():
+                    for metricsType, result in allMetrics.items():
+                        print("{0}        {1}\n{2}".format(rankingType, metricsType, result))
+                    print("--------------------------------------------------------")
+                print("========================================================================================")
+        else:
+            print("========================================================================================")
+            print("COMPAS Gender Results")
+            print(self.compasGenderResults)
+            print("========================================================================================")
+            print("========================================================================================")
+            print("COMPAS race results")
+            print(self.compasRaceResults)
+            print("========================================================================================")
+            print("========================================================================================")
+            print("GERMAN CREDIT gender results")
+            print(self.germanCreditGenderResults)
+            print("========================================================================================")
+            print("GERMAN CREDIT age 25 results")
+            print(self.germanCreditAge25Results)
+            print("========================================================================================")
+            print("========================================================================================")
+            print("GERMAN CREDIT age 35 results")
+            print(self.germanCreditAge35Results)
+            print("========================================================================================")
+            print("========================================================================================")
+            print("SAT results")
+            print(self.SATResults)
+            print("========================================================================================")
+            print("========================================================================================")
+            print("Xing results")
+            for rankingType, allMetrics in self.xingResults.items():
+                for metricsType, result in allMetrics.items():
+                    print("{0}        {1}\n{2}".format(rankingType, metricsType, result))
+                print("--------------------------------------------------------")
+            print("========================================================================================")
 
 
 

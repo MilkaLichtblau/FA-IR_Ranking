@@ -13,6 +13,7 @@ from datasetCreator import compasData, germanCreditData, satData, xingProfilesRe
 from evaluator.evaluator import Evaluator
 from evaluator.failProbabilityYangStoyanovich import determineFailProbOfGroupFairnessTesterForStoyanovichRanking
 
+EVALUATE_FAILURE_PROBABILITY = 0
 
 def main():
     setMemoryLimit(10000000000)
@@ -34,7 +35,7 @@ def main():
     # create the parser for the "evaluate" command
     parser_evaluate = subparsers.add_parser('dataset_evaluate', help='choose a dataset to evaluate')
     parser_evaluate.add_argument(dest='dataset_to_create', choices=["sat", "xing"
-                                                                  "compas_gender",  "compas_race",
+                                                                  "compas_gender", "compas_race",
                                                                   "germancredit_25", "germancredit_35", "germancredit_gender"])
 
     # create the parser for the "rank" command
@@ -56,44 +57,37 @@ def main():
             createXingData(40)
     elif args.evaluate == []:
         evaluator = Evaluator()
-        # evaluator.transposeResults()
-    elif args.evaluate ==['compas_gender']:
-        evaluator = Evaluator.compasGenderResults
-        # evaluator.transposeResults()
-        printResults(evaluator)
-    elif args.evaluate ==['compas_race']:
-        evaluator = Evaluator.compasRaceResults
-        # evaluator.transposeResults()
-        printResults(evaluator)
+        evaluator.printResults()
+    elif args.evaluate == ['compas_gender']:
+        evaluator = Evaluator('compas_gender')
+        evaluator.printResults()
+    elif args.evaluate == ['compas_race']:
+        evaluator = Evaluator('compas_race')
+        evaluator.printResults()
     elif args.evaluate == ['germancredit_25']:
-        evaluator = Evaluator.germanCreditAge25Results
-        # evaluator.transposeResults()
-        printResults(evaluator)
+        evaluator = Evaluator('germancredit_25')
+        evaluator.printResults()
     elif args.evaluate == ['germancredit_35']:
-        evaluator = Evaluator.germanCreditAge35Results
-        # evaluator.transposeResults()
-        printResults(evaluator)
+        evaluator = Evaluator('germancredit_35')
+        evaluator.printResults()
     elif args.evaluate == ['germancredit_gender']:
-        evaluator = Evaluator.germanCreditGenderResults
-        # evaluator.transposeResults()
-        printResults(evaluator)
+        evaluator = Evaluator('germancredit_gender')
+        evaluator.printResults()
     elif args.evaluate == ['xing']:
-        evaluator = Evaluator.xingResults
-        # evaluator.transposeResults()
-        printResults(evaluator)
+        evaluator = Evaluator('xing')
+        evaluator.printResults()
     elif args.evaluate == ['sat']:
-        evaluator = Evaluator.SATResults
-        # evaluator.transposeResults()
-        print(evaluator)
+        evaluator = Evaluator('sat')
+        evaluator.printResults()
 
     else:
         print("FA*IR \n running the full program \n Press ctrl+c to abort \n \n")
         createRankingsAndWriteToDisk()
         evaluator = Evaluator()
-        evaluator.transposeResults()
-        printResults(evaluator)
+        evaluator.printResults()
 #       in between commits
-        determineFailProbOfGroupFairnessTesterForStoyanovichRanking()
+        if EVALUATE_FAILURE_PROBABILITY:
+            determineFailProbOfGroupFairnessTesterForStoyanovichRanking()
 
 
 def createRankingsAndWriteToDisk():
@@ -101,37 +95,6 @@ def createRankingsAndWriteToDisk():
     createCOMPASData(1000)
     createGermanCreditData(100)
     createXingData(40)
-
-
-def printResults(evaluator):
-    print("COMPAS Gender Results:")
-    print(evaluator.compasGenderResults)
-    print("========================================================================================")
-    print("COMPAS race results")
-    print(evaluator.compasRaceResults)
-    print("========================================================================================")
-    print("GERMAN CREDIT gender results")
-    print(evaluator.germanCreditGenderResults)
-    print("========================================================================================")
-    print("GERMAN CREDIT age 25 results")
-    print(evaluator.germanCreditAge25Results)
-    print("========================================================================================")
-    print("GERMAN CREDIT age 35 results")
-    print(evaluator.germanCreditAge35Results)
-    print("========================================================================================")
-    print("SAT results")
-    print(evaluator.SATResults)
-    print("========================================================================================")
-    print("Xing results")
-    printDictAsTable(evaluator.xingResults)
-    print("========================================================================================")
-
-
-def printDictAsTable(dictionary):
-    for rankingType, allMetrics in dictionary.items():
-        for metricsType, result in allMetrics.items():
-            print("{0}        {1}\n{2}".format(rankingType, metricsType, result))
-        print("--------------------------------------------------------")
 
 
 def createXingData(k):
