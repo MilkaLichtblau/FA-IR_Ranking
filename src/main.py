@@ -189,9 +189,29 @@ def createSATData(k):
                         (0.8, 0.0084),
                         (0.9, 0.0096)]
 
-    satSetCreator = satData.Creator(SATFile)
-    protectedSAT, nonProtectedSAT = satSetCreator.create()
+    chileSetCreator = satData.Creator(SATFile)
+    protectedSAT, nonProtectedSAT = chileSetCreator.create()
     dumpRankingsToDisk(protectedSAT, nonProtectedSAT, k, "SAT", "../results/rankingDumps/SAT", pairsOfPAndAlpha)
+
+
+def createChileData(k):
+
+    chileFile = '../rawData/SAT/sat_data.pdf'
+
+    pairsOfPAndAlpha = [(0.1, 0.0122),
+                        (0.2, 0.0101),
+                        (0.3, 0.0092),
+                        (0.4, 0.0088),
+                        (0.5, 0.0084),
+                        (0.6, 0.0085),
+                        (0.7, 0.0084),
+                        (0.8, 0.0084),
+                        (0.9, 0.0096)]
+
+    chileSetCreator = chileData.Creator(chileFile)
+    protectedChile, nonProtectedChile = chileSetCreator.create()
+    dumpRankingsToDisk(protectedChile, nonProtectedChile, k, "Chile", "../results/rankingDumps/Chile", pairsOfPAndAlpha)
+
 
 
 def dumpRankingsToDisk(protected, nonProtected, k, dataSetName, directory, pairsOfPAndAlpha):
