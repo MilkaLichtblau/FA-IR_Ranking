@@ -196,7 +196,7 @@ def createSATData(k):
 
 def createChileData(k):
 
-    chileFile = '../rawData/SAT/sat_data.pdf'
+    chileFile = '../rawData/ChileSAT/sat_data.pdf'
 
     pairsOfPAndAlpha = [(0.1, 0.0122),
                         (0.2, 0.0101),
@@ -210,7 +210,7 @@ def createChileData(k):
 
     chileSetCreator = chileData.Creator(chileFile)
     protectedChile, nonProtectedChile = chileSetCreator.create()
-    dumpRankingsToDisk(protectedChile, nonProtectedChile, k, "Chile", "../results/rankingDumps/Chile", pairsOfPAndAlpha)
+    dumpRankingsToDisk(protectedChile, nonProtectedChile, k, "Chile", "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
 
 
 
