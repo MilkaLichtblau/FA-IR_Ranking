@@ -92,6 +92,7 @@ def main():
 
 def createRankingsAndWriteToDisk():
     createSATData(1500)
+    createChileData(1500)
     createCOMPASData(1000)
     createGermanCreditData(100)
     createXingData(40)
