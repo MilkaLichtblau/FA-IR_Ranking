@@ -72,7 +72,6 @@ The following datasets are included:
 `python3 main.py -e dataset-attribute` evaluates a set of rankings generated using the method above.
 
 ## License
-
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
