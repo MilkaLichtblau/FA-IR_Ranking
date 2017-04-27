@@ -4,6 +4,8 @@ This repository includes the source code and data sets associated with the the f
 
 * Meike Zehlike, Francesco Bonchi, Carlos Castillo, Sara Hajian, Mohamed Megahed and Ricardo Baeza-Yates FA\*IR: A Fair Top-k Ranking Algorithm. Submitted for review. 2017.
 
+Before the paper is published, you can request a copy by e-mail to the contact author listed below.
+
 ## Set-up
 
 ### Dependencies
@@ -90,6 +92,7 @@ Meike Zehlike
 meike.zehlike at tu-berlin.de
 https://www.cit.tu-berlin.de/menue/people/zehlike_meike/
 
+-----------------------------
 
 TODOs:
 
