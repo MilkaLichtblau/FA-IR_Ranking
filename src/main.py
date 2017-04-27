@@ -95,11 +95,10 @@ def main():
 
 def createRankingsAndWriteToDisk():
     createSATData(1500)
-    createChileData(1500)
+    createChileData(1500)  # need to change 1500
     createCOMPASData(1000)
     createGermanCreditData(100)
     createXingData(40)
-    createChileData(1500)           # need to change 1500
 
 
 def createXingData(k):
@@ -219,10 +218,10 @@ def createChileData(k):
                 chileFile = '../rawData/ChileSAT/Dataset/' + chileFile
                 print("reading: " + chileFile)
 
-                protectedChileSATGender, nonProtectedChileSATGender = chileSATData.createGender(chileFile,6)
+                protectedChileSATGender, nonProtectedChileSATGender = chileSATData.createGender(chileFile, 6)
                 dumpRankingsToDisk(protectedChileSATGender, nonProtectedChileSATGender, k, "ChileSATGender",
                                    "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
-                protectedChileSATNat, nonProtectedChileSATNat = chileSATData.createNationality(chileFile,6)
+                protectedChileSATNat, nonProtectedChileSATNat = chileSATData.createNationality(chileFile, 6)
                 dumpRankingsToDisk(protectedChileSATNat, nonProtectedChileSATNat, k, "ChileSATNationality",
                                    "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
 
