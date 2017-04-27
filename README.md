@@ -10,6 +10,10 @@ This repository includes the source code and data sets associated with the the f
 
 This program was developed and tested in [Python 3.5](https://www.python.org/downloads/release/python-350/). It uses the following modules:
 
+| ------- | ------- |
+| cycler 0.10.0<br/>DateTime 4.1.1<br/>guacamole 0.9.2 | cycler 0.10.0<br/>DateTime 4.1.1<br/>guacamole 0.9.2 |
+
+
 * cycler 0.10.0
 * DateTime 4.1.1
 * guacamole 0.9.2
