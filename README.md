@@ -4,15 +4,11 @@ This repository includes the source code and data sets associated with the the f
 
 * Meike Zehlike, Francesco Bonchi, Carlos Castillo, Sara Hajian, Mohamed Megahed and Ricardo Baeza-Yates FA\*IR: A Fair Top-k Ranking Algorithm. Submitted for review. 2017.
 
-## Installation
+## Set-up
 
-### System Requirements
+### Dependencies
 
-This program was developed and tested in [Python 3.5](https://www.python.org/downloads/release/python-350/). It uses the following modules:
-
-| ------- | ------- |
-| cycler 0.10.0<br/>DateTime 4.1.1<br/>guacamole 0.9.2 | cycler 0.10.0<br/>DateTime 4.1.1<br/>guacamole 0.9.2 |
-
+This program was developed and tested in [Python 3.5](https://www.python.org/downloads/release/python-350/). It depends on the following modules:
 
 * cycler 0.10.0
 * DateTime 4.1.1
@@ -44,7 +40,21 @@ This program was developed and tested in [Python 3.5](https://www.python.org/dow
 2. In a command-line shell, navigate to the directory where you cloned the repository:
 `$ cd ~/Downloads/FA-IR_Ranking/src`
 
-3. Run one or any of the following commands:
+### Datasets
+
+The following datasets are included:
+
+| Code  | Description |
+| ----- | ----------- |
+| sat   | *Scholastic Assessment Test*: a standardized test used in the US for university admissions  |
+| compas | COMPAS |
+
+## Running the program
+
+`python3 main.py -h` can be used to obtain help.
+
+`python3 main.py -c dataset` creates datasets. The *dataset* can be "sat," "compas," "germancredit," or "xing." If you omit the dataset, it will create all datasets.
+
     * `python3 main.py` for the full program
     * `python3 main.py -h` to obtain help and know which commands to run.
     * `python3 main.py -c` to create all datasets.
