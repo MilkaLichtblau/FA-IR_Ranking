@@ -1,15 +1,15 @@
-# FA*IR: A Fair Top-k Ranking Algorithm
+# FA*IR: A Fair Top-k Ranking Algorithm (code and data)
 
-This repository includes the source code and data sets associated with the [research paper](*//\\*) submitted for [KDD'17](http://www.kdd.org/kdd2017/).
-Submitted for Review on Feb 17, 2017.
+This repository includes the source code and data sets associated with the the following research paper:
 
-## Setup guide
+* Meike Zehlike, Francesco Bonchi, Carlos Castillo, Sara Hajian, Mohamed Megahed and Ricardo Baeza-Yates FA\*IR: A Fair Top-k Ranking Algorithm. Submitted for review. 2017.
+
+## Installation
 
 ### System Requirements
 
-This Program was developed an tested using the following versions:
-* Python versions: 3.5 - [available here](https://www.python.org/downloads/release/python-350/)
-* Python Modules:
+This program was developed and tested in [Python 3.5](https://www.python.org/downloads/release/python-350/). It uses the following modules:
+
     * DateTime	4.1.1
     * Jinja2	2.9.6
     * MarkupSafe	1.0
