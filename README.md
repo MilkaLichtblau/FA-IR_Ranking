@@ -53,6 +53,8 @@ The following datasets are included:
 | germancredit | [German Credit Scores](https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)) (SCHUFA) dataset |
 | xing | A dataset collected from the professional social network Xing in Jan/Feb 2017 |
 
+The datasets are included in the repository in "raw" form, so you need to use the `-c` option first to create the processed datasets, as described below.
+
 ## Running the program
 
 `python3 main.py -h` can be used to obtain help.
