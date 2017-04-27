@@ -5,11 +5,12 @@ Created on Mar 29, 2017
 '''
 import os
 import argparse
+
 from readWriteRankings.readAndWriteRankings import writePickleToDisk
 from ranker import createRankings
 from utilsAndConstants.constants import ESSENTIALLY_ZERO
 from utilsAndConstants.utils import setMemoryLimit
-from datasetCreator import compasData, germanCreditData, satData, xingProfilesReader
+from datasetCreator import compasData, germanCreditData, satData, xingProfilesReader, chileSATData
 from evaluator.evaluator import Evaluator
 from evaluator.failProbabilityYangStoyanovich import determineFailProbOfGroupFairnessTesterForStoyanovichRanking
 
@@ -30,7 +31,7 @@ def main():
 
     # create the parser for the "create" command
     parser_create = subparsers.add_parser('dataset_create', help='choose a dataset to generate')
-    parser_create.add_argument(dest='dataset_to_evaluate', choices=["sat", "compas", "germancredit", "xing"])
+    parser_create.add_argument(dest='dataset_to_evaluate', choices=["sat", "compas", "germancredit", "xing", "csat"])
 
     # create the parser for the "evaluate" command
     parser_evaluate = subparsers.add_parser('dataset_evaluate', help='choose a dataset to evaluate')
@@ -55,6 +56,8 @@ def main():
             createGermanCreditData(100)
     elif args.create == ['xing']:
             createXingData(40)
+    elif args.create == ['csat']:
+            createChileData(1500)
     elif args.evaluate == []:
         evaluator = Evaluator()
         evaluator.printResults()
@@ -96,6 +99,7 @@ def createRankingsAndWriteToDisk():
     createCOMPASData(1000)
     createGermanCreditData(100)
     createXingData(40)
+    createChileData(1500)           # need to change 1500
 
 
 def createXingData(k):
@@ -190,15 +194,15 @@ def createSATData(k):
                         (0.8, 0.0084),
                         (0.9, 0.0096)]
 
-    chileSetCreator = satData.Creator(SATFile)
-    protectedSAT, nonProtectedSAT = chileSetCreator.create()
+    satSetCreator = satData.Creator(SATFile)
+    protectedSAT, nonProtectedSAT = satSetCreator.create()
     dumpRankingsToDisk(protectedSAT, nonProtectedSAT, k, "SAT", "../results/rankingDumps/SAT", pairsOfPAndAlpha)
 
 
 def createChileData(k):
 
-    chileFile = '../rawData/ChileSAT/sat_data.pdf'
-
+    # loop through all files
+    chileDir = '../rawData/ChileSAT/Dataset'
     pairsOfPAndAlpha = [(0.1, 0.0122),
                         (0.2, 0.0101),
                         (0.3, 0.0092),
@@ -208,11 +212,19 @@ def createChileData(k):
                         (0.7, 0.0084),
                         (0.8, 0.0084),
                         (0.9, 0.0096)]
+    for root, dirs, filenames in os.walk(chileDir):
+        for chileFile in filenames:
+            if not chileFile.startswith('.') and os.path.isfile(os.path.join(root, chileFile)):
 
-    chileSetCreator = chileData.Creator(chileFile)
-    protectedChile, nonProtectedChile = chileSetCreator.create()
-    dumpRankingsToDisk(protectedChile, nonProtectedChile, k, "Chile", "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
+                chileFile = '../rawData/ChileSAT/Dataset/' + chileFile
+                print("reading: " + chileFile)
 
+                protectedChileSATGender, nonProtectedChileSATGender = chileSATData.createGender(chileFile,6)
+                dumpRankingsToDisk(protectedChileSATGender, nonProtectedChileSATGender, k, "ChileSATGender",
+                                   "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
+                protectedChileSATNat, nonProtectedChileSATNat = chileSATData.createNationality(chileFile,6)
+                dumpRankingsToDisk(protectedChileSATNat, nonProtectedChileSATNat, k, "ChileSATNationality",
+                                   "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
 
 
 def dumpRankingsToDisk(protected, nonProtected, k, dataSetName, directory, pairsOfPAndAlpha):
