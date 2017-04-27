@@ -10,43 +10,37 @@ This repository includes the source code and data sets associated with the the f
 
 This program was developed and tested in [Python 3.5](https://www.python.org/downloads/release/python-350/). It uses the following modules:
 
-    * DateTime	4.1.1
-    * Jinja2	2.9.6
-    * MarkupSafe	1.0
-    * PyPDF2	1.26.0
-    * cycler	0.10.0
-    * guacamole	0.9.2
-    * matplotlib	2.0.0
-    * numpy	1.12.0
-    * padme	1.1.1
-    * pandas	0.19.2
-    * pip	9.0.1
-    * plainbox	0.34.0
-    * pyparsing	2.1.10
-    * python-dateutil	2.6.0
-    * pytz	2016.10
-    * requests	2.13.0
-    * scipy	0.18.1
-    * setuptools	28.8.0
-    * six	1.10.0
-    * utils	0.9.0
-    * zope.interface	4.3.3
-
+* cycler 0.10.0
+* DateTime 4.1.1
+* guacamole 0.9.2
+* Jinja2 2.9.6
+* MarkupSafe 1.0
+* matplotlib 2.0.0
+* numpy 1.12.0
+* padme 1.1.1
+* pandas 0.19.2
+* pip 9.0.1
+* plainbox 0.34.0
+* pyparsing 2.1.10
+* PyPDF2 1.26.0
+* python-dateutil 2.6.0
+* pytz 2016.10
+* requests 2.13.0
+* scipy 0.18.1
+* setuptools 28.8.0
+* six 1.10.0
+* utils 0.9.0
+* zope.interface 4.3.3  
 
 ### Installation
-1. Download the repository to your local disk:
-https://github.com/MilkaLichtblau/FA-IR_Ranking/archive/master.zip
-alternatively clone the repository in the desired directory:
+
+1. Clone this repository:
 `git clone https://github.com/MilkaLichtblau/FA-IR_Ranking.git`
 
-2. Open the Shell:
- - Terminal (Mac/Linux) is located under Applications
- - Command Line (Windows) is reachable from the Start menu > Run > `cmd`
-
-3. Navigate to the directory where you downloaded / cloned the repository
+2. In a command-line shell, navigate to the directory where you cloned the repository:
 `$ cd ~/Downloads/FA-IR_Ranking/src`
 
-4. Run one or any of the following commands:
+3. Run one or any of the following commands:
     * `python3 main.py` for the full program
     * `python3 main.py -h` to obtain help and know which commands to run.
     * `python3 main.py -c` to create all datasets.
