@@ -40,14 +40,16 @@ This program was developed and tested in [Python 3.5](https://www.python.org/dow
 2. In a command-line shell, navigate to the directory where you cloned the repository:
 `$ cd ~/Downloads/FA-IR_Ranking/src`
 
-### Datasets
+## Datasets
 
 The following datasets are included:
 
 | Code  | Description |
 | ----- | ----------- |
-| sat   | *Scholastic Assessment Test*: a standardized test used in the US for university admissions  |
-| compas | COMPAS |
+| sat   | *Scholastic Assessment Test* ([SAT](https://secure-media.collegeboard.org/digitalServices/pdf/sat/sat-percentile-ranks-composite-crit-reading-math-writing-2014.pdf)): a standardized test used in the US for university admissions  |
+| compas | *Correctional Offender Management Profiling for Alternative Sanctions* ([COMPAS](https://github.com/propublica/compas-analysis)): a survey used in some US states for alternative sanctions such as parole |
+| germancredit | [German Credit Scores](https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)) (SCHUFA) dataset |
+| xing | A dataset collected from the professional social network Xing in Jan/Feb 2017 |
 
 ## Running the program
 
@@ -55,80 +57,38 @@ The following datasets are included:
 
 `python3 main.py -c dataset` creates datasets. The *dataset* can be "sat," "compas," "germancredit," or "xing." If you omit the dataset, it will create all datasets.
 
-    * `python3 main.py` for the full program
-    * `python3 main.py -h` to obtain help and know which commands to run.
-    * `python3 main.py -c` to create all datasets.
-    * `python3 main.py -c sat` to create only the SAT scores dataset.
-    * `python3 main.py -c compas` to create only the COMPAS dataset.
-    * `python3 main.py -c germancredit` to create only the German Credit (SCHUFA) dataset.
-    * `python3 main.py -c xing` to create only the Xing dataset.
-    * `python3 main.py -r` to rank all datasets.
-    * `python3 main.py -r sat` to rank only the SAT dataset with respect to Gender.
-    * `python3 main.py -r compasgender` to rank only the COMPAS dataset with respect to gender.
-    * `python3 main.py -r compasrace` to rank only the COMPAS dataset with respect to race.
-    * `python3 main.py -r germancredit_25` to rank only the German Credit (SCHUFA) dataset with respect to age (below 25 / 25 and above).
-    * `python3 main.py -r germancredit_35` to rank only the German Credit (SCHUFA) dataset with respect to age (below 35 / 35 and above).
-    * `python3 main.py -r germancredit_gender` to rank only the German Credit (SCHUFA) dataset with respect to age gender.
-    * `python3 main.py -r xing` to rank only the Xing dataset with respect to gender.
-    * `python3 main.py -e` to evaluate all datasets.
-    * `python3 main.py -e sat` to evaluate only the SAT dataset with respect to Gender.
-    * `python3 main.py -e compasgender` to evaluate only the COMPAS dataset with respect to gender.
-    * `python3 main.py -e compasrace` to evaluate only the COMPAS dataset with respect to race.
-    * `python3 main.py -e germancredit_25` to evaluate only the German Credit (SCHUFA) dataset with respect to age (below 25 / 25 and above).
-    * `python3 main.py -e germancredit_35` to evaluate only the German Credit (SCHUFA) dataset with respect to age (below 35 / 35 and above).
-    * `python3 main.py -e germancredit_gender` to evaluate only the German Credit (SCHUFA) dataset with respect to age gender.
-    * `python3 main.py -e xing` to evaluate only the Xing dataset with respect to gender.
+`python3 main.py -r dataset-attribute` ranks a dataset using the FA\*IR algorithm and a baseline algorithm, with respect to a protected attribute. If you omit the *dataset-attribute* it ranks all.
 
+* `python3 main.py -r sat` ranks the *sat* dataset with protected attribute gender=female.
+* `python3 main.py -r compasgender` ranks the *compas* dataset with protected attribute gender=male
+* `python3 main.py -r compasrace` ranks the *compas* dataset with protected attribute race=black
+* `python3 main.py -r germancredit_25` ranks the *germancredit* dataset with protected attribute age=below 25
+* `python3 main.py -r germancredit_35` ranks the *germancredit* dataset with protected attribute age=below 35
+* `python3 main.py -r germancredit_gender` ranks the *germancredit* dataset with protected attribute gender=female
+* `python3 main.py -r xing` ranks the *xing* dataset with protected attribute gender=female
 
-## Algorithms
-On a list of candidates sorted by ranking, FA*IR algorithms aim to determine bias towards individuals and minority groups *k* in a large sets *n (n >> k)*.
-It provides an alternative ranking that includes a proportional number of members from each of the two subsets (protected and non-protected members/groups).
-For more information regarding the algorithms, please refer to *section 4* of the paper.
+`python3 main.py -e dataset-attribute` evaluates a set of rankings generated using the method above.
 
-<!-- It is divided into the following Parts: -->
+## License
 
-<!-- * Using the Code -->
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<!-- * Algorithm 1 -->
-<!-- descr -->
-<!-- * Available Methods -->
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-<!-- * Algorithm 2 -->
-<!-- * Available Methods -->
-
-<!-- * Algorithm 3 -->
-<!-- * Available Methods -->
-
-
-## Data Sets
-Description available in `readme.md` of the respective dataset - check `~/files/testdata`
-* [COMPAS](https://github.com/propublica/compas-analysis) - *a dataset related to risk assessment in criminal sentencing in the USA*
-* [German Credit Scores](https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)) - *a dataset related to credit ratings of individual by the SCHUFA agency in Germany.*
-* [SAT](https://secure-media.collegeboard.org/digitalServices/pdf/sat/sat-percentile-ranks-composite-crit-reading-math-writing-2014.pdf) - *a dataset of SAT scores for college-bound high school students in Critical Reading + Mathematics + Writing available from The College Board*
-* XING - *a dataset of profiles on XING.com ranked by their search Engine, collected in Jan/Feb 2017*
-
-## Release Notes
-*//\\*
-
-## Copyright
-*//\\*
-
-### License
-*//\\*
-
-## acknowledgements
-*//\\*
-
-## references
-*//\\* feldmann
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Contact
+
 Meike Zehlike
 meike.zehlike at tu-berlin.de
 https://www.cit.tu-berlin.de/menue/people/zehlike_meike/
-
-### Keywords
-Algorithmic fairness, Ranking, Top-k selection, Discrimination Discovery, Bias, Information Retrieval, Machine Learning
 
 
 TODOs:
