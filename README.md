@@ -1,4 +1,4 @@
-# FA*IR: A Fair Top-k Ranking Algorithm (code and data)
+# Code and data for "FA\*IR: A Fair Top-k Ranking Algorithm"
 
 This repository includes the source code and data sets associated with the the following research paper:
 
