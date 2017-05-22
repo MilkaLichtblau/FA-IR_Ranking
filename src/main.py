@@ -95,7 +95,7 @@ def main():
 
 def createRankingsAndWriteToDisk():
     createSATData(1500)
-    createChileData(1500)  # need to change 1500
+    # createChileData(1500)  # uncomment, if Chile Data Set is available.
     createCOMPASData(1000)
     createGermanCreditData(100)
     createXingData(40)
