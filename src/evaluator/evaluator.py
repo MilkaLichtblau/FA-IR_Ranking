@@ -33,7 +33,7 @@ class Evaluator(object):
     current metrics we apply:
         * general metrics:
             ** percentage of protected people in the result ranking
-            ** utility of the result ranking
+            ** ndcp of the result ranking
         * own metrics:
             ** selected unfairness
             ** ordering unfairness
@@ -277,7 +277,7 @@ class Evaluator(object):
         """
         for filename, rank in rankings.items():
             if self.ORIGINAL in filename.lower():
-                util = metrics.utility(rank, self.LAMBDA)
+                util = metrics.ndcp(rank, self.LAMBDA)
                 orderUnfair = metrics.orderingUnfairness(rank)
                 percentProt = metrics.percentageOfProtected(rank)
                 return pd.Series({'util':util, 'selectUnfair':0, 'orderUnfair':orderUnfair,
@@ -295,7 +295,7 @@ class Evaluator(object):
         # not-selected candidates are needed for determining selection unfairness
         ranking, notSelected, percProtDataset = self.__findFilePair(rankingType, rankings)
 
-        util = metrics.utility(ranking, self.LAMBDA)
+        util = metrics.ndcp(ranking, self.LAMBDA)
         selectUnfair = metrics.selectionUnfairness(ranking, notSelected)
         orderUnfair = metrics.orderingUnfairness(ranking)
         percentProt = metrics.percentageOfProtected(ranking)

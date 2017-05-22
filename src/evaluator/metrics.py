@@ -4,8 +4,10 @@ Created on Jan 23, 2017
 @author: meike.zehlike
 '''
 import numpy as np
+import matplotlib.pyplot as plt
 from utilsAndConstants.utils import countProtected
 from plainbox.impl import color
+from math import log2
 
 
 def selectionUnfairness(ranking, notSelected):
@@ -99,37 +101,6 @@ def orderingUnfairness(ranking):
     return maxRankDrop, highestScoreInv
 
 
-# def feldmanOrderingUnfairness(ranking):
-#     """
-#     a feldman ranking is a special case because it changes the scores into both directions, i.e.
-#     it's not only increasing but also decreasing the scores, if necessary to adjust the qualification
-#     distribution of the protected and non-protected group
-#     That means that protected candidates can be rated up in the first half and rated down in the second
-#     half of the created ranking
-#     """
-#     colorblind = sorted(ranking, key=lambda currentCandidate: currentCandidate.originalQualification, reverse=True)
-#     highestPosDiff = 0
-#     highestScoreInv = 0
-#     for i, currentCandidate in enumerate(ranking):
-#         if currentCandidate.qualification != currentCandidate.originalQualification:
-#             # the candidates qualification was changed to put them into a different position
-#             colorblindOrigQual = colorblind[i].originalQualification
-#             if currentCandidate.originalQualification < colorblindOrigQual:
-#                 # the currentCandidate from the ranking has a higher position even though their qualification
-#                 # is worse than the one that should appear here --> find the actual position of the
-#                 # one that should appear here if rated by qualification
-#                 actualIdxOfColorblind = __findIndexOfCandidateByID(ranking, colorblind[i].uuid)
-#                 # the protected currentCandidate right above the non-protected, that was rated down should have the lowest
-#                 # score above the non-protected, otherwise in-group monotonicity would be violated
-#                 indexOfWorstAboveMe = __findFirstWorseCandidateAboveMe(ranking,
-#                                                                        colorblindOrigQual,
-#                                                                        actualIdxOfColorblind)
-#                 highestScoreInv = max(highestScoreInv, abs(ranking[indexOfWorstAboveMe].originalQualification - colorblindOrigQual))
-#                 highestPosDiff = max(highestPosDiff, abs(actualIdxOfColorblind - i))
-#
-#     return highestPosDiff, highestScoreInv
-
-
 def __findIndexOfCandidateByID(ranking, ident):
     for candidate in ranking:
         if candidate.uuid == ident:
@@ -167,7 +138,7 @@ def __findFirstWorseCandidateAboveMe(ranking, myQualification, startIndex):
     return i
 
 # @profile
-def utility(ranking, lambd):
+def ndcp(ranking, lambd):
     """
     calculates the average utility per position of a ranking by averaging the qualification of the candidates.
     In order to take the positions into account multiplies the qualification by an inverse exponential
@@ -181,13 +152,12 @@ def utility(ranking, lambd):
     # ensure k is not zero
     k = max(1, len(ranking))
 
-    # lambda should be dependent on k
-    lambd = (lambd + k / 100) / k
     x = np.arange(0, k, 1)
-    positionUtility = lambd * np.exp(-lambd * x) * 1000
+    # positionUtility = lambd * np.exp(-lambd * x) * 1000
+    positionUtility = 1 / log2(x + 1)
 
-#     plt.plot(x, positionUtility)
-#     plt.show()
+    plt.plot(x, positionUtility)
+    plt.show()
     rankingUtility = 0
     for i, candidate in enumerate(ranking):
         rankingUtility += candidate.originalQualification * positionUtility[i]
