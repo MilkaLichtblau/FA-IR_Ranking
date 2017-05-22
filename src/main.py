@@ -218,12 +218,12 @@ def createChileData(k):
                 chileFile = '../rawData/ChileSAT/Dataset/' + chileFile
                 print("reading: " + chileFile)
 
-                protectedChileSATGender, nonProtectedChileSATGender = chileSATData.createGender(chileFile, 6)
-                dumpRankingsToDisk(protectedChileSATGender, nonProtectedChileSATGender, k, "ChileSATGender",
+                protectedChileSATSchool, nonProtectedChileSATSchool = chileSATData.createSchool(chileFile, 6)
+                dumpRankingsToDisk(protectedChileSATSchool, nonProtectedChileSATSchool, k, "ChileSATSchool",
                                    "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
-                protectedChileSATNat, nonProtectedChileSATNat = chileSATData.createNationality(chileFile, 6)
-                dumpRankingsToDisk(protectedChileSATNat, nonProtectedChileSATNat, k, "ChileSATNationality",
-                                   "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
+                # protectedChileSATNat, nonProtectedChileSATNat = chileSATData.createNationality(chileFile, 6)
+                # dumpRankingsToDisk(protectedChileSATNat, nonProtectedChileSATNat, k, "ChileSATNationality",
+                #                    "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
 
 
 def dumpRankingsToDisk(protected, nonProtected, k, dataSetName, directory, pairsOfPAndAlpha):

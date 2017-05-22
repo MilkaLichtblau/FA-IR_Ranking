@@ -14,7 +14,7 @@ from datasetCreator.candidate import Candidate
 
 
 
-def createGender(filename, *columnsToRead):
+def createSchool(filename, *columnsToRead):
     """
     currently working with _________ as qualification attribute in candidates. Change index
     to try with other columns
@@ -25,10 +25,12 @@ def createGender(filename, *columnsToRead):
         data = pd.read_csv(csvfile, usecols=columnsToRead)
         for row in data.itertuples():
             # change to different index in row[.] to access other columns from csv file
-            if row[3] == 1:
-                nonProtected.append(Candidate(1 - row[3], []))
+            if row[45] == (1 or 2):
+                nonProtected.append(Candidate(1 - row[44], []))
+            elif row[45] == 3:
+                protected.append(Candidate(1 - row[44], ["private_school"]))
             else:
-                protected.append(Candidate(1 - row[3], ["female"]))
+                continue
 
     # sort candidates by recidivism scores in COMPAS
     protected.sort(key=lambda candidate: candidate.qualification, reverse=True)
