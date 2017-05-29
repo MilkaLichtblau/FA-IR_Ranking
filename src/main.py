@@ -3,7 +3,7 @@ Created on Mar 29, 2017
 
 @author: meike.zehlike
 '''
-import os
+import os, sys
 import argparse
 
 from readWriteRankings.readAndWriteRankings import writePickleToDisk
@@ -18,6 +18,7 @@ EVALUATE_FAILURE_PROBABILITY = 0
 
 def main():
     setMemoryLimit(10000000000)
+    print(sys.version)
 
     # create the top-level parser
     parser = argparse.ArgumentParser(prog='FA*IR', description='a fair Top-k ranking algorithm',
@@ -64,12 +65,14 @@ def main():
     elif args.evaluate == ['compas_gender']:
         evaluator = Evaluator('compas_gender')
         evaluator.printResults()
+        evaluator.plotOrderingUtilityVsPercentageOfProtected()
     elif args.evaluate == ['compas_race']:
         evaluator = Evaluator('compas_race')
         evaluator.printResults()
     elif args.evaluate == ['germancredit_25']:
         evaluator = Evaluator('germancredit_25')
         evaluator.printResults()
+        evaluator.plotOrderingUtilityVsPercentageOfProtected()
     elif args.evaluate == ['germancredit_35']:
         evaluator = Evaluator('germancredit_35')
         evaluator.printResults()
@@ -195,6 +198,7 @@ def createSATData(k):
 
     satSetCreator = satData.Creator(SATFile)
     protectedSAT, nonProtectedSAT = satSetCreator.create()
+
     dumpRankingsToDisk(protectedSAT, nonProtectedSAT, k, "SAT", "../results/rankingDumps/SAT", pairsOfPAndAlpha)
 
 

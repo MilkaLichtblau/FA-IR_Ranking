@@ -5,10 +5,16 @@ Created on Feb 9, 2017
 '''
 import os
 import pandas as pd
+
+from matplotlib import pyplot as plt
+import matplotlib as mpl
+
 from readWriteRankings.readAndWriteRankings import loadPicklesFromDirectory, loadPicklesFromSubDirs, \
     writePickleToDisk
 from evaluator import metrics
 from utilsAndConstants.utils import Switch
+from utilsAndConstants.printsAndPlots import plotFourListsInOnePlot, plotTwoListsInOnePlot
+
 
 
 class Evaluator(object):
@@ -39,7 +45,7 @@ class Evaluator(object):
             ** ordering unfairness
     """
 
-    CURRENT_WORKING_DIR = os.getcwd()
+    # CURRENT_WORKING_DIR = os.getcwd()
 
     # ranking types
     COLORBLIND = 'colorblind'
@@ -138,14 +144,15 @@ class Evaluator(object):
 
     # init generisch für den ganzen pfad
     def __init__(self, dataset=None):
+        print(os.getcwd())
         if dataset is None:
-            self.__compasGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Compas/Gender/')
-            self.__compasRaceResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Compas/Race/')
-            self.__germanCreditAge25Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Age25/')
-            self.__germanCreditAge35Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Age35/')
-            self.__germanCreditGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Gender/')
-            self.__SATResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/SAT/')
-            self.__xingResults = self.evaluateXing(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Xing/')
+            self.__compasGenderResults = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/Compas/Gender/')
+            self.__compasRaceResults = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/Compas/Race/')
+            self.__germanCreditAge25Results = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/German Credit/Age25/')
+            self.__germanCreditAge35Results = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/German Credit/Age35/')
+            self.__germanCreditGenderResults = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/German Credit/Gender/')
+            self.__SATResults = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/SAT/')
+            self.__xingResults = self.evaluateXing(os.getcwd() + '/' + '../results/rankingDumps/Xing/')
 
             self.__normalizeUtility(self.compasGenderResults)
             self.__normalizeUtility(self.compasRaceResults)
@@ -156,52 +163,52 @@ class Evaluator(object):
             for jobDescription, metricsResults in self.xingResults.items():
                 self.__normalizeUtility(self.xingResults[jobDescription])
 
-            self.compasGenderResults = self.compasGenderResults.T
-            self.compasRaceResults = self.compasRaceResults.T
-            self.germanCreditAge25Results = self.germanCreditAge25Results.T
-            self.germanCreditAge35Results = self.germanCreditAge35Results.T
-            self.germanCreditGenderResults = self.germanCreditGenderResults.T
-            self.SATResults = self.SATResults.T
+            self.__compasGenderResults = self.compasGenderResults.T
+            self.__compasRaceResults = self.compasRaceResults.T
+            self.__germanCreditAge25Results = self.germanCreditAge25Results.T
+            self.__germanCreditAge35Results = self.germanCreditAge35Results.T
+            self.__germanCreditGenderResults = self.germanCreditGenderResults.T
+            self.__SATResults = self.SATResults.T
             for jobDescription, metricsResults in self.xingResults.items():
-                self.xingResults[jobDescription] = self.xingResults[jobDescription].T
+                self.__xingResults[jobDescription] = self.xingResults[jobDescription].T
         else:
             self.__whichDataset = dataset
             for case in Switch(self.whichDataset):
                 if case('compas_gender'):
-                    self.__compasGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Compas/Gender/')
+                    self.__compasGenderResults = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/Compas/Gender/')
                     self.__normalizeUtility(self.compasGenderResults)
-                    self.compasGenderResults = self.compasGenderResults.T
+                    self.__compasGenderResults = self.compasGenderResults.T
                     break
                 if case('compas_race'):
-                    self.__compasRaceResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Compas/Race/')
+                    self.__compasRaceResults = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/Compas/Race/')
                     self.__normalizeUtility(self.compasRaceResults)
-                    self.compasRaceResults = self.compasRaceResults.T
+                    self.__compasRaceResults = self.compasRaceResults.T
                     break
                 if case('germancredit_25'):
-                    self.__germanCreditAge25Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Age25/')
+                    self.__germanCreditAge25Results = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/German Credit/Age25/')
                     self.__normalizeUtility(self.germanCreditAge25Results)
-                    self.germanCreditAge25Results = self.germanCreditAge25Results.T
+                    self.__germanCreditAge25Results = self.germanCreditAge25Results.T
                     break
                 if case('germancredit_35'):
-                    self.__germanCreditAge35Results = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Age35/')
+                    self.__germanCreditAge35Results = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/German Credit/Age35/')
                     self.__normalizeUtility(self.germanCreditAge35Results)
-                    self.germanCreditAge35Results = self.germanCreditAge35Results.T
+                    self.__germanCreditAge35Results = self.germanCreditAge35Results.T
                     break
                 if case('germancredit_gender'):
-                    self.__germanCreditGenderResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/German Credit/Gender/')
+                    self.__germanCreditGenderResults = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/German Credit/Gender/')
                     self.__normalizeUtility(self.germanCreditGenderResults)
-                    self.germanCreditGenderResults = self.germanCreditGenderResults.T
+                    self.__germanCreditGenderResults = self.germanCreditGenderResults.T
                     break
                 if case('sat'):
-                    self.__SATResults = self.evaluate(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/SAT/')
+                    self.__SATResults = self.evaluate(os.getcwd() + '/' + '../results/rankingDumps/SAT/')
                     self.__normalizeUtility(self.SATResults)
-                    self.SATResults = self.SATResults.T
+                    self.__SATResults = self.SATResults.T
                     break
                 if case('xing'):
-                    self.__xingResults = self.evaluateXing(self.CURRENT_WORKING_DIR + '/' + 'results/rankingDumps/Xing/')
+                    self.__xingResults = self.evaluateXing(os.getcwd() + '/' + '../results/rankingDumps/Xing/')
                     for jobDescription, metricsResults in self.xingResults.items():
                         self.__normalizeUtility(self.xingResults[jobDescription])
-                        self.xingResults[jobDescription] = self.xingResults[jobDescription].T
+                        self.__xingResults[jobDescription] = self.xingResults[jobDescription].T
                     break
 
 
@@ -277,7 +284,7 @@ class Evaluator(object):
         """
         for filename, rank in rankings.items():
             if self.ORIGINAL in filename.lower():
-                util = metrics.ndcp(rank, self.LAMBDA)
+                util = metrics.ndcp(rank)
                 orderUnfair = metrics.orderingUnfairness(rank)
                 percentProt = metrics.percentageOfProtected(rank)
                 return pd.Series({'util':util, 'selectUnfair':0, 'orderUnfair':orderUnfair,
@@ -295,7 +302,7 @@ class Evaluator(object):
         # not-selected candidates are needed for determining selection unfairness
         ranking, notSelected, percProtDataset = self.__findFilePair(rankingType, rankings)
 
-        util = metrics.ndcp(ranking, self.LAMBDA)
+        util = metrics.ndcp(ranking)
         selectUnfair = metrics.selectionUnfairness(ranking, notSelected)
         orderUnfair = metrics.orderingUnfairness(ranking)
         percentProt = metrics.percentageOfProtected(ranking)
@@ -314,6 +321,8 @@ class Evaluator(object):
         @param rankingType: the type of the ranking, e.g. FAIR_RANKING_01
         @param rankings: all rankings of one particular directory
         """
+
+        ranking, notSelected = [], []
         for filename, rank in rankings.items():
             if rankingType in filename.lower():
                 if "notselected" in filename.lower():
@@ -429,6 +438,36 @@ class Evaluator(object):
                 print("--------------------------------------------------------")
             print("========================================================================================")
 
+
+    def plotOrderingUtilityVsPercentageOfProtected(self):
+        ps = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+        if self.whichDataset is not None:
+            if self.whichDataset == 'germancredit_25':
+                orderUtil = self.germanCreditAge25Results.T.loc['orderUnfair']
+                orderUtil = orderUtil.drop(orderUtil.index[0])
+                orderUtil = orderUtil.drop(orderUtil.index[-1])
+                orderUtilValues = [1 - values[1] for values in orderUtil]
+
+                percentProt = self.germanCreditAge25Results.T.loc['percentProt']
+                percentProt = percentProt.drop(percentProt.index[0])
+                percentProt = percentProt.drop(percentProt.index[-1])
+
+                plotTwoListsInOnePlot(ps, percentProt.values, orderUtilValues, 'Protected', 'Ordering Utility',
+                                       "p", r"Percentage Protected in Ranking", r"Ordering Utility",
+                                       '../results/plots/GermanCreditAge25OrderUtil.png')
+
+                utilList = self.germanCreditAge25Results.T.loc['util']
+                utilList = utilList.drop('colorblind')
+                utilList = utilList.drop('feldman')
+
+                plotTwoListsInOnePlot(ps, percentProt.values, utilList.values, 'Protected', 'NDCG',
+                                      "p", 0, 1,
+                                      r"Percentage Protected in Ranking", 0, 1,
+                                      r"NDCG", 0.86, 1,
+                                      0.1,
+                                      '../results/plots/GermanCreditAge25NDCG.png')
+        else:
+            print('not yet implemented')
 
 
 

@@ -138,26 +138,23 @@ def __findFirstWorseCandidateAboveMe(ranking, myQualification, startIndex):
     return i
 
 # @profile
-def ndcp(ranking, lambd):
+def ndcp(ranking):
     """
     calculates the average utility per position of a ranking by averaging the qualification of the candidates.
     In order to take the positions into account multiplies the qualification by an inverse exponential
     function, such that the ranking of better candidates to lower positions is actually penalized
 
     @param ranking: the ranking to be measured, containing protected and non-protected candidates
-    @param lambd: a number that determines how fast the value of the positions itself decreases
-                  e.g. if 0.5 the value of a position drops to almost zero within the first 100 positions
     """
 
     # ensure k is not zero
     k = max(1, len(ranking))
+    # x has to start from two, otherwise we would divide by zero for x[0]
+    x = np.arange(2, k + 2, 1)
+    positionUtility = 1 / np.log2(x)
 
-    x = np.arange(0, k, 1)
-    # positionUtility = lambd * np.exp(-lambd * x) * 1000
-    positionUtility = 1 / log2(x + 1)
-
-    plt.plot(x, positionUtility)
-    plt.show()
+#     plt.plot(x, positionUtility)
+#     plt.show()
     rankingUtility = 0
     for i, candidate in enumerate(ranking):
         rankingUtility += candidate.originalQualification * positionUtility[i]
