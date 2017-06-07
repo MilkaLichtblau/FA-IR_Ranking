@@ -285,7 +285,7 @@ class Evaluator(object):
         for filename, rank in rankings.items():
             if self.ORIGINAL in filename.lower():
                 util = metrics.ndcp(rank)
-                orderUnfair = metrics.orderingUnfairness(rank)
+                orderUnfair = metrics.orderingUtility(rank)
                 percentProt = metrics.percentageOfProtected(rank)
                 return pd.Series({'util':util, 'selectUnfair':0, 'orderUnfair':orderUnfair,
                                   'percentProt':percentProt, 'percentProt_dataset':percentProt})
@@ -303,8 +303,8 @@ class Evaluator(object):
         ranking, notSelected, percProtDataset = self.__findFilePair(rankingType, rankings)
 
         util = metrics.ndcp(ranking)
-        selectUnfair = metrics.selectionUnfairness(ranking, notSelected)
-        orderUnfair = metrics.orderingUnfairness(ranking)
+        selectUnfair = metrics.selectionUtility(ranking, notSelected)
+        orderUnfair = metrics.orderingUtility(ranking)
         percentProt = metrics.percentageOfProtected(ranking)
         print(" [Done]")
 

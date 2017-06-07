@@ -4,7 +4,7 @@ Created on Jan 23, 2017
 @author: meike.zehlike
 '''
 import unittest
-from evaluator.metrics import selectionUnfairness, orderingUnfairness
+from evaluator.metrics import selectionUtility, orderingUtility
 from datasetCreator.candidate import Candidate
 
 
@@ -22,10 +22,10 @@ class TestMetrics(unittest.TestCase):
         notSelected = self.__unfairRanking[:500]
         ranking = []
         ranking.append(Candidate(1, ["female"]))
-        self.assertEqual(999, selectionUnfairness(ranking, notSelected))
+        self.assertEqual(999, selectionUtility(ranking, notSelected))
 
         ranking[0] = Candidate(1001, ["female"])
-        self.assertEqual(0, selectionUnfairness(ranking, notSelected), "no quality inversion, should\
+        self.assertEqual(0, selectionUtility(ranking, notSelected), "no quality inversion, should\
                                         be therefore zero unfair")
 
 
@@ -37,7 +37,7 @@ class TestMetrics(unittest.TestCase):
                    Candidate(5, ["female"]),
                    Candidate(7, [])]
 
-        self.assertEqual((2, 2), orderingUnfairness(ranking1))
+        self.assertEqual((2, 2), orderingUtility(ranking1))
 
         ranking2 = [Candidate(10, []),
                    Candidate(9, []),
@@ -45,7 +45,7 @@ class TestMetrics(unittest.TestCase):
                    Candidate(7, []),
                    Candidate(6, ["female"]),
                    Candidate(5, ["female"])]
-        self.assertEqual((0, 0), orderingUnfairness(ranking2))
+        self.assertEqual((0, 0), orderingUtility(ranking2))
 
         ranking3 = [Candidate(1000, []),
                    Candidate(996, ["female"]),
@@ -57,7 +57,7 @@ class TestMetrics(unittest.TestCase):
                    Candidate(989, ["female"]),
                    Candidate(993, []),
                    Candidate(993, [])]
-        self.assertEqual((2, 4), orderingUnfairness(ranking3))
+        self.assertEqual((2, 4), orderingUtility(ranking3))
 
 
 

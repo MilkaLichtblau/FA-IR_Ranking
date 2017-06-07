@@ -4,13 +4,10 @@ Created on Jan 23, 2017
 @author: meike.zehlike
 '''
 import numpy as np
-import matplotlib.pyplot as plt
 from utilsAndConstants.utils import countProtected
-from plainbox.impl import color
-from math import log2
 
 
-def selectionUnfairness(ranking, notSelected):
+def selectionUtility(ranking, notSelected):
     """
     calculates the difference in qualification of the last candidate in the ranking and the first
     one that was not selected for the ranking.
@@ -26,7 +23,7 @@ def selectionUnfairness(ranking, notSelected):
 
     otherwise a negative number that tells, how much lower the qualification of the first not selected
     candidate was compared to the qualification of the last selected.
-    Hence only lower than 0, if a protected candidate was to be preferred over a non-protected due
+    Hence only lower than 0, if a protected candidate was preferred over a non-protected due
     to the ranked group fairness constraint.
 
     """
@@ -37,11 +34,11 @@ def selectionUnfairness(ranking, notSelected):
         # find the first selected one with a lower qualification than the non-selected one
         for i in range(1, len(ranking) + 1):
             if ranking[-i].originalQualification < notSelected[0].originalQualification:
-                return notSelected[0].originalQualification - ranking[-i].originalQualification
+                return ranking[-i].originalQualification - notSelected[0].originalQualification
         return 0
 
 
-def orderingUnfairness(ranking):
+def orderingUtility(ranking):
     """
     calculates the maximum positional difference between a protected currentCandidate that was rated higher
     than a non-protected currentCandidate due to their protected status. Hence the protected currentCandidate is
@@ -52,9 +49,10 @@ def orderingUnfairness(ranking):
     maxRankDrop : int
         The maximum of which a currentCandidate was ranked down
 
-    highestScoreInv : float
-        The maximal score inversion, i.e. finds the maximum quality difference between someone who was
-        ranked higher but actually has a lower score
+    orderingUtility : float
+        Ordering utility is the negative maximum quality inversion. The function the maximum quality
+        difference between someone who was ranked higher but actually has a lower score. This is the
+        minimum ordering utility for the person who was ranked down
 
     Note that the maximum position difference and maximum score difference does not necessarily
     belong to the same two candidates, i.e. they are independent metrics.
@@ -74,7 +72,8 @@ def orderingUnfairness(ranking):
     9. N(993)            7.
     10.N(993)            8.
 
-    The highest score difference of ordering unfairness is 4 (between 8. and 9).
+    The highest score difference of ordering inversion is 4 (between 8. and 9). Hence the minimum
+    ordering utility is -4 for the candidate at position 9.
     The highest position difference is 2 (between 9. and 7., 10. and 8.).
 
 
@@ -98,7 +97,8 @@ def orderingUnfairness(ranking):
             highestScoreInv = max(highestScoreInv, currentScoreInv)
             maxRankDrop = max(maxRankDrop, i - idxInColorblindRanking)
 
-    return maxRankDrop, highestScoreInv
+    orderingUtility = -highestScoreInv
+    return maxRankDrop, orderingUtility
 
 
 def __findIndexOfCandidateByID(ranking, ident):
@@ -137,7 +137,7 @@ def __findFirstWorseCandidateAboveMe(ranking, myQualification, startIndex):
         i -= 1
     return i
 
-# @profile
+
 def ndcp(ranking):
     """
     calculates the average utility per position of a ranking by averaging the qualification of the candidates.
@@ -153,8 +153,6 @@ def ndcp(ranking):
     x = np.arange(2, k + 2, 1)
     positionUtility = 1 / np.log2(x)
 
-#     plt.plot(x, positionUtility)
-#     plt.show()
     rankingUtility = 0
     for i, candidate in enumerate(ranking):
         rankingUtility += candidate.originalQualification * positionUtility[i]
