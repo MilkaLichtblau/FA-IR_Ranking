@@ -100,7 +100,6 @@ TODOs:
 Ger. Credit:  https://archive.ics.uci.edu/ml/citation_policy.html
 *//\\* - to fill in
 a readme for each dataset?
-check if it works as it should with the SHAano
 
 guideline: https://data.research.cornell.edu/content/readme
 
