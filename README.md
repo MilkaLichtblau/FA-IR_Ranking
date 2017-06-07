@@ -90,7 +90,9 @@ The datasets are included in the repository in "raw" form, so you need to use th
 ## Contact
 
 Meike Zehlike
+
 meike.zehlike at tu-berlin.de
+
 https://www.cit.tu-berlin.de/menue/people/zehlike_meike/
 
 -----------------------------
