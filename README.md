@@ -99,7 +99,6 @@ TODOs:
 
 Ger. Credit:  https://archive.ics.uci.edu/ml/citation_policy.html
 *//\\* - to fill in
-remove the not anonymized xing dataset
 a readme for each dataset?
 check if it works as it should with the SHAano
 
