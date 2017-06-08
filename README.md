@@ -55,7 +55,7 @@ The following datasets are included:
 
 The datasets are included in the repository in "raw" form, so you need to use the `-c` option first to create the processed datasets, as described below.
 
-## Running the program
+## Reproducing the experiments in the paper
 
 `python3 main.py -h` can be used to obtain help.
 
@@ -72,6 +72,10 @@ The datasets are included in the repository in "raw" form, so you need to use th
 * `python3 main.py -r xing` ranks the *xing* dataset with protected attribute gender=female
 
 `python3 main.py -e dataset-attribute` evaluates a set of rankings generated using the method above.
+
+## Using the algorithm in your own code
+
+(TBA)
 
 ## License
     This program is free software: you can redistribute it and/or modify
