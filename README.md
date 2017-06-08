@@ -98,14 +98,3 @@ Meike Zehlike
 meike.zehlike at tu-berlin.de
 
 https://www.cit.tu-berlin.de/menue/people/zehlike_meike/
-
------------------------------
-
-TODOs:
-
-Ger. Credit:  https://archive.ics.uci.edu/ml/citation_policy.html
-*//\\* - to fill in
-a readme for each dataset?
-
-guideline: https://data.research.cornell.edu/content/readme
-
