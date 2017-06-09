@@ -2,7 +2,7 @@
 
 This repository includes the source code and data sets associated with the the following research paper:
 
-* Meike Zehlike, Francesco Bonchi, Carlos Castillo, Sara Hajian, Mohamed Megahed and Ricardo Baeza-Yates FA\*IR: A Fair Top-k Ranking Algorithm. Submitted for review. 2017.
+* Meike Zehlike, Francesco Bonchi, Carlos Castillo, Sara Hajian, Mohamed Megahed and Ricardo Baeza-Yates. FA\*IR: A Fair Top-k Ranking Algorithm. Submitted for review. 2017.
 
 Before the paper is published, you can request a copy by e-mail to the contact author listed below.
 
@@ -55,7 +55,7 @@ The following datasets are included:
 
 The datasets are included in the repository in "raw" form, so you need to use the `-c` option first to create the processed datasets, as described below.
 
-## Running the program
+## Reproducing the experiments in the paper
 
 `python3 main.py -h` can be used to obtain help.
 
@@ -72,6 +72,10 @@ The datasets are included in the repository in "raw" form, so you need to use th
 * `python3 main.py -r xing` ranks the *xing* dataset with protected attribute gender=female
 
 `python3 main.py -e dataset-attribute` evaluates a set of rankings generated using the method above.
+
+## Using the algorithm in your own code
+
+(TBA)
 
 ## License
     This program is free software: you can redistribute it and/or modify
@@ -90,18 +94,7 @@ The datasets are included in the repository in "raw" form, so you need to use th
 ## Contact
 
 Meike Zehlike
+
 meike.zehlike at tu-berlin.de
+
 https://www.cit.tu-berlin.de/menue/people/zehlike_meike/
-
------------------------------
-
-TODOs:
-
-Ger. Credit:  https://archive.ics.uci.edu/ml/citation_policy.html
-*//\\* - to fill in
-remove the not anonymized xing dataset
-a readme for each dataset?
-check if it works as it should with the SHAano
-
-guideline: https://data.research.cornell.edu/content/readme
-

@@ -6,3 +6,9 @@ https://github.com/DataResponsibly/FairRank/tree/6c1ab4a4751448443c86921976b7255
 
 For our experiments we use only two of the four columns, namely "Recidivism_rawscore" and the 
 protected attribute column ("sex" and "race" respectively).
+
+-----------------------------
+
+Citation for this dataset:
+
+Lichman, M. (2013). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.
