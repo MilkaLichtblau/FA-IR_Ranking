@@ -23,11 +23,8 @@ def main():
     # create the top-level parser
     parser = argparse.ArgumentParser(prog='FA*IR', description='a fair Top-k ranking algorithm',
                                      epilog="=== === === end === === ===")
-                                     # argument_default="-a")
-    parser.add_argument("-c", "--create", nargs='*', help="creates a ranking and dumps it to disk")
-    parser.add_argument("-e", "--evaluate", nargs='*', help="evaluates and transposes results")
-    parser.add_argument("-r", "--rank", nargs='*', help="ranks")
-    # parser.set_defaults(func='run_whole_prog')
+    parser.add_argument("-c", "--create", nargs='*', help="creates a ranking from the raw data and dumps it to disk")
+    parser.add_argument("-e", "--evaluate", nargs='*', help="evaluates rankings and writes results to disk")
     subparsers = parser.add_subparsers(help='sub-command help')
 
     # create the parser for the "create" command
@@ -40,25 +37,22 @@ def main():
                                                                   "compas_gender", "compas_race",
                                                                   "germancredit_25", "germancredit_35", "germancredit_gender"])
 
-    # create the parser for the "rank" command
-    # parser_evaluate = subparsers.add_parser('dataset_to_rank', help='choose a dataset to rank')
-    # parser_evaluate.add_argument("-d", "--dataset", choices=["sat", "compas", "germancredit", "xing"])
-
     args = parser.parse_args()
 
     if args.create == []:
         print("creating rankings for all datasets...")
-        createRankingsAndWriteToDisk()
+        createDataAndRankings()
     elif args.create == ['sat']:
-        createSATData(1500)
+        createAndRankSATData(1500)
     elif args.create == ['compas']:
-            createCOMPASData(1000)
+            createAndRankCOMPASData(1000)
     elif args.create == ['germancredit']:
-            createGermanCreditData(100)
+            createAndRankGermanCreditData(100)
     elif args.create == ['xing']:
-            createXingData(40)
+            createAndRankXingData(40)
     elif args.create == ['csat']:
-            createChileData(1500)
+            createAndRankChileData(1500)
+    #=======================================================
     elif args.evaluate == []:
         evaluator = Evaluator()
         evaluator.printResults()
@@ -88,7 +82,7 @@ def main():
 
     else:
         print("FA*IR \n running the full program \n Press ctrl+c to abort \n \n")
-        createRankingsAndWriteToDisk()
+        createDataAndRankings()
         evaluator = Evaluator()
         evaluator.printResults()
 #       in between commits
@@ -96,15 +90,15 @@ def main():
             determineFailProbOfGroupFairnessTesterForStoyanovichRanking()
 
 
-def createRankingsAndWriteToDisk():
-    createSATData(1500)
-    # createChileData(1500)  # uncomment, if Chile Data Set is available.
-    createCOMPASData(1000)
-    createGermanCreditData(100)
-    createXingData(40)
+def createDataAndRankings():
+    createAndRankSATData(1500)
+    # createAndRankChileData(1500)  # uncomment, if Chile Data Set is available.
+    createAndRankCOMPASData(1000)
+    createAndRankGermanCreditData(100)
+    createAndRankXingData(40)
 
 
-def createXingData(k):
+def createAndRankXingData(k):
     pairsOfPAndAlpha = [(0.1, 0.1),  # no real results, skip in evaluation
                         (0.2, 0.1),  # no real results, skip in evaluation
                         (0.3, 0.1),  # no real results, skip in evaluation
@@ -117,13 +111,13 @@ def createXingData(k):
 
     xingReader = xingProfilesReader.Reader('../rawData/Xing/*.json')  # glob gets abs/rel paths matching the regex
     for queryString, candidates in xingReader.entireDataSet.iterrows():
-        dumpRankingsToDisk(candidates['protected'], candidates['nonProtected'], k, queryString,
+        rankAndDump(candidates['protected'], candidates['nonProtected'], k, queryString,
                            "../results/rankingDumps/Xing" + '/' + queryString + '/', pairsOfPAndAlpha)
         writePickleToDisk(candidates['originalOrdering'], os.getcwd() + '/../results/rankingDumps/Xing/'
                           + '/' + queryString + '/' + 'OriginalOrdering.pickle')
 
 
-def createGermanCreditData(k):
+def createAndRankGermanCreditData(k):
 
     pairsOfPAndAlpha = [(0.1, 0.1),  # no real results, skip in evaluation
                         (0.2, 0.1),  # no real results, skip in evaluation
@@ -138,26 +132,26 @@ def createGermanCreditData(k):
     protectedGermanCreditGender, nonProtectedGermanCreditGender = germanCreditData.create(
         "../rawData/GermanCredit/GermanCredit_sex.csv", "DurationMonth", "CreditAmount",
         "score", "sex", protectedAttribute=["female"])
-    dumpRankingsToDisk(protectedGermanCreditGender, nonProtectedGermanCreditGender, k,
+    rankAndDump(protectedGermanCreditGender, nonProtectedGermanCreditGender, k,
                        "GermanCreditGender", "../results/rankingDumps/German Credit/Gender",
                        pairsOfPAndAlpha)
 
     protectedGermanCreditAge25, nonProtectedGermanCreditAge25 = germanCreditData.create(
         "../rawData/GermanCredit/GermanCredit_age25.csv", "DurationMonth", "CreditAmount",
         "score", "age25", protectedAttribute=["younger25"])
-    dumpRankingsToDisk(protectedGermanCreditAge25, nonProtectedGermanCreditAge25, k,
+    rankAndDump(protectedGermanCreditAge25, nonProtectedGermanCreditAge25, k,
                        "GermanCreditAge25", "../results/rankingDumps/German Credit/Age25",
                        pairsOfPAndAlpha)
 
     protectedGermanCreditAge35, nonProtectedGermanCreditAge35 = germanCreditData.create(
         "../rawData/GermanCredit/GermanCredit_age35.csv", "DurationMonth", "CreditAmount",
         "score", "age35", protectedAttribute=["younger35"])
-    dumpRankingsToDisk(protectedGermanCreditAge35, nonProtectedGermanCreditAge35, k,
+    rankAndDump(protectedGermanCreditAge35, nonProtectedGermanCreditAge35, k,
                        "GermanCreditAge35", "../results/rankingDumps/German Credit/Age35",
                        pairsOfPAndAlpha)
 
 
-def createCOMPASData(k):
+def createAndRankCOMPASData(k):
 
     pairsOfPAndAlpha = [(0.1, 0.0140),
                         (0.2, 0.0115),
@@ -172,17 +166,17 @@ def createCOMPASData(k):
     protectedCompasRace, nonProtectedCompasRace = compasData.createRace(
        "../rawData/COMPAS/ProPublica_race.csv", "race", "Violence_rawscore", "Recidivism_rawscore",
        "priors_count")
-    dumpRankingsToDisk(protectedCompasRace, nonProtectedCompasRace, k, "CompasRace",
+    rankAndDump(protectedCompasRace, nonProtectedCompasRace, k, "CompasRace",
                        "../results/rankingDumps/Compas/Race", pairsOfPAndAlpha)
 
     protectedCompasGender, nonProtectedCompasGender = compasData.createGender(
        "../rawData/COMPAS/ProPublica_sex.csv", "sex", "Violence_rawscore", "Recidivism_rawscore",
        "priors_count")
-    dumpRankingsToDisk(protectedCompasGender, nonProtectedCompasGender, k, "CompasGender",
+    rankAndDump(protectedCompasGender, nonProtectedCompasGender, k, "CompasGender",
                       "../results/rankingDumps/Compas/Gender", pairsOfPAndAlpha)
 
 
-def createSATData(k):
+def createAndRankSATData(k):
 
     SATFile = '../rawData/SAT/sat_data.pdf'
 
@@ -199,10 +193,10 @@ def createSATData(k):
     satSetCreator = satData.Creator(SATFile)
     protectedSAT, nonProtectedSAT = satSetCreator.create()
 
-    dumpRankingsToDisk(protectedSAT, nonProtectedSAT, k, "SAT", "../results/rankingDumps/SAT", pairsOfPAndAlpha)
+    rankAndDump(protectedSAT, nonProtectedSAT, k, "SAT", "../results/rankingDumps/SAT", pairsOfPAndAlpha)
 
 
-def createChileData(k):
+def createAndRankChileData(k):
 
     # loop through all files
     chileDir = '../rawData/ChileSAT/Dataset'
@@ -223,14 +217,14 @@ def createChileData(k):
                 print("reading: " + chileFile)
 
                 protectedChileSATSchool, nonProtectedChileSATSchool = chileSATData.createSchool(chileFile, 6)
-                dumpRankingsToDisk(protectedChileSATSchool, nonProtectedChileSATSchool, k, "ChileSATSchool",
+                rankAndDump(protectedChileSATSchool, nonProtectedChileSATSchool, k, "ChileSATSchool",
                                    "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
                 # protectedChileSATNat, nonProtectedChileSATNat = chileSATData.createNationality(chileFile, 6)
-                # dumpRankingsToDisk(protectedChileSATNat, nonProtectedChileSATNat, k, "ChileSATNationality",
+                # rankAndDump(protectedChileSATNat, nonProtectedChileSATNat, k, "ChileSATNationality",
                 #                    "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
 
 
-def dumpRankingsToDisk(protected, nonProtected, k, dataSetName, directory, pairsOfPAndAlpha):
+def rankAndDump(protected, nonProtected, k, dataSetName, directory, pairsOfPAndAlpha):
     """
     creates all rankings we need for one experimental data set and writes them to disk to be used later
 
