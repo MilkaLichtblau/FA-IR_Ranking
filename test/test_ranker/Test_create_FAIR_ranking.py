@@ -5,8 +5,8 @@ Created on Jan 18, 2017
 '''
 import unittest
 from datasetCreator.candidate import Candidate
-from ranker.createRankings import fairRanking
-from ranker.testFairnessInRankings import FairnessInRankingsTester
+from fairRanker.create import fairRanking
+from fairRanker.test import FairnessInRankingsTester
 from utilsAndConstants import constants
 
 
@@ -38,13 +38,13 @@ class Test_create_FAIR_ranking(unittest.TestCase):
 
         minProp = constants.ESSENTIALLY_ZERO
         sigma = 0.1
-        fairRanking = fairRanking(self.__k, self.__protectedCandidates,
+        ranking = fairRanking(self.__k, self.__protectedCandidates,
                                         self.__nonProtectedCandidates, minProp, sigma)[0]
 
-        predecessor = fairRanking[0]
+        predecessor = ranking[0]
         self.assertFalse(predecessor.isProtected, "first one should be non-protected")
-        for idx in range(1, len(fairRanking)):
-            current = fairRanking[idx]
+        for idx in range(1, len(ranking)):
+            current = ranking[idx]
             self.assertFalse(current.isProtected, "all candidates should be non-protected")
             self.assertGreater(predecessor.originalQualification, current.originalQualification, "candidates should be ordered by qualification\
                 failed at position {0}".format(idx))
@@ -54,13 +54,13 @@ class Test_create_FAIR_ranking(unittest.TestCase):
     def test_CreateFairRankingOnlyProtected(self):
         minProp = constants.ESSENTIALLY_ONE
         sigma = 0.1
-        fairRanking = fairRanking(self.__k, self.__protectedCandidates,
+        ranking = fairRanking(self.__k, self.__protectedCandidates,
                                         self.__nonProtectedCandidates, minProp, sigma)[0]
 
-        predecessor = fairRanking[0]
+        predecessor = ranking[0]
         self.assertTrue(predecessor.isProtected, "ranking should contain only protected")
-        for idx in range(1, len(fairRanking)):
-            current = fairRanking[idx]
+        for idx in range(1, len(ranking)):
+            current = ranking[idx]
             self.assertTrue(current.isProtected, "ranking should contain only protected")
             self.assertGreater(predecessor.originalQualification, current.originalQualification, "candidates should be ordered by qualification\
                 failed at position {0}".format(idx))
@@ -70,16 +70,16 @@ class Test_create_FAIR_ranking(unittest.TestCase):
     def test_CreateFairRankingHalfHalf(self):
         minProp = 0.5
         sigma = 0.1
-        fairRanking = fairRanking(self.__k, self.__protectedCandidates,
+        ranking = fairRanking(self.__k, self.__protectedCandidates,
                                         self.__nonProtectedCandidates, minProp, sigma)[0]
 
         tester = FairnessInRankingsTester(minProp, sigma, self.__k, False)
 
-        predecessor = fairRanking[0]
+        predecessor = ranking[0]
         self.assertFalse(predecessor.isProtected, "first one should be non-protected")
         candidatesNeededAtLastIdx = tester.candidatesNeeded[0]
-        for idx in range(1, len(fairRanking)):
-            current = fairRanking[idx]
+        for idx in range(1, len(ranking)):
+            current = ranking[idx]
             if candidatesNeededAtLastIdx == tester.candidatesNeeded[idx]:
                 # protected candidate should be inserted at each idx, at which the number of
                 # needed protected candidates changes, otherwise should be the better one (for this
@@ -105,14 +105,14 @@ class Test_create_FAIR_ranking(unittest.TestCase):
         # non-protected
         minProp = 0.5
         sigma = 0.1
-        fairRanking = fairRanking(self.__k, self.__protectedCandidates, self.__nonProtectedCandidates,
+        ranking = fairRanking(self.__k, self.__protectedCandidates, self.__nonProtectedCandidates,
                                         minProp, sigma)[0]
 
-        predecessor = fairRanking[0]
+        predecessor = ranking[0]
         self.assertTrue(predecessor.isProtected, "first one should be protected")
 
-        for idx in range(1, len(fairRanking)):
-            current = fairRanking[idx]
+        for idx in range(1, len(ranking)):
+            current = ranking[idx]
             if idx % 2 == 0:
                 # protected candidate should appear on each odd position
                 self.assertTrue(current.isProtected, "every candidate on odd position should be protected")

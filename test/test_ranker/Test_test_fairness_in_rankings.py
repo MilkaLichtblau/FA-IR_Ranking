@@ -5,7 +5,7 @@ Created on Jan 13, 2017
 '''
 import unittest
 from datasetCreator.candidate import Candidate
-from ranker.testFairnessInRankings import FairnessInRankingsTester
+from fairRanker.test import FairnessInRankingsTester
 
 class Test_test_fairness_in_rankings(unittest.TestCase):
 

@@ -4,11 +4,11 @@ Created on Jan 9, 2017
 @author: meike.zehlike
 '''
 import unittest
-from dataset_creator.sat_data import Creator
-from dataset_creator.candidate import Candidate
+from datasetCreator.satData import Creator
+from datasetCreator.candidate import Candidate
 
 class TestSATDataSetSimulation(unittest.TestCase):
-    filename = "../../raw_data/SAT/sat_data.pdf"
+    filename = "../rawData/SAT/sat_data.pdf"
     creator = Creator(filename)
 
     def test_constructor(self):
@@ -42,18 +42,18 @@ class TestSATDataSetSimulation(unittest.TestCase):
         self.assertIsInstance(nonProtected[0], Candidate, "only Candidates should be created")
 
         for i in range(255):
-            self.assertEqual(2400, protected[i].originalQualification, "the first 256 female candidates \
+            self.assertEqual(1.0, protected[i].originalQualification, "the first 256 female candidates \
                 should have the highest SAT score, failed at position {0}".format(i))
 
-        self.assertEqual(2390, protected[256].originalQualification, "the 257th female candidate \
+        self.assertEqual(0.9958333333333333, protected[256].originalQualification, "the 257th female candidate \
                 should have the second highest SAT score")
 
 
         for i in range(326):
-            self.assertEqual(2400, nonProtected[i].originalQualification, "the first 327 male candidates \
+            self.assertEqual(1.0, nonProtected[i].originalQualification, "the first 327 male candidates \
                 should have the highest SAT score, failed at position {0}".format(i))
 
-        self.assertEqual(2390, nonProtected[327].originalQualification, "the 328th male candidate \
+        self.assertEqual(0.9958333333333333, nonProtected[327].originalQualification, "the 328th male candidate \
                 should have the second highest SAT score")
 
 

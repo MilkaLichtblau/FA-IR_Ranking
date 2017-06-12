@@ -11,7 +11,7 @@ from utilsAndConstants.utils import countProtected
 class Test(unittest.TestCase):
 
     def testGermanCreditDataCreation(self):
-        protected, nonProtected = germanCreditData.create("GermanCredit_sex.csv", "DurationMonth", "CreditAmount",
+        protected, nonProtected = germanCreditData.create("testDatasetCreator/GermanCredit_sex.csv", "DurationMonth", "CreditAmount",
                                                           "score", "sex", protectedAttribute=["female"])
         self.assertEqual(310, len(nonProtected), "should have 310 males")
         self.assertEqual(0, countProtected(nonProtected), "the nonProtected array should not contain protected candidates")

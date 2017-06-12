@@ -46,6 +46,8 @@ def orderingUtility(ranking):
 
     Return
     ------
+    A tuple (maxRankDrop, orderingUtility)
+
     maxRankDrop : int
         The maximum of which a currentCandidate was ranked down
 
