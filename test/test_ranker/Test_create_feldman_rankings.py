@@ -12,6 +12,10 @@ class Test_create_feldman_rankings(unittest.TestCase):
 
 
     def testCreateFeldmanRanking(self):
+        """
+        creates 500 protected candidates and 1000 non-protected candidates into two arrays, ordered
+        by descending qualifications
+        """
         protectedCandidates = []
         nonProtectedCandidates = []
         k = 500

@@ -14,6 +14,10 @@ class Test_create_FAIR_ranking(unittest.TestCase):
 
     @classmethod
     def setUp(self):
+        """
+        creates k protected and k non-protected candidates into two arrays. Ordered by descending
+        qualifications
+        """
         self.__protectedCandidates = []
         self.__nonProtectedCandidates = []
         self.__k = 200

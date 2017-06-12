@@ -11,6 +11,13 @@ class Test_test_fairness_in_rankings(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """
+        creates 20 protected and 20 non-protected candidates and ranks them into 3 rankings:
+        - one that contains only protected candidates
+        - one that contains only non-protected
+        - one that alternates between a protected and a non-protected, starting with a protected
+          candidate at position 0
+        """
         cls.__fairRankingHalfHalf = []
         cls.__unfairRankingOnlyNonProtected = []
         cls.__unfairRankingOnlyProtected = []
