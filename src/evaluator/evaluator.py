@@ -6,14 +6,11 @@ Created on Feb 9, 2017
 import os
 import pandas as pd
 
-from matplotlib import pyplot as plt
-import matplotlib as mpl
-
 from readWriteRankings.readAndWriteRankings import loadPicklesFromDirectory, loadPicklesFromSubDirs, \
     writePickleToDisk
 from evaluator import metrics
 from utilsAndConstants.utils import Switch
-from utilsAndConstants.printsAndPlots import plotFourListsInOnePlot, plotTwoListsInOnePlot
+from utilsAndConstants.printsAndPlots import plotTwoListsInOnePlot
 
 
 
@@ -461,10 +458,9 @@ class Evaluator(object):
                 utilList = utilList.drop('feldman')
 
                 plotTwoListsInOnePlot(ps, percentProt.values, utilList.values, 'Protected', 'NDCG',
-                                      "p", 0, 1,
-                                      r"Percentage Protected in Ranking", 0, 1,
-                                      r"NDCG", 0.86, 1,
-                                      0.1,
+                                      "p",
+                                      r"Percentage Protected in Ranking",
+                                      r"NDCG",
                                       '../results/plots/GermanCreditAge25NDCG.png')
         else:
             print('not yet implemented')

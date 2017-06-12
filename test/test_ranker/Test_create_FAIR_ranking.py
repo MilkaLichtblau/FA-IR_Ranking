@@ -5,7 +5,7 @@ Created on Jan 18, 2017
 '''
 import unittest
 from datasetCreator.candidate import Candidate
-from ranker.createRankings import createFairRanking
+from ranker.createRankings import fairRanking
 from ranker.testFairnessInRankings import FairnessInRankingsTester
 from utilsAndConstants import constants
 
@@ -38,7 +38,7 @@ class Test_create_FAIR_ranking(unittest.TestCase):
 
         minProp = constants.ESSENTIALLY_ZERO
         sigma = 0.1
-        fairRanking = createFairRanking(self.__k, self.__protectedCandidates,
+        fairRanking = fairRanking(self.__k, self.__protectedCandidates,
                                         self.__nonProtectedCandidates, minProp, sigma)[0]
 
         predecessor = fairRanking[0]
@@ -54,7 +54,7 @@ class Test_create_FAIR_ranking(unittest.TestCase):
     def test_CreateFairRankingOnlyProtected(self):
         minProp = constants.ESSENTIALLY_ONE
         sigma = 0.1
-        fairRanking = createFairRanking(self.__k, self.__protectedCandidates,
+        fairRanking = fairRanking(self.__k, self.__protectedCandidates,
                                         self.__nonProtectedCandidates, minProp, sigma)[0]
 
         predecessor = fairRanking[0]
@@ -70,7 +70,7 @@ class Test_create_FAIR_ranking(unittest.TestCase):
     def test_CreateFairRankingHalfHalf(self):
         minProp = 0.5
         sigma = 0.1
-        fairRanking = createFairRanking(self.__k, self.__protectedCandidates,
+        fairRanking = fairRanking(self.__k, self.__protectedCandidates,
                                         self.__nonProtectedCandidates, minProp, sigma)[0]
 
         tester = FairnessInRankingsTester(minProp, sigma, self.__k, False)
@@ -105,7 +105,7 @@ class Test_create_FAIR_ranking(unittest.TestCase):
         # non-protected
         minProp = 0.5
         sigma = 0.1
-        fairRanking = createFairRanking(self.__k, self.__protectedCandidates, self.__nonProtectedCandidates,
+        fairRanking = fairRanking(self.__k, self.__protectedCandidates, self.__nonProtectedCandidates,
                                         minProp, sigma)[0]
 
         predecessor = fairRanking[0]

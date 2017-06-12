@@ -7,7 +7,7 @@ import os, sys
 import argparse
 
 from readWriteRankings.readAndWriteRankings import writePickleToDisk
-from ranker import createRankings
+from fairRanker.create import fairRanking, feldmanRanking
 from utilsAndConstants.constants import ESSENTIALLY_ZERO
 from utilsAndConstants.utils import setMemoryLimit
 from datasetCreator import compasData, germanCreditData, satData, xingProfilesReader, chileSATData
@@ -250,32 +250,32 @@ def rankAndDump(protected, nonProtected, k, dataSetName, directory, pairsOfPAndA
         os.makedirs(os.getcwd() + '/' + directory + '/')
 
     print("colorblind ranking", end='', flush=True)
-    colorblindRanking, colorblindNotSelected = createRankings.createFairRanking(k, protected, nonProtected, ESSENTIALLY_ZERO, 0.1)
+    colorblindRanking, colorblindNotSelected = fairRanking(k, protected, nonProtected, ESSENTIALLY_ZERO, 0.1)
     print(" [Done]")
 
     print("fair rankings", end='', flush=True)
     pair01 = [item for item in pairsOfPAndAlpha if item[0] == 0.1][0]
-    fairRanking01, fair01NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair01[0], pair01[1])
+    fairRanking01, fair01NotSelected = fairRanking(k, protected, nonProtected, pair01[0], pair01[1])
     pair02 = [item for item in pairsOfPAndAlpha if item[0] == 0.2][0]
-    fairRanking02, fair02NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair02[0], pair02[1])
+    fairRanking02, fair02NotSelected = fairRanking(k, protected, nonProtected, pair02[0], pair02[1])
     pair03 = [item for item in pairsOfPAndAlpha if item[0] == 0.3][0]
-    fairRanking03, fair03NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair03[0], pair03[1])
+    fairRanking03, fair03NotSelected = fairRanking(k, protected, nonProtected, pair03[0], pair03[1])
     pair04 = [item for item in pairsOfPAndAlpha if item[0] == 0.4][0]
-    fairRanking04, fair04NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair04[0], pair04[1])
+    fairRanking04, fair04NotSelected = fairRanking(k, protected, nonProtected, pair04[0], pair04[1])
     pair05 = [item for item in pairsOfPAndAlpha if item[0] == 0.5][0]
-    fairRanking05, fair05NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair05[0], pair05[1])
+    fairRanking05, fair05NotSelected = fairRanking(k, protected, nonProtected, pair05[0], pair05[1])
     pair06 = [item for item in pairsOfPAndAlpha if item[0] == 0.6][0]
-    fairRanking06, fair06NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair06[0], pair06[1])
+    fairRanking06, fair06NotSelected = fairRanking(k, protected, nonProtected, pair06[0], pair06[1])
     pair07 = [item for item in pairsOfPAndAlpha if item[0] == 0.7][0]
-    fairRanking07, fair07NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair07[0], pair07[1])
+    fairRanking07, fair07NotSelected = fairRanking(k, protected, nonProtected, pair07[0], pair07[1])
     pair08 = [item for item in pairsOfPAndAlpha if item[0] == 0.8][0]
-    fairRanking08, fair08NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair08[0], pair08[1])
+    fairRanking08, fair08NotSelected = fairRanking(k, protected, nonProtected, pair08[0], pair08[1])
     pair09 = [item for item in pairsOfPAndAlpha if item[0] == 0.9][0]
-    fairRanking09, fair09NotSelected = createRankings.createFairRanking(k, protected, nonProtected, pair09[0], pair09[1])
+    fairRanking09, fair09NotSelected = fairRanking(k, protected, nonProtected, pair09[0], pair09[1])
     print(" [Done]")
 
     print("feldman ranking", end='', flush=True)
-    feldmanRanking, feldmanNotSelected = createRankings.createFeldmanRanking(protected, nonProtected, k)
+    feldmanRanking, feldmanNotSelected = feldmanRanking(protected, nonProtected, k)
     print(" [Done]")
 
     print("Write rankings to disk", end='', flush=True)

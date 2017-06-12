@@ -4,13 +4,13 @@ Created on Jan 17, 2017
 @author: meike.zehlike
 '''
 
-from ranker.testFairnessInRankings import FairnessInRankingsTester
+from fairRanker.test import FairnessInRankingsTester
 from scipy.stats.stats import percentileofscore
 from scipy.stats.stats import scoreatpercentile
 from utilsAndConstants.constants import ESSENTIALLY_ZERO
 
 
-def createFeldmanRanking(protectedCandidates, nonProtectedCandidates, k):
+def feldmanRanking(protectedCandidates, nonProtectedCandidates, k):
     """
     creates a ranking that promotes the protected candidates by adjusting the distribution of the
     qualifications of the protected and non-protected group
@@ -60,10 +60,10 @@ def createFeldmanRanking(protectedCandidates, nonProtectedCandidates, k):
         candidate.qualification = score
 
     # create a colorblind ranking
-    return createFairRanking(k, protectedCandidates, nonProtectedCandidates, ESSENTIALLY_ZERO, 0.1)
+    return fairRanking(k, protectedCandidates, nonProtectedCandidates, ESSENTIALLY_ZERO, 0.1)
 
 
-def createFairRanking(k, protectedCandidates, nonProtectedCandidates, minProp, alpha):
+def fairRanking(k, protectedCandidates, nonProtectedCandidates, minProp, alpha):
     """
     creates a ranked output that satisfies the fairness definition in :class:'FairnessInRankingsTester'
     if k is larger than one of the candidate lists we have available, the ranking is filled up with
@@ -76,11 +76,11 @@ def createFairRanking(k, protectedCandidates, nonProtectedCandidates, minProp, a
         the expected length of the ranking
 
     protectedCandidates : [Candidates]
-        array of protected class:`candidates <dataStructure.Candidate.Candidate>`, assumed to be
+        array of protected class:`candidates <datasetCreator.candidate.Candidate>`, assumed to be
         sorted by candidate qualification in descending order
 
     nonProtectedCandidates : [Candidates]
-        array of non-protected class:`candidates <dataStructure.Candidate.Candidate>`, assumed to be
+        array of non-protected class:`candidates <datasetCreator.candidate.Candidate>`, assumed to be
         sorted by candidate qualification in descending order
 
     minProp : float
@@ -92,7 +92,7 @@ def createFairRanking(k, protectedCandidates, nonProtectedCandidates, minProp, a
 
     Return:
     ------
-    an array of class:`candidates <dataStructure.Candidate.Candidate>` that maximizes ordering and
+    an array of class:`candidates <datasetCreator.candidate.Candidate>` that maximizes ordering and
     selection fairness
 
     the left-over candidates that were not selected into the ranking, sorted color-blindly

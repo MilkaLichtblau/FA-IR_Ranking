@@ -5,7 +5,7 @@ Created on Feb 2, 2017
 '''
 import unittest
 from datasetCreator.candidate import Candidate
-from ranker.createRankings import createFeldmanRanking
+from ranker.createRankings import feldmanRanking
 
 
 class Test_create_feldman_rankings(unittest.TestCase):
@@ -41,7 +41,7 @@ class Test_create_feldman_rankings(unittest.TestCase):
                 expectedResult.append(nonProtectedForExpectedResult.pop(0))
                 fiveNonProtectedInbetween += 1
 
-        result = createFeldmanRanking(protectedCandidates, nonProtectedCandidates, k)[0]
+        result = feldmanRanking(protectedCandidates, nonProtectedCandidates, k)[0]
         for candidate in result:
             candidate.qualification = int(candidate.qualification)
 
