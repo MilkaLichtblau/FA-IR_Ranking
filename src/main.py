@@ -18,7 +18,6 @@ EVALUATE_FAILURE_PROBABILITY = 0
 
 def main():
     setMemoryLimit(10000000000)
-    print(sys.version)
 
     # create the top-level parser
     parser = argparse.ArgumentParser(prog='FA*IR', description='a fair Top-k ranking algorithm',
@@ -29,11 +28,11 @@ def main():
 
     # create the parser for the "create" command
     parser_create = subparsers.add_parser('dataset_create', help='choose a dataset to generate')
-    parser_create.add_argument(dest='dataset_to_evaluate', choices=["sat", "compas", "germancredit", "xing", "csat"])
+    parser_create.add_argument(dest='dataset_to_create', choices=["sat", "compas", "germancredit", "xing", "csat"])
 
     # create the parser for the "evaluate" command
     parser_evaluate = subparsers.add_parser('dataset_evaluate', help='choose a dataset to evaluate')
-    parser_evaluate.add_argument(dest='dataset_to_create', choices=["sat", "xing"
+    parser_evaluate.add_argument(dest='dataset_to_evaluate', choices=["sat", "xing"
                                                                   "compas_gender", "compas_race",
                                                                   "germancredit_25", "germancredit_35", "germancredit_gender"])
 
