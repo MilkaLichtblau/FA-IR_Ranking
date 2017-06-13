@@ -10,7 +10,7 @@ from fairRanker.test import FairnessInRankingsTester
 from utilsAndConstants import constants
 
 
-class Test_create_FAIR_ranking(unittest.TestCase):
+class Test_create_FAIR_rankings(unittest.TestCase):
 
     @classmethod
     def setUp(self):
@@ -35,7 +35,7 @@ class Test_create_FAIR_ranking(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        super(Test_create_FAIR_ranking, cls).tearDownClass()
+        super(Test_create_FAIR_rankings, cls).tearDownClass()
 
 
     def test_CreateFairRankingColorBlind(self):
