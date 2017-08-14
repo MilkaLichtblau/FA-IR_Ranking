@@ -56,8 +56,8 @@ def rankedGroupFairnessInYangStoyanovich(alpha, p, k, numberProtected, numberNon
 
     for idx in range(trials):
         rankedOutput = yangStoyanovichMethod.create(p, k, numberProtected, numberNonProtected)
-        posAtFail, isFair = gft.rankedGroupFairnessCondition(rankedOutput)
+        posAtFail, isFair = gft.ranked_group_fairness_condition(rankedOutput)
         if not isFair:
             result[posAtFail] += 1
 
-    return result, gft.candidatesNeeded
+    return result, gft.candidates_needed

@@ -24,12 +24,12 @@ class FairnessInRankingsTester():
     """
 
     @property
-    def candidatesNeeded(self):
+    def candidates_needed(self):
         return self.__candidatesNeeded
 
 
     @property
-    def minimalProportion(self):
+    def minimal_proportion(self):
         return self.__minProp
 
 
@@ -53,12 +53,12 @@ class FairnessInRankingsTester():
         self.__minProp = minProp
         self.__alpha = alpha
         if correctedAlpha:
-            self.__candidatesNeeded = self.__candidatesNeededWithCorrection(k)
+            self.__candidatesNeeded = self.__candidates_needed_with_correction(k)
         else:
-            self.__candidatesNeeded = self.__calculateProtectedNeededAtEachPosition(k)
+            self.__candidatesNeeded = self.__calculate_protected_needed_at_each_position(k)
 
 
-    def rankedGroupFairnessCondition(self, ranking):
+    def ranked_group_fairness_condition(self, ranking):
         """
         checks that every prefix of a given ranking tau satisfies the fair representation condition
         starts to check from the top of the list (i.e. with the first candidate) and expands downwards
@@ -79,13 +79,13 @@ class FairnessInRankingsTester():
 
         for t in range(len(ranking)):
             prefix.append(ranking[t])
-            if not self.fairRepresentationCondition(prefix):
+            if not self.fair_representation_condition(prefix):
                 return t, False
 
         return 0, True
 
 
-    def fairRepresentationCondition(self, ranking):
+    def fair_representation_condition(self, ranking):
         """
         checks if a given ranking with tau_p protected candidates fairly represents the protected group. A
         minimal proportion of protected candidates is defined in advance.
@@ -110,7 +110,7 @@ class FairnessInRankingsTester():
             return True
 
 
-    def __calculateProtectedNeededAtEachPosition(self, k):
+    def __calculate_protected_needed_at_each_position(self, k):
         result = []
 
         if self.__minProp == 0:
@@ -124,7 +124,7 @@ class FairnessInRankingsTester():
         return result
 
 
-    def __candidatesNeededWithCorrection(self, k):
+    def __candidates_needed_with_correction(self, k):
         fc = AlphaAdjustment(k, self.__minProp, self.__alpha)
         mtableAsList = fc.mtable.m.tolist()
         mtableAsList = [int(i) for i in mtableAsList]

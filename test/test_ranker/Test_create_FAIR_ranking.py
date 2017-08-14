@@ -81,10 +81,10 @@ class Test_create_FAIR_rankings(unittest.TestCase):
 
         predecessor = ranking[0]
         self.assertFalse(predecessor.isProtected, "first one should be non-protected")
-        candidatesNeededAtLastIdx = tester.candidatesNeeded[0]
+        candidatesNeededAtLastIdx = tester.candidates_needed[0]
         for idx in range(1, len(ranking)):
             current = ranking[idx]
-            if candidatesNeededAtLastIdx == tester.candidatesNeeded[idx]:
+            if candidatesNeededAtLastIdx == tester.candidates_needed[idx]:
                 # protected candidate should be inserted at each idx, at which the number of
                 # needed protected candidates changes, otherwise should be the better one (for this
                 # setting, not in general for the algorithm)
@@ -93,7 +93,7 @@ class Test_create_FAIR_rankings(unittest.TestCase):
                 self.assertTrue(current.isProtected, "every candidate on even position should be protected")
 
             predecessor = current
-            candidatesNeededAtLastIdx = tester.candidatesNeeded[idx]
+            candidatesNeededAtLastIdx = tester.candidates_needed[idx]
 
 
     def test_CreateFairRankingSameQualification(self):

@@ -44,71 +44,71 @@ class Test_test_fairness_in_rankings(unittest.TestCase):
     def test_fairRepresentationCondition(self):
         tester = FairnessInRankingsTester(0.5, 0.1, len(self.__fairRankingHalfHalf), False)
 
-        self.assertTrue(tester.fairRepresentationCondition(self.__fairRankingHalfHalf))
-        self.assertTrue(tester.fairRepresentationCondition(self.__unfairRankingOnlyProtected),
+        self.assertTrue(tester.fair_representation_condition(self.__fairRankingHalfHalf))
+        self.assertTrue(tester.fair_representation_condition(self.__unfairRankingOnlyProtected),
                         "we ensure that there are AT LEAST 50% protected candidates, not approximately 50%")
-        self.assertFalse(tester.fairRepresentationCondition(self.__unfairRankingOnlyNonProtected),
+        self.assertFalse(tester.fair_representation_condition(self.__unfairRankingOnlyNonProtected),
                          "if there are less than 50% protected candidates in the ranking, should return False")
 
         # we expect a minimal proportion of protected candidates of 100%, however the set only contains
         # 50% of protected candidates
         tester = FairnessInRankingsTester(1, 0.1, len(self.__fairRankingHalfHalf), False)
 
-        self.assertFalse(tester.fairRepresentationCondition(self.__fairRankingHalfHalf))
-        self.assertTrue(tester.fairRepresentationCondition(self.__unfairRankingOnlyProtected),
+        self.assertFalse(tester.fair_representation_condition(self.__fairRankingHalfHalf))
+        self.assertTrue(tester.fair_representation_condition(self.__unfairRankingOnlyProtected),
                         "contains only protected candidates, so each minimal proportion should be sufficient")
-        self.assertFalse(tester.fairRepresentationCondition(self.__unfairRankingOnlyNonProtected),
+        self.assertFalse(tester.fair_representation_condition(self.__unfairRankingOnlyNonProtected),
                          "if there are less than 50% protected candidates in the ranking, should return False")
 
         # we don't expect a single protected candidate, so this should accept all sets
         tester = FairnessInRankingsTester(0, 0.1, len(self.__fairRankingHalfHalf), False)
 
-        self.assertTrue(tester.fairRepresentationCondition(self.__fairRankingHalfHalf))
-        self.assertTrue(tester.fairRepresentationCondition(self.__unfairRankingOnlyProtected),
+        self.assertTrue(tester.fair_representation_condition(self.__fairRankingHalfHalf))
+        self.assertTrue(tester.fair_representation_condition(self.__unfairRankingOnlyProtected),
                         "contains only protected candidates, so each minimal proportion should be sufficient")
-        self.assertTrue(tester.fairRepresentationCondition(self.__unfairRankingOnlyNonProtected),
+        self.assertTrue(tester.fair_representation_condition(self.__unfairRankingOnlyNonProtected),
                         "if there are less than 50% protected candidates in the ranking, should return False")
 
 
     def test_rankedGroupFairnessCondition(self):
         tester = FairnessInRankingsTester(0.5, 0.1, len(self.__fairRankingHalfHalf), False)
 
-        pos, isFair = tester.rankedGroupFairnessCondition(self.__fairRankingHalfHalf)
+        pos, isFair = tester.ranked_group_fairness_condition(self.__fairRankingHalfHalf)
         self.assertTrue(isFair, "Test MinProp: {0} => half half ranking became unfair at position \
-            {1}".format(tester.minimalProportion, pos))
-        pos, isFair = tester.rankedGroupFairnessCondition(self.__unfairRankingOnlyProtected)
+            {1}".format(tester.minimal_proportion, pos))
+        pos, isFair = tester.ranked_group_fairness_condition(self.__unfairRankingOnlyProtected)
         self.assertTrue(isFair, "Test MinProp: {0} => ranking with only protected became unfair at \
-            position {1}".format(tester.minimalProportion, pos))
-        pos, isFair = tester.rankedGroupFairnessCondition(self.__unfairRankingOnlyNonProtected)
+            position {1}".format(tester.minimal_proportion, pos))
+        pos, isFair = tester.ranked_group_fairness_condition(self.__unfairRankingOnlyNonProtected)
         self.assertFalse(isFair, "Test MinProp: {0} => ranking with only non-protected became unfair \
-            at position {1}".format(tester.minimalProportion, pos))
+            at position {1}".format(tester.minimal_proportion, pos))
 
         # we expect a minimal proportion of protected candidates of 100%, however the set only contains
         # 50% of protected candidates
         tester = FairnessInRankingsTester(1, 0.1, len(self.__fairRankingHalfHalf), False)
 
-        pos, isFair = tester.rankedGroupFairnessCondition(self.__fairRankingHalfHalf)
+        pos, isFair = tester.ranked_group_fairness_condition(self.__fairRankingHalfHalf)
         self.assertFalse(isFair, "Test MinProp: {0} => half half ranking should be unfair at each \
-            position for this minimal proportion".format(tester.minimalProportion))
-        pos, isFair = tester.rankedGroupFairnessCondition(self.__unfairRankingOnlyProtected)
+            position for this minimal proportion".format(tester.minimal_proportion))
+        pos, isFair = tester.ranked_group_fairness_condition(self.__unfairRankingOnlyProtected)
         self.assertTrue(isFair, "Test MinProp: {0} => ranking with only protected became unfair at \
-            position {1}".format(tester.minimalProportion, pos))
-        pos, isFair = tester.rankedGroupFairnessCondition(self.__unfairRankingOnlyNonProtected)
+            position {1}".format(tester.minimal_proportion, pos))
+        pos, isFair = tester.ranked_group_fairness_condition(self.__unfairRankingOnlyNonProtected)
         self.assertFalse(isFair, "Test MinProp: {0} => ranking with only non-protected became unfair \
-            at position {1}".format(tester.minimalProportion, pos))
+            at position {1}".format(tester.minimal_proportion, pos))
 
         # we don't expect a single protected candidate, so this should accept all sets
         tester = FairnessInRankingsTester(0, 0.1, len(self.__fairRankingHalfHalf), False)
 
-        pos, isFair = tester.rankedGroupFairnessCondition(self.__fairRankingHalfHalf)
+        pos, isFair = tester.ranked_group_fairness_condition(self.__fairRankingHalfHalf)
         self.assertTrue(isFair, "Test MinProp: {0} => half half ranking became unfair at position \
-            {1}".format(tester.minimalProportion, pos))
-        pos, isFair = tester.rankedGroupFairnessCondition(self.__unfairRankingOnlyProtected)
+            {1}".format(tester.minimal_proportion, pos))
+        pos, isFair = tester.ranked_group_fairness_condition(self.__unfairRankingOnlyProtected)
         self.assertTrue(isFair, "Test MinProp: {0} => ranking with only protected became unfair at \
-            position {1}".format(tester.minimalProportion, pos))
-        pos, isFair = tester.rankedGroupFairnessCondition(self.__unfairRankingOnlyNonProtected)
+            position {1}".format(tester.minimal_proportion, pos))
+        pos, isFair = tester.ranked_group_fairness_condition(self.__unfairRankingOnlyNonProtected)
         self.assertTrue(isFair, "Test MinProp: {0} => ranking with only non-protected became unfair \
-            at position {1}".format(tester.minimalProportion, pos))
+            at position {1}".format(tester.minimal_proportion, pos))
 
 
     def test_CandidatesNeededAtPosition(self):
@@ -120,21 +120,21 @@ class Test_test_fairness_in_rankings(unittest.TestCase):
         expected100 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
         gft = FairnessInRankingsTester(0, 0.1, 10, False)
-        self.assertEqual(expected0, gft.candidatesNeeded)
+        self.assertEqual(expected0, gft.candidates_needed)
 
         gft = FairnessInRankingsTester(0.2, 0.1, 10, False)
-        self.assertEqual(expected20, gft.candidatesNeeded)
+        self.assertEqual(expected20, gft.candidates_needed)
 
         gft = FairnessInRankingsTester(0.3, 0.1, 10, False)
-        self.assertEqual(expected30, gft.candidatesNeeded)
+        self.assertEqual(expected30, gft.candidates_needed)
 
         gft = FairnessInRankingsTester(0.4, 0.1, 10, False)
-        self.assertEqual(expected40, gft.candidatesNeeded)
+        self.assertEqual(expected40, gft.candidates_needed)
 
         gft = FairnessInRankingsTester(0.5, 0.1, 10, False)
-        self.assertEqual(expected50, gft.candidatesNeeded)
+        self.assertEqual(expected50, gft.candidates_needed)
 
         gft = FairnessInRankingsTester(1, 0.1, 10, False)
-        self.assertEqual(expected100, gft.candidatesNeeded)
+        self.assertEqual(expected100, gft.candidates_needed)
 
 

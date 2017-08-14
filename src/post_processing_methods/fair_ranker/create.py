@@ -121,7 +121,7 @@ def fairRanking(k, protectedCandidates, nonProtectedCandidates, minProp, alpha):
             idxProtected += 1
             countProtected += 1
 
-        elif countProtected < gft.candidatesNeeded[i]:
+        elif countProtected < gft.candidates_needed[i]:
             # add a protected candidate
             result.append(protectedCandidates[idxProtected])
             idxProtected += 1
