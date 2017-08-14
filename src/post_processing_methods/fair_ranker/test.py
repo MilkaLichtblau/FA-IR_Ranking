@@ -5,7 +5,7 @@ Created on Jan 11, 2017
 '''
 from scipy.stats import binom
 from utilsAndConstants.utils import countProtected
-from post_processing_methods.fair_ranker.alpha_adjustment import Alpha_adjustment
+from post_processing_methods.fair_ranker.alpha_adjustment import AlphaAdjustment
 
 class FairnessInRankingsTester():
     """
@@ -125,7 +125,7 @@ class FairnessInRankingsTester():
 
 
     def __candidatesNeededWithCorrection(self, k):
-        fc = Alpha_adjustment(k, self.__minProp, self.__alpha)
+        fc = AlphaAdjustment(k, self.__minProp, self.__alpha)
         mtableAsList = fc.mtable.m.tolist()
         mtableAsList = [int(i) for i in mtableAsList]
         return mtableAsList
