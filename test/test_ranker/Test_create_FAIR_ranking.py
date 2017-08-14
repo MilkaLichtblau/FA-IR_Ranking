@@ -5,8 +5,8 @@ Created on Jan 18, 2017
 '''
 import unittest
 from datasetCreator.candidate import Candidate
-from fairRanker.create import fairRanking
-from fairRanker.test import FairnessInRankingsTester
+from post_processing_methods.fair_ranker.create import fairRanking
+from post_processing_methods.fair_ranker.test import FairnessInRankingsTester
 from utilsAndConstants import constants
 
 

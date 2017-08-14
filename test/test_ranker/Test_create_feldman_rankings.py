@@ -5,7 +5,7 @@ Created on Feb 2, 2017
 '''
 import unittest
 from datasetCreator.candidate import Candidate
-from fairRanker.create import feldmanRanking
+from post_processing_methods.fair_ranker.create import feldmanRanking
 
 
 class Test_create_feldman_rankings(unittest.TestCase):
