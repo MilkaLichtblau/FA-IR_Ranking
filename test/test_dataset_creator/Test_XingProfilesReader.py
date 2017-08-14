@@ -9,7 +9,7 @@ from datasetCreator.xingProfilesReader import Reader
 class Test(unittest.TestCase):
 
     def testReadFemaleDominant(self):
-        data = Reader('testDatasetCreator/femaleDominant.json')
+        data = Reader('test_dataset_creator/femaleDominant.json')
         df = data.entireDataSet
 
         # check shape is 1 row, 3 columns
@@ -40,7 +40,7 @@ class Test(unittest.TestCase):
 
 
     def testReadMaleDominant(self):
-        data = Reader('testDatasetCreator/maleDominant.json')
+        data = Reader('test_dataset_creator/maleDominant.json')
         df = data.entireDataSet
 
         # check shape is 1 row, 3 columns
@@ -71,7 +71,7 @@ class Test(unittest.TestCase):
 
 
     def testReadGenderNeutral(self):
-        data = Reader('testDatasetCreator/genderNeutral.json')
+        data = Reader('test_dataset_creator/genderNeutral.json')
         df = data.entireDataSet
 
         # check shape is 1 row, 3 columns
@@ -102,7 +102,7 @@ class Test(unittest.TestCase):
 
 
     def testReadAll(self):
-        data = Reader('testDatasetCreator/*.json')
+        data = Reader('test_dataset_creator/*.json')
         df = data.entireDataSet
 
         # check shape is 3 row, 3 columns

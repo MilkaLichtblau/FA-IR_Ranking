@@ -13,7 +13,7 @@ class Test(unittest.TestCase):
 
     def testDatasetCreationRace(self):
         # the csv file contains 310 male persons and 690 female
-        protected, nonProtected = compasData.createRace("testDatasetCreator/ProPublica_race.csv", "race", "Violence_rawscore", "Recidivism_rawscore",
+        protected, nonProtected = compasData.createRace("test_dataset_creator/ProPublica_race.csv", "race", "Violence_rawscore", "Recidivism_rawscore",
        "priors_count")
         self.assertEqual(3361, len(nonProtected), "should have 3361 non-blacks")
         self.assertEqual(0, countProtected(nonProtected), "the nonProtected array should not contain protected candidates")
@@ -27,7 +27,7 @@ class Test(unittest.TestCase):
 
     def testDatasetCreationGender(self):
         # the csv file contains 5561 male persons and 1328 female
-        protected, nonProtected = compasData.createGender("testDatasetCreator/ProPublica_sex.csv", "sex", "Violence_rawscore", "Recidivism_rawscore",
+        protected, nonProtected = compasData.createGender("test_dataset_creator/ProPublica_sex.csv", "sex", "Violence_rawscore", "Recidivism_rawscore",
        "priors_count")
         self.assertEqual(1328, len(protected), "should have 1328 females")
         self.assertEqual(1328, countProtected(protected), "the nonProtected array should not contain protected candidates")
