@@ -4,7 +4,7 @@ import scipy.stats as stats
 
 
 
-class AlphaAdjustment:
+class Alpha_adjustment:
 
     def __init__(self, n: int, p: float, alpha: float):
         if n < 1:
@@ -129,7 +129,7 @@ class AlphaAdjustment:
 # p = 0.9
 # alpha = 0.0375
 #
-# fc = AlphaAdjustment(n=n, p=p, alpha=alpha)
+# fc = Alpha_adjustment(n=n, p=p, alpha=alpha)
 # print("Success probability for n={:.0f}, p={:.2f}, alpha={:.6f}: {:.10f}".format(n, p, alpha, fc.compute_success_probability()))
 
 
