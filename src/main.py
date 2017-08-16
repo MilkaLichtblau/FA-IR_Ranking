@@ -7,7 +7,7 @@ import os, sys
 import argparse
 
 from readWriteRankings.readAndWriteRankings import writePickleToDisk
-from fairRanker.create import fairRanking, feldmanRanking
+from post_processing_methods.fair_ranker.create import fairRanking, feldmanRanking
 from utilsAndConstants.constants import ESSENTIALLY_ZERO
 from utilsAndConstants.utils import setMemoryLimit
 from datasetCreator import compasData, germanCreditData, satData, xingProfilesReader, chileSATData
