@@ -5,7 +5,7 @@ Created on Apr 12, 2017
 '''
 from utilsAndConstants import printsAndPlots
 from datasetCreator import yangStoyanovichMethod
-from fairRanker.test import FairnessInRankingsTester
+from post_processing_methods.fair_ranker.test import FairnessInRankingsTester
 
 def determineFailProbOfGroupFairnessTesterForStoyanovichRanking():
     """
