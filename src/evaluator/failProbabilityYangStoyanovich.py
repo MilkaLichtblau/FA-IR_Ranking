@@ -47,7 +47,7 @@ def determineFailProbOfGroupFairnessTesterForStoyanovichRanking():
         failProb = sumOfFailures / numTrials
         failProbs2.append(failProb)
 
-    printsAndPlots.plotFourListsInOnePlot(ps, modelAlpha1, failProbs1, modelAlpha2, failProbs2, 'p', 'prob. rejection', filename='failProbs.pdf')
+    printsAndPlots.plotFourListsInOnePlot(ps, modelAlpha1, failProbs1, modelAlpha2, failProbs2, 'p', 'prob. rejection', filename='../results/plots/failProbs.pdf')
 
 
 def rankedGroupFairnessInYangStoyanovich(alpha, p, k, numberProtected, numberNonProtected, trials):
