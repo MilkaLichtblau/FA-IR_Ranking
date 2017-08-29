@@ -10,10 +10,10 @@ from matplotlib import pyplot as plt
 
 
 def plotFourListsInOnePlot(xdata, ydata1, ydata2, ydata3, ydata4, xlabel, ylabel, filename):
-    mpl.rcParams.update({'font.size': 20, 'lines.linewidth': 3})
+    mpl.rcParams.update({'font.size': 20, 'lines.linewidth': 3, 'lines.markersize': 10})
     plt.plot(xdata, ydata1, c='r')
     plt.scatter(xdata, ydata2, marker='x', c='r')
-    plt.plot(xdata, ydata3, c='b')
+    plt.plot(xdata, ydata3, c='b', linestyle='--')
     plt.scatter(xdata, ydata4, marker='x', c='b')
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
@@ -28,17 +28,20 @@ def plotTwoListsInOnePlot(xdata, ydata1, ydata2, labelLine1, labelLine2,
                           labelYAx1,
                           labelYAx2,
                           filename):
-    mpl.rcParams.update({'font.size': 20, 'lines.linewidth': 3})
+    mpl.rcParams.update({'font.size': 20, 'lines.linewidth': 3, 'lines.markersize': 15})
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax2 = ax.twinx()
-    ax.plot(xdata, ydata1, marker='x', c='r', label=labelLine1)
-    ax2.plot(xdata, ydata2, marker='x', c='b', label=labelLine2)
+    ax.plot(xdata, ydata1, marker='.', c='r', label=labelLine1)
+    ax2.plot(xdata, ydata2, linestyle='--', marker='.', c='b', label=labelLine2)
 
     # added these two lines
-    ax.legend(loc=1, framealpha=0.3)
-    ax2.legend(loc=4, framealpha=0.3)
+    ax.legend(loc=1, framealpha=0.7)
+    ax2.legend(loc=4, framealpha=0.7)
+
+    ax.set_xlim(xmin=0, xmax=1)
+    ax.set_ylim(ymin=0, ymax=1)
 
     ax.set_xlabel(labelXAx)
     ax.set_ylabel(labelYAx1)

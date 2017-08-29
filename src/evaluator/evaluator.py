@@ -443,7 +443,7 @@ class Evaluator(object):
                 orderUtil = self.germanCreditAge25Results.T.loc['orderUnfair']
                 orderUtil = orderUtil.drop(orderUtil.index[0])
                 orderUtil = orderUtil.drop(orderUtil.index[-1])
-                orderUtilValues = [1 - values[1] for values in orderUtil]
+                orderUtilValues = [1 - abs(values[1]) for values in orderUtil]
 
                 percentProt = self.germanCreditAge25Results.T.loc['percentProt']
                 percentProt = percentProt.drop(percentProt.index[0])
