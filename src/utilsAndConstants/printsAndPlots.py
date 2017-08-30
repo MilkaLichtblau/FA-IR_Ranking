@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 
 
 def plotFourListsInOnePlot(xdata, ydata1, ydata2, ydata3, ydata4, xlabel, ylabel, filename):
-    mpl.rcParams.update({'font.size': 20, 'lines.linewidth': 3, 'lines.markersize': 10})
+    mpl.rcParams.update({'font.size': 20, 'lines.linewidth': 3, 'lines.markersize': 12})
     plt.plot(xdata, ydata1, c='r')
     plt.scatter(xdata, ydata2, marker='x', c='r')
     plt.plot(xdata, ydata3, c='b', linestyle='--')

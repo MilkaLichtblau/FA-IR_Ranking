@@ -6,6 +6,7 @@ Created on Apr 12, 2017
 from utilsAndConstants import printsAndPlots
 from datasetCreator import yangStoyanovichMethod
 from post_processing_methods.fair_ranker.test import FairnessInRankingsTester
+from readWriteRankings.readAndWriteRankings import writePickleToDisk
 
 def determineFailProbOfGroupFairnessTesterForStoyanovichRanking():
     """
@@ -47,6 +48,8 @@ def determineFailProbOfGroupFairnessTesterForStoyanovichRanking():
         failProb = sumOfFailures / numTrials
         failProbs2.append(failProb)
 
+    writePickleToDisk(failProbs1, '../results/FailureProbYangMethod/failProbsK=1000.pickle')
+    writePickleToDisk(failProbs2, '../results/FailureProbYangMethod/failProbsK=1500.pickle')
     printsAndPlots.plotFourListsInOnePlot(ps, modelAlpha1, failProbs1, modelAlpha2, failProbs2, 'p', 'prob. rejection', filename='../results/plots/failProbs.pdf')
 
 
