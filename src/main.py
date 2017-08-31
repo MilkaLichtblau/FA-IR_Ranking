@@ -84,7 +84,7 @@ def main():
         createDataAndRankings()
         evaluator = Evaluator()
         evaluator.printResults()
-#       in between commits
+
         if EVALUATE_FAILURE_PROBABILITY:
             determineFailProbOfGroupFairnessTesterForStoyanovichRanking()
 
