@@ -30,8 +30,8 @@ class Creator(object):
     """
 
     _scores = []
-    _numberMales = []
-    _numberFemales = []
+    _number_nonprotected = []
+    _number_protected = []
 
     def __init__(self, filename):
 
@@ -53,11 +53,11 @@ class Creator(object):
             score = self._scores[index]
 
             # create protected candidates of given score
-            for i in range(self._numberFemales[index]):
-                protectedCandidates.append(Candidate(score, ["female"]))
+            for i in range(self._number_protected[index]):
+                protectedCandidates.append(Candidate(score, ["protected"]))
 
             # create non-protected candidates of given score
-            for i in range(self._numberMales[index]):
+            for i in range(self._number_nonprotected[index]):
                 nonProtectedCandidates.append(Candidate(score, []))
 
         normalizeQualifications(protectedCandidates + nonProtectedCandidates)
@@ -136,14 +136,14 @@ class Creator(object):
                     break
                 if case(3):
                     # fourth column
-                    self._numberMales.append(int(number))
+                    self._number_nonprotected.append(int(number))
                     break
                 if case(4):
                     # fifth column
                     break
                 if case(5):
                     # sixth column
-                    self._numberFemales.append(int(number))
+                    self._number_protected.append(int(number))
                     break
                 if case(6):
                     # seventh column
@@ -153,7 +153,7 @@ class Creator(object):
                     corresponding to the above created arrays")
 
         # ensure that all lists are of the same length now
-        if not ((len(self._scores) == len(self._numberFemales)) and (len(self._numberFemales) == len(self._numberMales))):
+        if not ((len(self._scores) == len(self._number_protected)) and (len(self._number_protected) == len(self._number_nonprotected))):
             raise IndexError("All lists created from the SAT table should be of the same size")
 
 

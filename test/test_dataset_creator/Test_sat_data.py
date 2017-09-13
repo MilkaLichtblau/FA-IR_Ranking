@@ -21,13 +21,13 @@ class TestSATDataSetSimulation(unittest.TestCase):
         self.assertEqual(600, self.creator._scores[180], "last element of _scores should contain the \
             lowest SAT score")
 
-        self.assertEqual(181, len(self.creator._numberMales), "_numberMales should have 181 entries \
+        self.assertEqual(181, len(self.creator._number_nonprotected), "_numberMales should have 181 entries \
             as has the SAT testfile")
-        self.assertEqual(327, self.creator._numberMales[0], "first element of _numberMales should \
+        self.assertEqual(327, self.creator._number_nonprotected[0], "first element of _numberMales should \
             contain the first table entry of the SAT file")
-        self.assertEqual(181, len(self.creator._numberFemales), "_numberFemales should have 181 entries \
+        self.assertEqual(181, len(self.creator._number_protected), "_numberFemales should have 181 entries \
             as has the SAT testfile")
-        self.assertEqual(256, self.creator._numberFemales[0], "first element of _numberFemales should \
+        self.assertEqual(256, self.creator._number_protected[0], "first element of _numberFemales should \
             contain the first table entry of the SAT file")
 
     def test_createSetOfCandidates(self):
