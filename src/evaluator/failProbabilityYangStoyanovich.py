@@ -52,7 +52,7 @@ def determineFailProbOfGroupFairnessTesterForStoyanovichRanking():
     writePickleToDisk(failProbs2, '../results/FailureProbYangMethod/failProbsK=1500.pickle')
 #     failProbs1 = loadPickleFromDisk('../results/FailureProbYangMethod/failProbsK=1000.pickle')
 #     failProbs2 = loadPickleFromDisk('../results/FailureProbYangMethod/failProbsK=1500.pickle')
-    printsAndPlots.plotFourListsInOnePlot(ps, modelAlpha1, failProbs1, modelAlpha2, failProbs2, 'p', 'prob. rejection', filename='../results/plots/failProbs.pdf')
+    printsAndPlots.plotFourListsInOnePlot(ps, modelAlpha1, failProbs1, modelAlpha2, failProbs2, 'p', 'prob. rejection', filename='../results/plots/FailureProbability10000Trials.pdf')
 
 
 def rankedGroupFairnessInYangStoyanovich(alpha, p, k, numberProtected, numberNonProtected, trials):

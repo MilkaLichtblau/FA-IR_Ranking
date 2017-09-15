@@ -451,7 +451,7 @@ class Evaluator(object):
 
                 plotTwoListsInOnePlot(ps, percentProt.values, orderUtilValues, 'Protected', 'Ordering Utility',
                                        "p", r"Percentage Protected in Ranking", r"Ordering Utility",
-                                       '../results/plots/GermanCreditAge25OrderUtil.png')
+                                       '../results/plots/d4-protected-vs-ordering.pdf')
 
                 utilList = self.germanCreditAge25Results.T.loc['util']
                 utilList = utilList.drop('colorblind')
@@ -461,7 +461,7 @@ class Evaluator(object):
                                       "p",
                                       r"Percentage Protected in Ranking",
                                       r"NDCG",
-                                      '../results/plots/GermanCreditAge25NDCG.png')
+                                      '../results/plots/d4-protected-vs-ndcg.pdf')
         else:
             print('not yet implemented')
 

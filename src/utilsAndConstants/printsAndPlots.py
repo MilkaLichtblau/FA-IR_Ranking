@@ -11,6 +11,10 @@ from matplotlib import pyplot as plt
 
 def plotFourListsInOnePlot(xdata, ydata1, ydata2, ydata3, ydata4, xlabel, ylabel, filename):
     mpl.rcParams.update({'font.size': 20, 'lines.linewidth': 3, 'lines.markersize': 15})
+    # avoid type 3 (i.e. bitmap) fonts in figures
+    mpl.rcParams['ps.useafm'] = True
+    mpl.rcParams['pdf.use14corefonts'] = True
+    mpl.rcParams['text.usetex'] = True
     plt.plot(xdata, ydata1, c='r')
     plt.scatter(xdata, ydata2, marker='x', c='r', s=100)
     plt.plot(xdata, ydata3, c='b')
@@ -30,8 +34,11 @@ def plotTwoListsInOnePlot(xdata, ydata1, ydata2, labelLine1, labelLine2,
                           labelYAx1,
                           labelYAx2,
                           filename):
-    mpl.rcParams.update({'font.size': 20, 'lines.linewidth': 3, 'lines.markersize': 15})
-
+    mpl.rcParams.update({'font.size': 20, 'lines.linewidth': 3, 'lines.markersize': 15, 'font.family':'Times New Roman'})
+    # avoid type 3 (i.e. bitmap) fonts in figures
+    mpl.rcParams['ps.useafm'] = True
+    mpl.rcParams['pdf.use14corefonts'] = True
+    mpl.rcParams['text.usetex'] = True
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax2 = ax.twinx()
