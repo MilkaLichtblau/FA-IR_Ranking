@@ -15,6 +15,7 @@ def create_multinomial(num_groups, mean_diff=50, var_diff=0):
 
     @param num_groups:    the number of groups (assumes one non-protected, rest protected) in the data
     @param mean_diff:     desired difference of means for each group
+    @param var_diff:      difference in variances per group
     """
     data = {}
     sigma = 100
