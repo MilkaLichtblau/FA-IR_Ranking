@@ -16,13 +16,20 @@ def create_multinomial(num_groups, mean_diff=50, var_diff=0):
     @param num_groups:    the number of groups (assumes one non-protected, rest protected) in the data
     @param mean_diff:     desired difference of means for each group
     @param var_diff:      difference in variances per group
+
+    @return: dictionary with group_number as key and arrays of size 10000 with normally distributed data
+             points (integers) as value
     """
     data = {}
     sigma = 100
-    for mu in range(0, mean_diff * num_groups, mean_diff):
+    mu = 0
+    for group in range(0, num_groups):
         score_data = np.random.normal(mu, sigma, 10000)
-        score_data = score_data.round().astype(int)
-        data[mu] = score_data
-        sigma += var_diff
+        data[group] = score_data.round().astype(int)
 
-    printsAndPlots.plot_two_histograms(data[0], data[50])
+        sigma += var_diff
+        mu += mean_diff
+
+    printsAndPlots.plot_two_histograms(data[0], data[1])
+
+    return data
