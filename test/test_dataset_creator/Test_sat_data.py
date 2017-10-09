@@ -4,8 +4,8 @@ Created on Jan 9, 2017
 @author: meike.zehlike
 '''
 import unittest
-from datasetCreator.satData import Creator
-from datasetCreator.candidate import Candidate
+from dataset_creator.satData import Creator
+from dataset_creator.candidate import Candidate
 
 class TestSATDataSetSimulation(unittest.TestCase):
     filename = "../rawData/SAT/sat_data.pdf"

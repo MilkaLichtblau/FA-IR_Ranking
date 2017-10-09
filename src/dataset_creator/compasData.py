@@ -5,7 +5,7 @@ Created on Jan 24, 2017
 '''
 
 import pandas as pd
-from datasetCreator.candidate import Candidate
+from dataset_creator.candidate import Candidate
 
 
 def createGender(filename, *columnsToRead):

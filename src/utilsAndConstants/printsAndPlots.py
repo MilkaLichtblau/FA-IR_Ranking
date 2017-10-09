@@ -8,6 +8,14 @@ import matplotlib as mpl
 
 from matplotlib import pyplot as plt
 
+def plot_two_histograms(dataset1, dataset2):
+    bins = max(dataset2 + dataset1) - min(dataset2 + dataset1)
+    bins = 100
+    plt.hist(dataset2, bins, alpha=0.5, label='protected')
+    plt.hist(dataset1, bins, alpha=0.5, label='non-protected')
+    plt.legend(loc='upper right')
+    plt.show()
+
 
 def plotFourListsInOnePlot(xdata, ydata1, ydata2, ydata3, ydata4, xlabel, ylabel, filename):
     mpl.rcParams.update({'font.size': 20, 'lines.linewidth': 3, 'lines.markersize': 15})

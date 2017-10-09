@@ -10,7 +10,7 @@ from readWriteRankings.readAndWriteRankings import writePickleToDisk
 from post_processing_methods.fair_ranker.create import fairRanking, feldmanRanking
 from utilsAndConstants.constants import ESSENTIALLY_ZERO
 from utilsAndConstants.utils import setMemoryLimit
-from datasetCreator import compasData, germanCreditData, satData, xingProfilesReader, chileSATData
+from dataset_creator import *
 from evaluator.evaluator import Evaluator
 from evaluator.failProbabilityYangStoyanovich import determineFailProbOfGroupFairnessTesterForStoyanovichRanking
 
@@ -44,13 +44,15 @@ def main():
     elif args.create == ['sat']:
         createAndRankSATData(1500)
     elif args.create == ['compas']:
-            createAndRankCOMPASData(1000)
+        createAndRankCOMPASData(1000)
     elif args.create == ['germancredit']:
-            createAndRankGermanCreditData(100)
+        createAndRankGermanCreditData(100)
     elif args.create == ['xing']:
-            createAndRankXingData(40)
+        createAndRankXingData(40)
     elif args.create == ['csat']:
-            createAndRankChileData(1500)
+        createAndRankChileData(1500)
+    elif args.create == ['syntheticsat']:
+        createSyntheticSAT(1000)
     #=======================================================
     elif args.evaluate == []:
         evaluator = Evaluator()
@@ -95,6 +97,10 @@ def createDataAndRankings():
     createAndRankCOMPASData(1000)
     createAndRankGermanCreditData(100)
     createAndRankXingData(40)
+
+
+def createSyntheticSAT(k):
+    dataset = synthetic_normally_distributed.create_multinomial(2)
 
 
 def createAndRankXingData(k):

@@ -9,7 +9,7 @@ Created on Apr 26, 2017
 
 import pandas as pd
 from utilsAndConstants.utils import Switch, normalizeQualifications
-from datasetCreator.candidate import Candidate
+from dataset_creator.candidate import Candidate
 
 
 

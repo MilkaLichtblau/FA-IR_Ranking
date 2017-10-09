@@ -5,7 +5,7 @@ Created on Apr 3, 2017
 '''
 
 import pandas as pd
-from datasetCreator.candidate import Candidate
+from dataset_creator.candidate import Candidate
 
 
 def create(filename, *columnsToRead, protectedAttribute):

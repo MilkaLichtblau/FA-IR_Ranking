@@ -11,7 +11,7 @@ import math
 import pandas as pd
 import pickle
 
-from datasetCreator.candidate import Candidate
+from dataset_creator.candidate import Candidate
 from utilsAndConstants.utils import normalizeQualifications
 
 

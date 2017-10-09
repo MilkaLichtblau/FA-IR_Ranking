@@ -4,7 +4,7 @@ Created on Apr 12, 2017
 @author: meike.zehlike
 '''
 from utilsAndConstants import printsAndPlots
-from datasetCreator import yangStoyanovichMethod
+from dataset_creator import yangStoyanovichMethod
 from post_processing_methods.fair_ranker.test import FairnessInRankingsTester
 from readWriteRankings.readAndWriteRankings import writePickleToDisk, loadPickleFromDisk
 

@@ -3,7 +3,7 @@ Created on Jan 2, 2017
 
 @author: meike.zehlike
 """
-from datasetCreator.candidate import Candidate
+from dataset_creator.candidate import Candidate
 import random
 
 def create(fairnessProbability, k, numProtected, numNonProtected):
