@@ -4,7 +4,7 @@ Created on Apr 3, 2017
 @author: meike.zehlike
 '''
 import unittest
-from datasetCreator import compasData
+from dataset_creator import compasData
 from utilsAndConstants.utils import countProtected
 
 

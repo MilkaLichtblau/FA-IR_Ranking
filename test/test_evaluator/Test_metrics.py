@@ -5,7 +5,7 @@ Created on Jan 23, 2017
 '''
 import unittest
 from evaluator.metrics import selectionUtility, orderingUtility
-from datasetCreator.candidate import Candidate
+from dataset_creator.candidate import Candidate
 
 
 class TestMetrics(unittest.TestCase):

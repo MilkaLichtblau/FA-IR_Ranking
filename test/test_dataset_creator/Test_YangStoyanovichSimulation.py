@@ -4,7 +4,7 @@ Created on Jan 7, 2017
 @author: meike.zehlike
 '''
 import unittest
-from datasetCreator.yangStoyanovichMethod import generateCandidateList, create
+from dataset_creator.yangStoyanovichMethod import generateCandidateList, create
 
 
 class TestYangStoyanovichSimulation(unittest.TestCase):

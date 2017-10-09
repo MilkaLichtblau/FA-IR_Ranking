@@ -4,7 +4,7 @@ Created on Apr 3, 2017
 @author: meike.zehlike
 '''
 import unittest
-from datasetCreator import germanCreditData
+from dataset_creator import germanCreditData
 from utilsAndConstants.utils import countProtected
 
 

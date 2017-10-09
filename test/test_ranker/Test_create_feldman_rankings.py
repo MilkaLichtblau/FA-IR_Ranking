@@ -4,7 +4,7 @@ Created on Feb 2, 2017
 @author: meike.zehlike
 '''
 import unittest
-from datasetCreator.candidate import Candidate
+from dataset_creator.candidate import Candidate
 from post_processing_methods.fair_ranker.create import feldmanRanking
 
 
