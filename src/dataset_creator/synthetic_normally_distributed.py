@@ -30,6 +30,6 @@ def create_multinomial(num_groups, mean_diff=50, var_diff=0):
         sigma += var_diff
         mu += mean_diff
 
-    printsAndPlots.plot_two_histograms(data[0], data[1])
+#    printsAndPlots.plot_two_histograms(data[0], data[1])
 
     return data
