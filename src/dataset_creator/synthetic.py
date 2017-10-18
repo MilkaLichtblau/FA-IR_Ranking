@@ -54,8 +54,12 @@ class SyntheticDatasetCreator(object):
         self.__createScoresNormalDistribution(nonProtectedAttributes, mu, sigma)
 
         # generate ID column
+        # self.__dataset['uuid'] = uuid.uuid4()
 
-        self.__dataset['uuid'] = uuid.uuid4()
+
+
+    def writeToJSON(self, path):
+        self.__dataset.to_json(path, orient='records', lines=True)
 
 
     def __determineGroups(self, attributeNamesAndCategories):
@@ -86,7 +90,6 @@ class SyntheticDatasetCreator(object):
 
         for attr in nonProtectedAttributes:
             self.__dataset = self.__dataset.groupby(self.__dataset.columns.tolist(), as_index=False, sort=False).apply(score, (attr))
-            print(self.__dataset)
 
 
     def __createCategoricalProtectedAttributes(self, attributeNamesAndCategories, numItems):
@@ -111,5 +114,4 @@ class SyntheticDatasetCreator(object):
 
         # add protected columns to dataset
         self.__dataset = self.__dataset.append(newData)
-        print(self.__dataset)
 
