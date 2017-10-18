@@ -7,6 +7,8 @@ provides basic utilities for candidate rankings
 '''
 
 import resource
+import numpy as np
+
 
 def countProtected(ranking):
     result = 0
@@ -34,6 +36,11 @@ def setMemoryLimit(maxMem):
         return True
     except ValueError:
         return False
+
+
+def cartesian_product(*arrays):
+    ndim = len(arrays)
+    return np.stack(np.meshgrid(*arrays), axis=-1).reshape(-1, ndim)
 
 
 class Switch(object):

@@ -5,31 +5,111 @@ Created on Oct 3, 2017
 
 '''
 import numpy as np
-from utilsAndConstants import printsAndPlots
+import pandas as pd
+import random, uuid
+from utilsAndConstants import *
+import itertools
 
 
-def create_multinomial(num_groups, mean_diff=50, std_dev_diff=0):
+class SyntheticDatasetCreator(object):
+
     """
-    creates synthetic training data for learning to rank. The score data is normally distributed and
-    the means for each groups vary by mean_diff points. Scores are integers.
-
-    @param num_groups:    the number of groups (assumes one non-protected, rest protected) in the data
-    @param mean_diff:     desired difference of means for each group
-    @param std_dev_diff:      difference in variances per group
-
-    @return: dictionary with group_number as key and arrays of size 10000 with normally distributed data
-             points (integers) as value
+    a dataframe that contains protected and non-protected features in columns. Each row represents
+    a candidate with their feature values
     """
-    data = {}
-    sigma = 100
-    mu = 0
-    for group in range(0, num_groups):
-        score_data = np.random.normal(mu, sigma, 10000)
-        data[group] = score_data.round().astype(int)
+    @property
+    def dataset(self):
+        return self.__dataset
 
-        sigma += std_dev_diff
-        mu += mean_diff
 
-#    printsAndPlots.plot_two_histograms(data[0], data[1])
+    """
+    refers to possible combinations of protected attributes. Each group is an element of the Cartesian
+    product of the element set per protected attribute.
+    example:   attribute gender has two possible elements {0, 1}, attribute ethnicity has three
+               possible elements {0, 1, 2} --> there are six groups
+               a group is determined by one of the tuples (0, 0), (0,1), (1, 0), ..., (2, 1)
+    the non-protected group is always represented by the tuple with only zeros
+    """
+    @property
+    def groups(self):
+        return self.__groups
 
-    return data
+
+    def __init__(self, size, attributeNamesAndCategories, nonProtectedAttributes):
+        """
+        TODO: Parameter description
+        mu and sigma as parameters
+        """
+        self.__dataset = pd.DataFrame()
+        mu = [0]
+        sigma = [0.1]
+
+        # determine groups of candidates
+        self.__determineGroups(attributeNamesAndCategories)
+
+        # generate distribution of protected attributes
+        self.__createCategoricalProtectedAttributes(attributeNamesAndCategories, size)
+
+        # generate scores per group
+        self.__createScoresNormalDistribution(nonProtectedAttributes, mu, sigma)
+
+        # generate ID column
+
+        self.__dataset['uuid'] = uuid.uuid4()
+
+
+    def __determineGroups(self, attributeNamesAndCategories):
+        elementSets = []
+        for attr, cardinality in attributeNamesAndCategories.items():
+            elementSets.append(list(range(0, cardinality)))
+
+        self.__groups = list(itertools.product(*elementSets))
+
+
+    def __createScoresNormalDistribution(self, nonProtectedAttributes, mu, sigma):
+        """
+        @param nonProtectedAttributes:     a string array that contains the names of the non-protected
+                                           features
+        @param mu:                         float array that contains means of the expected scores. Its
+                                           length should match the length of 'nonProtectedAttributes'
+        @param sigma:                      float array that contains standard deviations of the
+                                           expected scores. Its length should match the length of
+                                           'nonProtectedAttributes'
+        """
+        if len(mu) != len(nonProtectedAttributes) or len(sigma) != len(nonProtectedAttributes):
+            raise ValueError("lengths of arrays nonProtectedAttributes, mu and sigma have to match")
+
+        def score(x, colName):
+            idx = nonProtectedAttributes.index(colName)
+            x[colName] = np.random.normal(mu[idx], sigma[idx], size=len(x))
+            return x
+
+        for attr in nonProtectedAttributes:
+            self.__dataset = self.__dataset.groupby(self.__dataset.columns.tolist(), as_index=False, sort=False).apply(score, (attr))
+            print(self.__dataset)
+
+
+    def __createCategoricalProtectedAttributes(self, attributeNamesAndCategories, numItems):
+        """
+        @param attributeNamesAndCategories:         a dictionary that contains the names of the
+                                                    protected attributes as keys and the number of
+                                                    categories as values
+                                                    (e.g. {('ethnicity'; 5), ('gender'; 2)})
+        @param numItems:                            number of items in entire created dataset (all
+                                                    protection status)
+
+        @return category zero is assumed to be the non-protected
+        """
+        newData = pd.DataFrame(columns=attributeNamesAndCategories.keys())
+
+        for attributeName in attributeNamesAndCategories.keys():
+            col = []
+            categories = range(0, attributeNamesAndCategories[attributeName])
+            for count in range(0, numItems):
+                col.append(random.choice(categories))
+            newData[attributeName] = col
+
+        # add protected columns to dataset
+        self.__dataset = self.__dataset.append(newData)
+        print(self.__dataset)
+

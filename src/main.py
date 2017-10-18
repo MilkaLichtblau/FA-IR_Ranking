@@ -100,7 +100,7 @@ def createDataAndRankings():
 
 
 def createSyntheticSAT(k):
-    dataset = synthetic_normally_distributed.create_multinomial(2)
+    creator = synthetic_normally_distributed.SyntheticDatasetCreator(10000, {"gender": 2, "ethnicity": 3, "disability": 2}, ["sat"])
 
 
 def createAndRankXingData(k):

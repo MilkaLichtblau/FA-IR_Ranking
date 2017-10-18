@@ -5,6 +5,8 @@ Created on Apr 12, 2017
 '''
 import numpy as np
 import matplotlib as mpl
+from scipy.stats import binom
+
 
 from matplotlib import pyplot as plt
 
@@ -16,6 +18,22 @@ def plot_two_histograms(dataset1, dataset2):
     plt.legend(loc='upper right')
     plt.show()
 
+def plotBinomCDF():
+    # this is just a very useless function, not adjustable, has to be refactored
+    tau_p = 80
+    k = 100
+    p = 0.25
+    fig, ax = plt.subplots(1, 1)
+
+    print(binom.cdf(tau_p, k, 0.9))
+    print(1 - binom.cdf(tau_p - 1, k, p))
+
+    x = np.arange(0,
+                  k)
+    ax.plot(x, binom.cdf(x, k, p), 'bo', ms=5, label='binom cdf')
+    ax.vlines(x, 0, binom.cdf(x, k, p), colors='b', lw=5, alpha=0.5)
+
+    plt.show()
 
 def plotFourListsInOnePlot(xdata, ydata1, ydata2, ydata3, ydata4, xlabel, ylabel, filename):
     mpl.rcParams.update({'font.size': 20, 'lines.linewidth': 3, 'lines.markersize': 15})
