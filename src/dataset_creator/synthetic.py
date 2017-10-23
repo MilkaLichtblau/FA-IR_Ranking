@@ -7,7 +7,6 @@ Created on Oct 3, 2017
 import numpy as np
 import pandas as pd
 import random, uuid
-from utilsAndConstants import *
 import itertools
 
 
@@ -41,8 +40,6 @@ class SyntheticDatasetCreator(object):
         mu and sigma as parameters
         """
         self.__dataset = pd.DataFrame()
-        mu = [0]
-        sigma = [0.1]
 
         # determine groups of candidates
         self.__determineGroups(attributeNamesAndCategories)
@@ -51,7 +48,7 @@ class SyntheticDatasetCreator(object):
         self.__createCategoricalProtectedAttributes(attributeNamesAndCategories, size)
 
         # generate scores per group
-        self.__createScoresNormalDistribution(nonProtectedAttributes, mu, sigma)
+        self.__createScoresNormalDistribution(nonProtectedAttributes)
 
         # generate ID column
         # self.__dataset['uuid'] = uuid.uuid4()
@@ -70,7 +67,7 @@ class SyntheticDatasetCreator(object):
         self.__groups = list(itertools.product(*elementSets))
 
 
-    def __createScoresNormalDistribution(self, nonProtectedAttributes, mu, sigma):
+    def __createScoresNormalDistribution(self, nonProtectedAttributes):
         """
         @param nonProtectedAttributes:     a string array that contains the names of the non-protected
                                            features
@@ -80,16 +77,18 @@ class SyntheticDatasetCreator(object):
                                            expected scores. Its length should match the length of
                                            'nonProtectedAttributes'
         """
-        if len(mu) != len(nonProtectedAttributes) or len(sigma) != len(nonProtectedAttributes):
-            raise ValueError("lengths of arrays nonProtectedAttributes, mu and sigma have to match")
+        # if len(mu_diff) != len(nonProtectedAttributes) or len(sigma_diff) != len(nonProtectedAttributes):
+        #    raise ValueError("lengths of arrays nonProtectedAttributes, mu_diff and sigma_diff have to match")
 
         def score(x, colName):
-            idx = nonProtectedAttributes.index(colName)
-            x[colName] = np.random.normal(mu[idx], sigma[idx], size=len(x))
+            mu = np.random.uniform()
+            sigma = np.random.uniform()
+            x[colName] = np.random.normal(mu, sigma, size=len(x))
             return x
 
         for attr in nonProtectedAttributes:
-            self.__dataset = self.__dataset.groupby(self.__dataset.columns.tolist(), as_index=False, sort=False).apply(score, (attr))
+            self.__dataset = self.__dataset.groupby(self.__dataset.columns.tolist(), as_index=False,
+                                                    sort=False).apply(score, (attr))
 
 
     def __createCategoricalProtectedAttributes(self, attributeNamesAndCategories, numItems):

@@ -100,7 +100,7 @@ def createDataAndRankings():
 
 
 def createSyntheticSAT(k):
-    creator = synthetic.SyntheticDatasetCreator(100000, {"gender": 2, "ethnicity": 3, "disability": 2}, ["score"])
+    creator = synthetic.SyntheticDatasetCreator(50000, {"gender": 2, "ethnicity": 3, "disability": 2}, ["score"])
     creator.writeToJSON('../rawData/Synthetic/dataset.json')
 
 
