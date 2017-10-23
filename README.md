@@ -1,6 +1,6 @@
 # A Tool for Fair Rankings in Search
 
-This repository consists of a collection of approaches to make learning-to-rank frameworks fairer with respect to modern anti-discrimination laws. The master branch contains most recent developments and is therefore not to be checked out. Please use the branches associated to the respective papers if you want to reproduce any experiments.
+This repository consists of a collection of approaches to make learning-to-rank frameworks fairer with respect to modern anti-discrimination laws. The master branch contains most recent developments and is therefore not stable. Please use the branches associated to the respective papers if you want to reproduce any experiments.
 
 The repository includes the source code and data sets associated with the the following research papers:
 
