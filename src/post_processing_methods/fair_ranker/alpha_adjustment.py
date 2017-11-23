@@ -125,9 +125,9 @@ class AlphaAdjustment:
 
 # Example
 
-# n = 40
-# p = 0.9
-# alpha = 0.0375
+# n = 1000
+# p = 0.55
+# alpha = 0.0084
 #
 # fc = AlphaAdjustment(n=n, p=p, alpha=alpha)
 # print("Success probability for n={:.0f}, p={:.2f}, alpha={:.6f}: {:.10f}".format(n, p, alpha, fc.compute_success_probability()))

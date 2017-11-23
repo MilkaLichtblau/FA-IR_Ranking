@@ -13,6 +13,7 @@ from utilsAndConstants.utils import setMemoryLimit
 from dataset_creator import *
 from evaluator.evaluator import Evaluator
 from evaluator.failProbabilityYangStoyanovich import determineFailProbOfGroupFairnessTesterForStoyanovichRanking
+from post_processing_methods import fair_ranker
 
 EVALUATE_FAILURE_PROBABILITY = 0
 
@@ -281,7 +282,7 @@ def rankAndDump(protected, nonProtected, k, dataSetName, directory, pairsOfPAndA
     print(" [Done]")
 
     print("feldman ranking", end='', flush=True)
-    feldmanRanking, feldmanNotSelected = feldmanRanking(protected, nonProtected, k)
+    feldmanRanking, feldmanNotSelected = fair_ranker.create.feldmanRanking(protected, nonProtected, k)
     print(" [Done]")
 
     print("Write rankings to disk", end='', flush=True)
