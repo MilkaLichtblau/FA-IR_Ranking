@@ -10,11 +10,11 @@ from scipy.stats import binom
 
 from matplotlib import pyplot as plt
 
-def plot_two_histograms(dataset1, dataset2):
-    bins = max(dataset2 + dataset1) - min(dataset2 + dataset1)
+def plot_two_histograms(protected, nonprotected):
+    bins = max(nonprotected + protected) - min(nonprotected + protected)
     bins = 100
-    plt.hist(dataset2, bins, alpha=0.5, label='protected')
-    plt.hist(dataset1, bins, alpha=0.5, label='non-protected')
+    plt.hist(nonprotected, bins, alpha=0.5, label='protected')
+    plt.hist(protected, bins, alpha=0.5, label='non-protected')
     plt.legend(loc='upper right')
     plt.show()
 
