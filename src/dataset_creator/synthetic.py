@@ -61,6 +61,10 @@ class SyntheticDatasetCreator(object):
         self.__dataset.to_json(path, orient='records', lines=True)
 
 
+    def writeToTXT(self, path):
+        self.__dataset.to_csv(path)
+
+
     def __determineGroups(self, attributeNamesAndCategories):
         elementSets = []
         for attr, cardinality in attributeNamesAndCategories.items():
