@@ -55,6 +55,7 @@ class SyntheticDatasetCreator(object):
 
 
 
+
     def writeToJSON(self, path):
         self.__dataset.to_json(path, orient='records', lines=True)
 
@@ -84,6 +85,28 @@ class SyntheticDatasetCreator(object):
             mu = np.random.uniform()
             sigma = np.random.uniform()
             x[colName] = np.random.normal(mu, sigma, size=len(x))
+            return x
+
+        for attr in nonProtectedAttributes:
+            self.__dataset = self.__dataset.groupby(self.__dataset.columns.tolist(), as_index=False,
+                                                    sort=False).apply(score, (attr))
+
+
+    def __createScoresUniformDistribution(self, nonProtectedAttributes):
+        """
+        @param nonProtectedAttributes:     a string array that contains the names of the non-protected
+                                           features
+        @param mu:                         float array that contains means of the expected scores. Its
+                                           length should match the length of 'nonProtectedAttributes'
+        @param sigma:                      float array that contains standard deviations of the
+                                           expected scores. Its length should match the length of
+                                           'nonProtectedAttributes'
+        """
+        # if len(mu_diff) != len(nonProtectedAttributes) or len(sigma_diff) != len(nonProtectedAttributes):
+        #    raise ValueError("lengths of arrays nonProtectedAttributes, mu_diff and sigma_diff have to match")
+
+        def score(x, colName):
+            x[colName] = np.random.uniform()
             return x
 
         for attr in nonProtectedAttributes:
