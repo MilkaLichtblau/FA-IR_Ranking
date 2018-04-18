@@ -63,7 +63,7 @@ class SyntheticDatasetCreator(object):
 
 
     def writeToTXT(self, path):
-        self.__dataset.to_csv(path, index=False)
+        self.__dataset.to_csv(path, index=False, header=False)
 
 
     def __determineGroups(self, attributeNamesAndCategories):

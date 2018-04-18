@@ -102,12 +102,12 @@ def createDataAndRankings():
 
 def createSyntheticSAT(k):
 #     creator = synthetic.SyntheticDatasetCreator(50000, {"gender": 2, "ethnicity": 3, "disability": 2}, ["score"])
-    creator = synthetic.SyntheticDatasetCreator(1, 50000, {"gender": 2}, ["score"])
+    creator = synthetic.SyntheticDatasetCreator(1, 5000, {"gender": 2}, ["score"])
     creator.dataset.sort_values(by=['score'], inplace=True)
     creator.dataset['rank'] = creator.dataset.index
     creator.writeToTXT('../rawData/Synthetic/sample_train_data_scoreAndGender.txt')
 
-    creator = synthetic.SyntheticDatasetCreator(1, 50000, {"gender": 2}, ["score"])
+    creator = synthetic.SyntheticDatasetCreator(1, 5000, {"gender": 2}, ["score"])
     creator.dataset.sort_values(by=['score'], inplace=True)
     creator.dataset['rank'] = creator.dataset.index
     creator.writeToTXT('../rawData/Synthetic/sample_test_data_scoreAndGender.txt')
