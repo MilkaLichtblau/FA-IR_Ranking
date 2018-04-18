@@ -55,8 +55,6 @@ class SyntheticDatasetCreator(object):
         # self.__dataset['uuid'] = uuid.uuid4()
 
 
-
-
     def writeToJSON(self, path):
         self.__dataset.to_json(path, orient='records', lines=True)
 
