@@ -34,7 +34,7 @@ class SyntheticDatasetCreator(object):
         return self.__groups
 
 
-    def __init__(self, size, attributeNamesAndCategories, nonProtectedAttributes):
+    def __init__(self, query_id, size, attributeNamesAndCategories, nonProtectedAttributes):
         """
         TODO: Parameter description
         mu and sigma as parameters
@@ -51,6 +51,9 @@ class SyntheticDatasetCreator(object):
 #         self.__createScoresNormalDistribution(nonProtectedAttributes)
         self.__createScoresUniformDistribution(nonProtectedAttributes)
 
+        self.__dataset.insert(0, 'query_id', query_id)
+
+
         # generate ID column
         # self.__dataset['uuid'] = uuid.uuid4()
 
@@ -60,7 +63,7 @@ class SyntheticDatasetCreator(object):
 
 
     def writeToTXT(self, path):
-        self.__dataset.to_csv(path)
+        self.__dataset.to_csv(path, index=False)
 
 
     def __determineGroups(self, attributeNamesAndCategories):
