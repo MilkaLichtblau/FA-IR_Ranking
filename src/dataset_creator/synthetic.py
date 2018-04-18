@@ -48,7 +48,8 @@ class SyntheticDatasetCreator(object):
         self.__createCategoricalProtectedAttributes(attributeNamesAndCategories, size)
 
         # generate scores per group
-        self.__createScoresNormalDistribution(nonProtectedAttributes)
+#         self.__createScoresNormalDistribution(nonProtectedAttributes)
+        self.__createScoresUniformDistribution(nonProtectedAttributes)
 
         # generate ID column
         # self.__dataset['uuid'] = uuid.uuid4()
@@ -106,7 +107,7 @@ class SyntheticDatasetCreator(object):
         #    raise ValueError("lengths of arrays nonProtectedAttributes, mu_diff and sigma_diff have to match")
 
         def score(x, colName):
-            x[colName] = np.random.uniform()
+            x[colName] = np.random.uniform(size=x.size)
             return x
 
         for attr in nonProtectedAttributes:
