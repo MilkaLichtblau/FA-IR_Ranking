@@ -50,6 +50,8 @@ class SyntheticDatasetCreator(object):
         # generate scores per group
 #         self.__createScoresNormalDistribution(nonProtectedAttributes)
         self.__createScoresUniformDistribution(nonProtectedAttributes)
+#         self.__createScoresUniformDistributionGroupsSeparated(size)
+
 
         self.__dataset.insert(0, 'query_id', query_id)
 
@@ -102,23 +104,32 @@ class SyntheticDatasetCreator(object):
         """
         @param nonProtectedAttributes:     a string array that contains the names of the non-protected
                                            features
-        @param mu:                         float array that contains means of the expected scores. Its
-                                           length should match the length of 'nonProtectedAttributes'
-        @param sigma:                      float array that contains standard deviations of the
-                                           expected scores. Its length should match the length of
-                                           'nonProtectedAttributes'
         """
-        # if len(mu_diff) != len(nonProtectedAttributes) or len(sigma_diff) != len(nonProtectedAttributes):
-        #    raise ValueError("lengths of arrays nonProtectedAttributes, mu_diff and sigma_diff have to match")
 
         def score(x, colName):
-            x[colName] = np.random.uniform(size=x.size)
+            highest = np.random.uniform()
+            x[colName] = np.random.uniform(high=highest, size=x.size)
             return x
 
         for attr in nonProtectedAttributes:
             self.__dataset = self.__dataset.groupby(self.__dataset.columns.tolist(), as_index=False,
                                                     sort=False).apply(score, (attr))
 
+
+    def __createScoresUniformDistributionGroupsSeparated(self, size):
+            """
+            @param size:     expected size of the dataset
+            """
+
+            prot_data = pd.DataFrame()
+            prot_data['gender'] = np.ones(int(size / 2)).astype(int)
+            prot_data['score'] = np.random.uniform(high=0.5, low=0.0, size=int(size / 2))
+
+            nonprot_data = pd.DataFrame()
+            nonprot_data['gender'] = np.zeros(int(size / 2)).astype(int)
+            nonprot_data['score'] = np.random.uniform(high=1.0, low=0.5, size=int(size / 2))
+
+            self.__dataset = pd.concat([prot_data, nonprot_data])
 
     def __createCategoricalProtectedAttributes(self, attributeNamesAndCategories, numItems):
         """
