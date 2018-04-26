@@ -131,6 +131,7 @@ class SyntheticDatasetCreator(object):
 
             self.__dataset = pd.concat([prot_data, nonprot_data])
 
+
     def __createCategoricalProtectedAttributes(self, attributeNamesAndCategories, numItems):
         """
         @param attributeNamesAndCategories:         a dictionary that contains the names of the
