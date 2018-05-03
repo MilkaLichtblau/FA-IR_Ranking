@@ -50,8 +50,8 @@ class SyntheticDatasetCreator(object):
         # generate scores per group
 #         self.__createScoresNormalDistribution(nonProtectedAttributes)
 #        self.__createScoresUniformDistribution(nonProtectedAttributes)
-#        self.__createScoresUniformDistributionGroupsSeparated(size)
         self.__createScoresUniformDistributionGroupsSeparated(size)
+#         self.__createScoresNormalDistributionGroupsSeparated(size)
 
 
         self.__dataset.insert(0, 'query_id', query_id)
@@ -117,34 +117,40 @@ class SyntheticDatasetCreator(object):
                                                     sort=False).apply(score, (attr))
 
 
-    def __createScoresUniformDistributionGroupsSeparated(self, size):
-            """
-            @param size:     expected size of the dataset
-            """
-
-            prot_data = pd.DataFrame()
-            prot_data['gender'] = np.zeros(int(size / 2)).astype(int)
-            prot_data['score'] = np.random.normal(0.3, 0.3, size=int(size / 2))
-
-
-            nonprot_data = pd.DataFrame()
-            nonprot_data['gender'] = np.ones(int(size / 2)).astype(int)
-            nonprot_data['score'] = np.random.normal(0.7, 0.3, size=int(size / 2))
-
-            self.__dataset = pd.concat([prot_data, nonprot_data])
-
-
     def __createScoresNormalDistributionGroupsSeparated(self, size):
             """
             @param size:     expected size of the dataset
             """
 
             prot_data = pd.DataFrame()
-            prot_data['gender'] = np.zeros(int(size / 2)).astype(int)
+            prot_data['gender'] = np.ones(int(size / 2)).astype(int)
+            prot_data['score'] = np.random.normal(0.2, 0.3, size=int(size / 2))
+
+
+            nonprot_data = pd.DataFrame()
+            nonprot_data['gender'] = np.zeros(int(size / 2)).astype(int)
+            nonprot_data['score'] = np.random.normal(0.8, 0.3, size=int(size / 2))
+
+            self.__dataset = pd.concat([prot_data, nonprot_data])
+
+            # normalize data
+            mini = self.__dataset['score'].min()
+            maxi = self.__dataset['score'].max()
+            self.__dataset['score'] = (self.__dataset['score'] - mini) / (maxi - mini)
+
+
+
+    def __createScoresUniformDistributionGroupsSeparated(self, size):
+            """
+            @param size:     expected size of the dataset
+            """
+
+            prot_data = pd.DataFrame()
+            prot_data['gender'] = np.ones(int(size / 2)).astype(int)
             prot_data['score'] = np.random.uniform(high=0.5, low=0.0, size=int(size / 2))
 
             nonprot_data = pd.DataFrame()
-            nonprot_data['gender'] = np.ones(int(size / 2)).astype(int)
+            nonprot_data['gender'] = np.zeros(int(size / 2)).astype(int)
             nonprot_data['score'] = np.random.uniform(high=1.0, low=0.5, size=int(size / 2))
 
             self.__dataset = pd.concat([prot_data, nonprot_data])
