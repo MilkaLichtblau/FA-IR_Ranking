@@ -102,7 +102,7 @@ def createDataAndRankings():
 
 def createSyntheticSAT(k):
 #     creator = synthetic.SyntheticDatasetCreator(50000, {"gender": 2, "ethnicity": 3, "disability": 2}, ["score"])
-    size = 500
+    size = 50
     creator = synthetic.SyntheticDatasetCreator(1, size, {"gender": 2}, ["score"])
     creator.dataset.sort_values(by=['score'], inplace=True, ascending=False)
     creator.dataset['rank'] = range(size)

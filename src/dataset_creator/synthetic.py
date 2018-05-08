@@ -119,7 +119,7 @@ class SyntheticDatasetCreator(object):
 
     def __createScoresNormalDistributionGroupsSeparated(self, size):
             """
-            @param size:     expected size of the dataset
+            @param size: expected size of the dataset
             """
 
             prot_data = pd.DataFrame()
