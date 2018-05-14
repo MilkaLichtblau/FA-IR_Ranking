@@ -105,13 +105,13 @@ def createSyntheticSAT(k):
     size = 50
     creator = synthetic.SyntheticDatasetCreator(1, size, {"gender": 2}, ["score"])
     creator.dataset.sort_values(by=['score'], inplace=True, ascending=False)
-    creator.dataset['rank'] = range(size)
+    creator.dataset['rank'] = range(size, 0, -1)
     creator.dataset['rank'] = creator.dataset['rank'] / size
     creator.writeToTXT('../rawData/Synthetic/sample_train_data_scoreAndGender_separated.txt')
 
     creator = synthetic.SyntheticDatasetCreator(1, size, {"gender": 2}, ["score"])
     creator.dataset.sort_values(by=['score'], inplace=True, ascending=False)
-    creator.dataset['rank'] = range(size)
+    creator.dataset['rank'] = range(size, 0, -1)
     creator.dataset['rank'] = creator.dataset['rank'] / size
     creator.writeToTXT('../rawData/Synthetic/sample_test_data_scoreAndGender_separated.txt')
 
