@@ -12,13 +12,13 @@ class TestSyntheticDatasetCreator(unittest.TestCase):
     def test_constructor(self):
         size = 100000
         creator = SyntheticDatasetCreator(size, {"gender": 2, "ethnicity": 3, "disability": 2}, ["score"])
-        self.assertTrue("gender" in self.creator.dataset.columns)
-        self.assertTrue("ethnicity" in self.creator.dataset.columns)
-        self.assertTrue("disability" in self.creator.dataset.columns)
-        self.assertTrue("score" in self.creator.dataset.columns)
+        self.assertTrue("gender" in creator.dataset.columns)
+        self.assertTrue("ethnicity" in creator.dataset.columns)
+        self.assertTrue("disability" in creator.dataset.columns)
+        self.assertTrue("score" in creator.dataset.columns)
 
-        self.assertEqual((self.size, 4), self.creator.dataset.shape)
-        self.assertEqual(12, len(self.creator.groups))
+        self.assertEqual((size, 4), creator.dataset.shape)
+        self.assertEqual(12, len(creator.groups))
 
         expectedGroups = [(0, 0, 0),
                           (0, 0, 1),
@@ -32,7 +32,7 @@ class TestSyntheticDatasetCreator(unittest.TestCase):
                           (1, 1, 1),
                           (1, 2, 0),
                           (1, 2, 1)]
-        self.assertCountEqual(expectedGroups, self.creator.groups)
+        self.assertCountEqual(expectedGroups, creator.groups)
 
 
 if __name__ == "__main__":
