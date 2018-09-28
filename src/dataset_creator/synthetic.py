@@ -34,7 +34,7 @@ class SyntheticDatasetCreator(object):
         return self.__groups
 
 
-    def __init__(self, query_id, size, attributeNamesAndCategories, nonProtectedAttributes):
+    def __init__(self, size, attributeNamesAndCategories, nonProtectedAttributes):
         """
         TODO: Parameter description
         mu and sigma as parameters
@@ -48,13 +48,8 @@ class SyntheticDatasetCreator(object):
         self.__createCategoricalProtectedAttributes(attributeNamesAndCategories, size)
 
         # generate scores per group
-#         self.__createScoresNormalDistribution(nonProtectedAttributes)
+        self.__createScoresNormalDistribution(nonProtectedAttributes)
 #        self.__createScoresUniformDistribution(nonProtectedAttributes)
-        self.__createScoresUniformDistributionGroupsSeparated(size)
-#         self.__createScoresNormalDistributionGroupsSeparated(size)
-
-
-        self.__dataset.insert(0, 'query_id', query_id)
 
 
         # generate ID column
