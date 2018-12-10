@@ -4,60 +4,47 @@ Created on Apr 26, 2017
 @author: m.megahed
 '''
 
-#!/usr/bin/env python3 -tt
-# -*- coding: utf-8 -*-
-
 import pandas as pd
-from utilsAndConstants.utils import Switch, normalizeQualifications
 from dataset_creator.candidate import Candidate
 
 
+class ChileSatCreator():
+    '''
+    TODO: write doc
+    '''
 
+    @property
+    def protectedCandidates(self):
+        '''
+        list with protected candidate objects
+        '''
+        return self.__protectedCandidates
 
-def createSchool(filename, *columnsToRead):
-    """
-    currently working with _________ as qualification attribute in candidates. Change index
-    to try with other columns
-    """
-    nonProtected = []
-    protected = []
-    with open(filename) as csvfile:
-        data = pd.read_csv(csvfile, usecols=columnsToRead)
-        for row in data.itertuples():
-            # change to different index in row[.] to access other columns from csv file
-            if row[45] == (1 or 2):
-                nonProtected.append(Candidate(1 - row[44], []))
-            elif row[45] == 3:
-                protected.append(Candidate(1 - row[44], ["private_school"]))
+    @property
+    def nonprotectedCandidates(self):
+        '''
+        list with non-protected candidate objects
+        '''
+        return self.__nonprotectedCandidates
+
+    def __init__(self, path, protAttr, protAttrName):
+        self.__data = pd.read_csv(path, sep=',', names=["query_id", "ranking_position", "score", "prot_attr"])
+        self.__protectedCandidates = []
+        self.__nonprotectedCandidates = []
+        self.__separateGroups(protAttr, protAttrName)
+
+    def __separateGroups(self, protAttr, protAttrName):
+        '''
+        separates data into two lists with protected and non-protected candidate objects
+
+        @param protAttr: int, defines protection status
+        '''
+        for _, row in self.__data.iterrows():
+            if row['prot_attr'] == protAttr:
+                self.__protectedCandidates.append(Candidate(row['score'], [protAttrName]))
             else:
-                continue
+                self.__nonprotectedCandidates.append(Candidate(row['score'], []))
 
-    # sort candidates by recidivism scores in COMPAS
-    protected.sort(key=lambda candidate: candidate.qualification, reverse=True)
-    nonProtected.sort(key=lambda candidate: candidate.qualification, reverse=True)
-
-    return protected, nonProtected
-
-
-def createNationality(filename, *columnsToRead):
-    """
-    currently working with recidivism score as qualification attribute in candidates. Change index
-    to try with other columns
-    """
-    nonProtected = []
-    protected = []
-    with open(filename) as csvfile:
-        data = pd.read_csv(csvfile, usecols=columnsToRead)
-        for row in data.itertuples():
-            # change to different index in row[.] to access other columns from csv file
-            if row[2] == 1:
-                nonProtected.append(Candidate(1 - row[1], []))
-            else:
-                protected.append(Candidate(1 - row[1], ["foreigner"]))
-
-    # sort candidates by ____ scores in chileSAT
-    protected.sort(key=lambda candidate: candidate.qualification, reverse=True)
-    nonProtected.sort(key=lambda candidate: candidate.qualification, reverse=True)
-
-    return protected, nonProtected
+        self.__protectedCandidates.sort(key=lambda candidate: candidate.qualification, reverse=True)
+        self.__nonprotectedCandidates.sort(key=lambda candidate: candidate.qualification, reverse=True)
 

@@ -5,6 +5,7 @@ Created on 23.12.2016
 '''
 import uuid
 
+
 class Candidate(object):
     """
     represents a candidate in a set that is passed to a search algorithm
@@ -13,40 +14,40 @@ class Candidate(object):
     natural ordering established by the qualification
     """
 
-
-    def __init__(self, qualification, protectedAttributes):
+    def __init__(self, qualification, protectedAttributes, origPosition=None):
         """
-        @param qualification : describes how qualified the candidate is to match the search query
-        @param protectedAttributes: list of strings that represent the protected attributes this
-                                    candidate has (e.g. gender, race, etc)
-                                    if the list is empty/null this is a candidate from a non-protected group
+        @param qualification :       describes how qualified the candidate is to match the search query
+        @param protectedAttributes:  list of strings that represent the protected attributes this
+                                     candidate has (e.g. gender, race, etc)
+                                     if the list is empty/null this is a candidate from a non-protected group
+        @param origPosition:         original position in ranking, may not be provided
         """
         self.__qualification = qualification
         self.__protectedAttributes = protectedAttributes
         # keeps the candidate's initial qualification for evaluation purposes
         self.__originalQualification = qualification
+        self.__originalPosition = origPosition
         self.uuid = uuid.uuid4()
-
 
     @property
     def qualification(self):
         return self.__qualification
 
-
     @qualification.setter
     def qualification(self, value):
         self.__qualification = value
-
 
     @property
     def originalQualification(self):
         return self.__originalQualification
 
+    @property
+    def originalPosition(self):
+        return self.__originalPosition
 
     @originalQualification.setter
     def originalQualification(self, value):
         self.__originalQualification = value
-
 
     @property
     def isProtected(self):
@@ -55,30 +56,4 @@ class Candidate(object):
         false otherwise
         '''
         return not self.__protectedAttributes == []
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

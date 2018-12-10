@@ -17,6 +17,7 @@ from post_processing_methods import fair_ranker
 
 EVALUATE_FAILURE_PROBABILITY = 0
 
+
 def main():
     setMemoryLimit(10000000000)
 
@@ -50,7 +51,7 @@ def main():
         createAndRankGermanCreditData(100)
     elif args.create == ['xing']:
         createAndRankXingData(40)
-    elif args.create == ['csat']:
+    elif args.create == ['chilesat']:
         createAndRankChileData(1500)
     elif args.create == ['syntheticsat']:
         createSyntheticSAT(1000)
@@ -94,7 +95,7 @@ def main():
 
 def createDataAndRankings():
     createAndRankSATData(1500)
-    # createAndRankChileData(1500)  # uncomment, if Chile Data Set is available.
+    createAndRankChileData(1500)  # uncomment, if Chile Data Set is available.
     createAndRankCOMPASData(1000)
     createAndRankGermanCreditData(100)
     createAndRankXingData(40)
@@ -132,7 +133,7 @@ def createAndRankXingData(k):
         rankAndDump(candidates['protected'], candidates['nonProtected'], k, queryString,
                            "../results/rankingDumps/Xing" + '/' + queryString + '/', pairsOfPAndAlpha)
         writePickleToDisk(candidates['originalOrdering'], os.getcwd() + '/../results/rankingDumps/Xing/'
-                          + '/' + queryString + '/' + 'OriginalOrdering.pickle')
+                          +'/' + queryString + '/' + 'OriginalOrdering.pickle')
 
 
 def createAndRankGermanCreditData(k):
@@ -216,8 +217,6 @@ def createAndRankSATData(k):
 
 def createAndRankChileData(k):
 
-    # loop through all files
-    chileDir = '../rawData/ChileSAT/Dataset'
     pairsOfPAndAlpha = [(0.1, 0.0122),
                         (0.2, 0.0101),
                         (0.3, 0.0092),
@@ -227,19 +226,44 @@ def createAndRankChileData(k):
                         (0.7, 0.0084),
                         (0.8, 0.0084),
                         (0.9, 0.0096)]
-    for root, dirs, filenames in os.walk(chileDir):
-        for chileFile in filenames:
-            if not chileFile.startswith('.') and os.path.isfile(os.path.join(root, chileFile)):
 
-                chileFile = '../rawData/ChileSAT/Dataset/' + chileFile
-                print("reading: " + chileFile)
+    # run with gender as protected attribute
+    chileGenderDir = '../rawData/ChileUniversitySAT/NoSemiprivateSchools/gender/'
+    for root, _, filenames in os.walk(chileGenderDir):
+        for filename in filenames:
+            path = os.path.join(root, filename)
+            if filename.endswith('SORTED.pred') and os.path.isfile(path):
+                print("reading: " + filename + "\nfrom: " + root)
 
-                protectedChileSATSchool, nonProtectedChileSATSchool = chileSATData.createSchool(chileFile, 6)
-                rankAndDump(protectedChileSATSchool, nonProtectedChileSATSchool, k, "ChileSATSchool",
-                                   "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
-                # protectedChileSATNat, nonProtectedChileSATNat = chileSATData.createNationality(chileFile, 6)
-                # rankAndDump(protectedChileSATNat, nonProtectedChileSATNat, k, "ChileSATNationality",
-                #                    "../results/rankingDumps/ChileSAT", pairsOfPAndAlpha)
+                chileData = chileSATData.ChileSatCreator(path, 1, 'female')
+
+                resultDir = "../results/rankingDumps/ChileSAT/gender/" + root.replace(chileGenderDir, "")
+
+                rankAndDump(chileData.protectedCandidates,
+                            chileData.nonprotectedCandidates,
+                            k,
+                            "ChileSATGender_",
+                            resultDir,
+                            pairsOfPAndAlpha)
+
+    # run with highschool type as protected attribute
+    chileHighschoolDir = '../rawData/ChileUniversitySAT/NoSemiprivateSchools/highschool/'
+    for root, _, filenames in os.walk(chileHighschoolDir):
+        for filename in filenames:
+            path = os.path.join(root, filename)
+            if filename.endswith('SORTED.pred') and os.path.isfile(path):
+                print("reading: " + filename + "\nfrom: " + root)
+
+                chileData = chileSATData.ChileSatCreator(path, 1, 'publicSchool')
+
+                resultDir = "../results/rankingDumps/ChileSAT/highschool/" + root.replace(chileHighschoolDir, "")
+
+                rankAndDump(chileData.protectedCandidates,
+                            chileData.nonprotectedCandidates,
+                            k,
+                            "ChileSATHighschool_",
+                            resultDir,
+                            pairsOfPAndAlpha)
 
 
 def rankAndDump(protected, nonProtected, k, dataSetName, directory, pairsOfPAndAlpha):
@@ -320,7 +344,6 @@ def rankAndDump(protected, nonProtected, k, dataSetName, directory, pairsOfPAndA
     writePickleToDisk(fairRanking09, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking09PercentProtected.pickle')
     writePickleToDisk(fair09NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking09NotSelected.pickle')
     print(" [Done]")
-
 
 
 if __name__ == '__main__':
