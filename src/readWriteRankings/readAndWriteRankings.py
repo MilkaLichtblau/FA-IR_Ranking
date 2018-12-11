@@ -6,7 +6,9 @@ utility module to load and store ranking data
 @author: meike.zehlike
 '''
 import os
+import csv
 import pickle
+import pandas as pd
 
 
 def loadPicklesFromDirectory(path):
@@ -64,3 +66,25 @@ def loadPickleFromDisk(filename):
     with open(filename, 'rb') as handle:
         data = pickle.load(handle)
     return data
+
+
+def convertAllPicklesToCSV(sourceRootDir, destRootDir):
+    for root, _, filenames in os.walk(sourceRootDir):
+        for filename in filenames:
+            if filename.endswith('.pickle'):
+                # load candidate objects
+                rankedCandidates = loadPickleFromDisk(root + '/' + filename)
+                # write into csv file
+                destPath = destRootDir + \
+                           root.replace(sourceRootDir, "") + '/' + \
+                           filename.replace(".pickle", ".csv")
+                print(destPath)
+                with open(destPath, 'wt') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(("query_id", "position", "score", "protAttr"))
+                    for candidate in rankedCandidates:
+                        row = (int(candidate.stuffToSave.get("query_id")),
+                               int(candidate.stuffToSave.get("position")),
+                               candidate.qualification,
+                               int(candidate.isProtected))
+                        writer.writerow(row)
