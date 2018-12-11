@@ -3,7 +3,6 @@ import numpy as np
 import scipy.stats as stats
 
 
-
 class AlphaAdjustment:
 
     def __init__(self, n: int, p: float, alpha: float):
@@ -122,15 +121,12 @@ class AlphaAdjustment:
 
         return success_probability
 
-
 # Example
 
-# n = 1000
-# p = 0.55
-# alpha = 0.0084
+# n = 300
+# p = 0.1
+# alpha = 0.0
 #
 # fc = AlphaAdjustment(n=n, p=p, alpha=alpha)
 # print("Success probability for n={:.0f}, p={:.2f}, alpha={:.6f}: {:.10f}".format(n, p, alpha, fc.compute_success_probability()))
-
-
 

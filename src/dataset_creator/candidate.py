@@ -14,19 +14,20 @@ class Candidate(object):
     natural ordering established by the qualification
     """
 
-    def __init__(self, qualification, protectedAttributes, origPosition=None):
+    def __init__(self, qualification, protectedAttributes, stuffToSave={}):
         """
         @param qualification :       describes how qualified the candidate is to match the search query
         @param protectedAttributes:  list of strings that represent the protected attributes this
                                      candidate has (e.g. gender, race, etc)
                                      if the list is empty/null this is a candidate from a non-protected group
-        @param origPosition:         original position in ranking, may not be provided
+        @param stuffToSave:          in case original data contains anything needed later, can be saved in a
+                                     dictionary
         """
         self.__qualification = qualification
         self.__protectedAttributes = protectedAttributes
         # keeps the candidate's initial qualification for evaluation purposes
         self.__originalQualification = qualification
-        self.__originalPosition = origPosition
+        self.__stuffToSave = stuffToSave
         self.uuid = uuid.uuid4()
 
     @property
@@ -42,8 +43,8 @@ class Candidate(object):
         return self.__originalQualification
 
     @property
-    def originalPosition(self):
-        return self.__originalPosition
+    def stuffToSave(self):
+        return self.__stuffToSave
 
     @originalQualification.setter
     def originalQualification(self, value):

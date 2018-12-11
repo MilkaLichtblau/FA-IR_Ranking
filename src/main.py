@@ -3,11 +3,11 @@ Created on Mar 29, 2017
 
 @author: meike.zehlike
 '''
-import os, sys
+import os
 import argparse
 
-from readWriteRankings.readAndWriteRankings import writePickleToDisk
-from post_processing_methods.fair_ranker.create import fairRanking, feldmanRanking
+from readWriteRankings.readAndWriteRankings import writePickleToDisk, convertAllPicklesToCSV
+from post_processing_methods.fair_ranker.create import fairRanking
 from utilsAndConstants.constants import ESSENTIALLY_ZERO
 from utilsAndConstants.utils import setMemoryLimit
 from dataset_creator import *
@@ -30,11 +30,11 @@ def main():
 
     # create the parser for the "create" command
     parser_create = subparsers.add_parser('dataset_create', help='choose a dataset to generate')
-    parser_create.add_argument(dest='dataset_to_create', choices=["sat", "compas", "germancredit", "xing", "csat"])
+    parser_create.add_argument(dest='dataset_to_create', choices=["sat", "compas", "germancredit", "xing", "chilesat", "lsat"])
 
     # create the parser for the "evaluate" command
     parser_evaluate = subparsers.add_parser('dataset_evaluate', help='choose a dataset to evaluate')
-    parser_evaluate.add_argument(dest='dataset_to_evaluate', choices=["sat", "xing"
+    parser_evaluate.add_argument(dest='dataset_to_evaluate', choices=["sat", "xing",
                                                                   "compas_gender", "compas_race",
                                                                   "germancredit_25", "germancredit_35", "germancredit_gender"])
 
@@ -52,7 +52,17 @@ def main():
     elif args.create == ['xing']:
         createAndRankXingData(40)
     elif args.create == ['chilesat']:
-        createAndRankChileData(1500)
+        createAndRankChileData()
+        convertAllPicklesToCSV("../results/rankingDumps/ChileSAT/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/")
+    elif args.create == ['lsat']:
+        createAndRankLSATData()
+        convertAllPicklesToCSV("../results/rankingDumps/LSAT/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/LawStudents/")
+    elif args.create == ['trec']:
+        createAndRankTRECData()
+        convertAllPicklesToCSV("../results/rankingDumps/ChileSAT/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/TREC/")
     elif args.create == ['syntheticsat']:
         createSyntheticSAT(1000)
     #=======================================================
@@ -215,8 +225,8 @@ def createAndRankSATData(k):
     rankAndDump(protectedSAT, nonProtectedSAT, k, "SAT", "../results/rankingDumps/SAT", pairsOfPAndAlpha)
 
 
-def createAndRankChileData(k):
-
+def createAndRankLSATData():
+    k = 1500
     pairsOfPAndAlpha = [(0.1, 0.0122),
                         (0.2, 0.0101),
                         (0.3, 0.0092),
@@ -227,6 +237,169 @@ def createAndRankChileData(k):
                         (0.8, 0.0084),
                         (0.9, 0.0096)]
 
+        # run with gender as protected attribute
+    lsatGenderDir = '../rawData/LSAT/gender/'
+    for root, _, filenames in os.walk(lsatGenderDir):
+        for filename in filenames:
+            path = os.path.join(root, filename)
+            if filename.endswith('SORTED.pred') and os.path.isfile(path):
+                print("reading: " + filename + "\nfrom: " + root)
+
+                lsatData = L2R_PredictionsData.Creator(path, 1, 'female')
+
+                resultDir = "../results/rankingDumps/LSAT/gender/" + root.replace(lsatGenderDir, "")
+
+                rankAndDump(lsatData.protectedCandidates,
+                            lsatData.nonprotectedCandidates,
+                            k,
+                            "LSAT_gender_",
+                            resultDir,
+                            pairsOfPAndAlpha)
+
+    # run with different races as protected attribute
+    lsatRaceDir = '../rawData/LSAT/race_asian/'
+    for root, _, filenames in os.walk(lsatRaceDir):
+        for filename in filenames:
+            path = os.path.join(root, filename)
+            if filename.endswith('SORTED.pred') and os.path.isfile(path):
+                print("reading: " + filename + "\nfrom: " + root)
+
+                lsatData = L2R_PredictionsData.Creator(path, 1, 'asian')
+
+                resultDir = "../results/rankingDumps/LSAT/race_asian/" + root.replace(lsatRaceDir, "")
+
+                rankAndDump(lsatData.protectedCandidates,
+                            lsatData.nonprotectedCandidates,
+                            k,
+                            "LSAT_asian_",
+                            resultDir,
+                            pairsOfPAndAlpha)
+
+    #----------------------------------------------------------------
+
+    lsatRaceDir = '../rawData/LSAT/race_black/'
+    for root, _, filenames in os.walk(lsatRaceDir):
+        for filename in filenames:
+            path = os.path.join(root, filename)
+            if filename.endswith('SORTED.pred') and os.path.isfile(path):
+                print("reading: " + filename + "\nfrom: " + root)
+
+                lsatData = L2R_PredictionsData.Creator(path, 1, 'black')
+
+                resultDir = "../results/rankingDumps/LSAT/race_black/" + root.replace(lsatRaceDir, "")
+
+                rankAndDump(lsatData.protectedCandidates,
+                            lsatData.nonprotectedCandidates,
+                            k,
+                            "LSAT_black_",
+                            resultDir,
+                            pairsOfPAndAlpha)
+
+    #----------------------------------------------------------------
+
+    lsatRaceDir = '../rawData/LSAT/race_hispanic/'
+    for root, _, filenames in os.walk(lsatRaceDir):
+        for filename in filenames:
+            path = os.path.join(root, filename)
+            if filename.endswith('SORTED.pred') and os.path.isfile(path):
+                print("reading: " + filename + "\nfrom: " + root)
+
+                lsatData = L2R_PredictionsData.Creator(path, 1, 'hispanic')
+
+                resultDir = "../results/rankingDumps/LSAT/race_hispanic/" + root.replace(lsatRaceDir, "")
+
+                rankAndDump(lsatData.protectedCandidates,
+                            lsatData.nonprotectedCandidates,
+                            k,
+                            "LSAT_hispanic_",
+                            resultDir,
+                            pairsOfPAndAlpha)
+
+    #----------------------------------------------------------------
+
+    lsatRaceDir = '../rawData/LSAT/race_mexican/'
+    for root, _, filenames in os.walk(lsatRaceDir):
+        for filename in filenames:
+            path = os.path.join(root, filename)
+            if filename.endswith('SORTED.pred') and os.path.isfile(path):
+                print("reading: " + filename + "\nfrom: " + root)
+
+                lsatData = L2R_PredictionsData.Creator(path, 1, 'mexican')
+
+                resultDir = "../results/rankingDumps/LSAT/race_mexican/" + root.replace(lsatRaceDir, "")
+
+                rankAndDump(lsatData.protectedCandidates,
+                            lsatData.nonprotectedCandidates,
+                            k,
+                            "LSAT_mexican_",
+                            resultDir,
+                            pairsOfPAndAlpha)
+
+    #----------------------------------------------------------------
+
+    lsatRaceDir = '../rawData/LSAT/race_puertorican/'
+    for root, _, filenames in os.walk(lsatRaceDir):
+        for filename in filenames:
+            path = os.path.join(root, filename)
+            if filename.endswith('SORTED.pred') and os.path.isfile(path):
+                print("reading: " + filename + "\nfrom: " + root)
+
+                lsatData = L2R_PredictionsData.Creator(path, 1, 'puertorican')
+
+                resultDir = "../results/rankingDumps/LSAT/race_puertorican/" + root.replace(lsatRaceDir, "")
+
+                rankAndDump(lsatData.protectedCandidates,
+                            lsatData.nonprotectedCandidates,
+                            k,
+                            "LSAT_puertorican_",
+                            resultDir,
+                            pairsOfPAndAlpha)
+
+
+def createAndRankTRECData():
+    k = 200
+    pairsOfPAndAlpha = [(0.1, 0.02838134765625),
+                        (0.2, 0.020825195312500003),
+                        (0.3, 0.01865234375),
+                        (0.4, 0.016796875000000003),
+                        (0.5, 0.0156494140625),
+                        (0.6, 0.015771484375),
+                        (0.7, 0.0156494140625),
+                        (0.8, 0.016894531250000004),
+                        (0.9, 0.01793212890625)]
+
+    # run with gender as protected attribute
+    trecDir = '../rawData/TREC/'
+    for root, _, filenames in os.walk(trecDir):
+        for filename in filenames:
+            path = os.path.join(root, filename)
+            if filename.endswith('SORTED.pred') and os.path.isfile(path):
+                print("reading: " + filename + "\nfrom: " + root)
+
+                trecData = L2R_PredictionsData.Creator(path, 1, 'female')
+
+                resultDir = "../results/rankingDumps/TREC/" + root.replace(trecDir, "")
+
+                rankAndDump(trecData.protectedCandidates,
+                            trecData.nonprotectedCandidates,
+                            k,
+                            "TREC_",
+                            resultDir,
+                            pairsOfPAndAlpha)
+
+
+def createAndRankChileData():
+    k = 500
+    pairsOfPAndAlpha = [(0.1, 0.018249511718750003),
+                        (0.2, 0.014404296875),
+                        (0.3, 0.013012695312500001),
+                        (0.4, 0.01220855712890625),
+                        (0.5, 0.011315917968750002),
+                        (0.6, 0.011480712890625),
+                        (0.7, 0.011066436767578125),
+                        (0.8, 0.011614990234375),
+                        (0.9, 0.012792968750000001)]
+
     # run with gender as protected attribute
     chileGenderDir = '../rawData/ChileUniversitySAT/NoSemiprivateSchools/gender/'
     for root, _, filenames in os.walk(chileGenderDir):
@@ -235,7 +408,7 @@ def createAndRankChileData(k):
             if filename.endswith('SORTED.pred') and os.path.isfile(path):
                 print("reading: " + filename + "\nfrom: " + root)
 
-                chileData = chileSATData.ChileSatCreator(path, 1, 'female')
+                chileData = L2R_PredictionsData.Creator(path, 1, 'female')
 
                 resultDir = "../results/rankingDumps/ChileSAT/gender/" + root.replace(chileGenderDir, "")
 
@@ -254,7 +427,7 @@ def createAndRankChileData(k):
             if filename.endswith('SORTED.pred') and os.path.isfile(path):
                 print("reading: " + filename + "\nfrom: " + root)
 
-                chileData = chileSATData.ChileSatCreator(path, 1, 'publicSchool')
+                chileData = L2R_PredictionsData.Creator(path, 1, 'publicSchool')
 
                 resultDir = "../results/rankingDumps/ChileSAT/highschool/" + root.replace(chileHighschoolDir, "")
 

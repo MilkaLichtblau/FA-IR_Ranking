@@ -8,7 +8,7 @@ import pandas as pd
 from dataset_creator.candidate import Candidate
 
 
-class ChileSatCreator():
+class Creator():
     '''
     TODO: write doc
     '''
@@ -28,7 +28,7 @@ class ChileSatCreator():
         return self.__nonprotectedCandidates
 
     def __init__(self, path, protAttr, protAttrName):
-        self.__data = pd.read_csv(path, sep=',', names=["query_id", "ranking_position", "score", "prot_attr"])
+        self.__data = pd.read_csv(path, sep=',', names=["query_id", "position", "score", "prot_attr"])
         self.__protectedCandidates = []
         self.__nonprotectedCandidates = []
         self.__separateGroups(protAttr, protAttrName)
@@ -38,12 +38,17 @@ class ChileSatCreator():
         separates data into two lists with protected and non-protected candidate objects
 
         @param protAttr: int, defines protection status
+        @param protAttrName: string, defines protection status in words
         '''
         for _, row in self.__data.iterrows():
+            stuffToSave = {
+                    "query_id" : row["query_id"],
+                    "position" : row["position"],
+                }
             if row['prot_attr'] == protAttr:
-                self.__protectedCandidates.append(Candidate(row['score'], [protAttrName]))
+                self.__protectedCandidates.append(Candidate(row['score'], [protAttrName], stuffToSave=stuffToSave))
             else:
-                self.__nonprotectedCandidates.append(Candidate(row['score'], []))
+                self.__nonprotectedCandidates.append(Candidate(row['score'], [], stuffToSave=stuffToSave))
 
         self.__protectedCandidates.sort(key=lambda candidate: candidate.qualification, reverse=True)
         self.__nonprotectedCandidates.sort(key=lambda candidate: candidate.qualification, reverse=True)
