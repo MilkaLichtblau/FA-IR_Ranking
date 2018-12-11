@@ -44,13 +44,13 @@ def main():
         print("creating rankings for all datasets...")
         createDataAndRankings()
     elif args.create == ['sat']:
-        createAndRankSATData(1500)
+        createAndRankSATData()
     elif args.create == ['compas']:
-        createAndRankCOMPASData(1000)
+        createAndRankCOMPASData()
     elif args.create == ['germancredit']:
-        createAndRankGermanCreditData(100)
+        createAndRankGermanCreditData()
     elif args.create == ['xing']:
-        createAndRankXingData(40)
+        createAndRankXingData()
     elif args.create == ['chilesat']:
         createAndRankChileData()
         convertAllPicklesToCSV("../results/rankingDumps/ChileSAT/",
@@ -64,7 +64,7 @@ def main():
         convertAllPicklesToCSV("../results/rankingDumps/ChileSAT/",
                                "../../Meike-FairnessInL2R-Code/octave-src/sample/TREC/")
     elif args.create == ['syntheticsat']:
-        createSyntheticSAT(1000)
+        createSyntheticSAT()
     #=======================================================
     elif args.evaluate == []:
         evaluator = Evaluator()
@@ -104,11 +104,13 @@ def main():
 
 
 def createDataAndRankings():
-    createAndRankSATData(1500)
-    createAndRankChileData(1500)  # uncomment, if Chile Data Set is available.
-    createAndRankCOMPASData(1000)
-    createAndRankGermanCreditData(100)
-    createAndRankXingData(40)
+    createAndRankSATData()
+#     createAndRankChileData()  # uncomment, if Chile Data Set is available.
+    createAndRankLSATData()
+    createAndRankTRECData()
+    createAndRankCOMPASData()
+    createAndRankGermanCreditData()
+    createAndRankXingData()
 
 
 def createSyntheticSAT(k):
@@ -127,7 +129,8 @@ def createSyntheticSAT(k):
     creator.writeToTXT('../rawData/Synthetic/sample_test_data_scoreAndGender_separated.txt')
 
 
-def createAndRankXingData(k):
+def createAndRankXingData():
+    k = 40
     pairsOfPAndAlpha = [(0.1, 0.1),  # no real results, skip in evaluation
                         (0.2, 0.1),  # no real results, skip in evaluation
                         (0.3, 0.1),  # no real results, skip in evaluation
@@ -146,8 +149,8 @@ def createAndRankXingData(k):
                           +'/' + queryString + '/' + 'OriginalOrdering.pickle')
 
 
-def createAndRankGermanCreditData(k):
-
+def createAndRankGermanCreditData():
+    k = 100
     pairsOfPAndAlpha = [(0.1, 0.1),  # no real results, skip in evaluation
                         (0.2, 0.1),  # no real results, skip in evaluation
                         (0.3, 0.0220),
@@ -180,8 +183,8 @@ def createAndRankGermanCreditData(k):
                        pairsOfPAndAlpha)
 
 
-def createAndRankCOMPASData(k):
-
+def createAndRankCOMPASData():
+    k = 1000
     pairsOfPAndAlpha = [(0.1, 0.0140),
                         (0.2, 0.0115),
                         (0.3, 0.0103),
@@ -205,8 +208,8 @@ def createAndRankCOMPASData(k):
                       "../results/rankingDumps/Compas/Gender", pairsOfPAndAlpha)
 
 
-def createAndRankSATData(k):
-
+def createAndRankSATData():
+    k = 1500
     SATFile = '../rawData/SAT/sat_data.pdf'
 
     pairsOfPAndAlpha = [(0.1, 0.0122),
