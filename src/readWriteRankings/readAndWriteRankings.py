@@ -8,7 +8,6 @@ utility module to load and store ranking data
 import os
 import csv
 import pickle
-import pandas as pd
 
 
 def loadPicklesFromDirectory(path):
@@ -17,7 +16,7 @@ def loadPicklesFromDirectory(path):
     """
     allRankings = dict()
 
-    for root, dirs, files in os.walk(path):
+    for root, _, files in os.walk(path):
         for filename in files:
             if "gitignore" in filename:
                 # FIXME: quick fix for SAT directory
@@ -75,9 +74,10 @@ def convertAllPicklesToCSV(sourceRootDir, destRootDir):
                 # load candidate objects
                 rankedCandidates = loadPickleFromDisk(root + '/' + filename)
                 # write into csv file
-                destPath = destRootDir + \
-                           root.replace(sourceRootDir, "") + '/' + \
-                           filename.replace(".pickle", ".csv")
+                destDir = destRootDir + root.replace(sourceRootDir, "") + '/FA-IR/'
+                if not os.path.exists(destDir):
+                    os.makedirs(destDir)
+                destPath = destDir + filename.replace(".pickle", ".csv")
                 print(destPath)
                 with open(destPath, 'wt') as file:
                     writer = csv.writer(file)
@@ -85,6 +85,6 @@ def convertAllPicklesToCSV(sourceRootDir, destRootDir):
                     for candidate in rankedCandidates:
                         row = (int(candidate.stuffToSave.get("query_id")),
                                int(candidate.stuffToSave.get("position")),
-                               candidate.qualification,
+                               candidate.originalQualification,
                                int(candidate.isProtected))
                         writer.writerow(row)

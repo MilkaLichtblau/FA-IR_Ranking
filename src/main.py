@@ -61,7 +61,7 @@ def main():
                                "../../Meike-FairnessInL2R-Code/octave-src/sample/LawStudents/")
     elif args.create == ['trec']:
         createAndRankTRECData()
-        convertAllPicklesToCSV("../results/rankingDumps/ChileSAT/",
+        convertAllPicklesToCSV("../results/rankingDumps/TREC/",
                                "../../Meike-FairnessInL2R-Code/octave-src/sample/TREC/")
     elif args.create == ['syntheticsat']:
         createSyntheticSAT()
