@@ -27,10 +27,18 @@ class Creator():
         '''
         return self.__nonprotectedCandidates
 
+    @property
+    def query_id(self):
+        '''
+        int with query id of these candidates
+        '''
+        return self.__query_id
+
     def __init__(self, path, protAttr, protAttrName):
         self.__data = pd.read_csv(path, sep=',', names=["query_id", "position", "score", "prot_attr"])
         self.__protectedCandidates = []
         self.__nonprotectedCandidates = []
+        self.__query_id = self.__data["query_id"][0]
         self.__separateGroups(protAttr, protAttrName)
 
     def __separateGroups(self, protAttr, protAttrName):

@@ -7,6 +7,7 @@ utility module to load and store ranking data
 '''
 import os
 import csv
+import re
 import pickle
 
 
@@ -67,21 +68,24 @@ def loadPickleFromDisk(filename):
     return data
 
 
-def convertAllPicklesToCSV(sourceRootDir, destRootDir):
+def convertFAIRPicklesToCSV(sourceRootDir, destRootDir, fold=""):
+    # FIXME: es sind alle Queries in der Datei und zum Teil fehlen Leute, warum werden nicht nur die Queries aus fold1
+    # geschrieben?
     for root, _, filenames in os.walk(sourceRootDir):
         for filename in filenames:
-            if filename.endswith('.pickle'):
+            if filename.endswith('.pickle') and "FairRanking" in filename and not "NotSelected" in filename:
                 # load candidate objects
                 rankedCandidates = loadPickleFromDisk(root + '/' + filename)
                 # write into csv file
-                destDir = destRootDir + root.replace(sourceRootDir, "") + '/FA-IR/'
+                destDir = destRootDir + fold + 'FA-IR/'
                 if not os.path.exists(destDir):
                     os.makedirs(destDir)
-                destPath = destDir + filename.replace(".pickle", ".csv")
+                resultFilename = "p=" + re.findall(r'\d+', filename)[0] + "_predictions_SORTED.pred"
+                destPath = destDir + resultFilename
+                print(root + '/' + filename)
                 print(destPath)
-                with open(destPath, 'wt') as file:
+                with open(destPath, 'a') as file:
                     writer = csv.writer(file)
-                    writer.writerow(("query_id", "position", "score", "protAttr"))
                     for candidate in rankedCandidates:
                         row = (int(candidate.stuffToSave.get("query_id")),
                                int(candidate.stuffToSave.get("position")),

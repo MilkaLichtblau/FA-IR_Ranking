@@ -6,7 +6,7 @@ Created on Mar 29, 2017
 import os
 import argparse
 
-from readWriteRankings.readAndWriteRankings import writePickleToDisk, convertAllPicklesToCSV
+from readWriteRankings.readAndWriteRankings import writePickleToDisk, convertFAIRPicklesToCSV
 from post_processing_methods.fair_ranker.create import fairRanking
 from utilsAndConstants.constants import ESSENTIALLY_ZERO
 from utilsAndConstants.utils import setMemoryLimit
@@ -53,16 +53,32 @@ def main():
         createAndRankXingData()
     elif args.create == ['chilesat']:
         createAndRankChileData()
-        convertAllPicklesToCSV("../results/rankingDumps/ChileSAT/",
+        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/",
                                "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/")
     elif args.create == ['lsat']:
         createAndRankLSATData()
-        convertAllPicklesToCSV("../results/rankingDumps/LSAT/",
+        convertFAIRPicklesToCSV("../results/rankingDumps/LSAT/",
                                "../../Meike-FairnessInL2R-Code/octave-src/sample/LawStudents/")
     elif args.create == ['trec']:
-        createAndRankTRECData()
-        convertAllPicklesToCSV("../results/rankingDumps/TREC/",
-                               "../../Meike-FairnessInL2R-Code/octave-src/sample/TREC/")
+#         createAndRankTRECData()
+        convertFAIRPicklesToCSV("../results/rankingDumps/TREC/fold_1/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/TREC/",
+                                fold="fold_1/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/TREC/fold_2/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/TREC/",
+                                fold="fold_2/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/TREC/fold_3/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/TREC/",
+                                fold="fold_3/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/TREC/fold_4/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/TREC/",
+                                fold="fold_4/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/TREC/fold_5/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/TREC/",
+                                fold="fold_5/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/TREC/fold_6/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/TREC/",
+                                fold="fold_6/")
     elif args.create == ['syntheticsat']:
         createSyntheticSAT()
     #=======================================================
@@ -378,10 +394,12 @@ def createAndRankTRECData():
             path = os.path.join(root, filename)
             if filename.endswith('SORTED.pred') and os.path.isfile(path):
                 print("reading: " + filename + "\nfrom: " + root)
-
+                # TODO: apply algorithm per Query only
                 trecData = L2R_PredictionsData.Creator(path, 1, 'female')
 
-                resultDir = "../results/rankingDumps/TREC/" + root.replace(trecDir, "")
+                resultDir = "../results/rankingDumps/TREC/" \
+                            +root.replace(trecDir, "") \
+                            +"/query_id=" + str(trecData.query_id) + "/"
 
                 rankAndDump(trecData.protectedCandidates,
                             trecData.nonprotectedCandidates,
