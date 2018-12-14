@@ -53,14 +53,54 @@ def main():
         createAndRankXingData()
     elif args.create == ['chilesat']:
         createAndRankChileData()
-        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/",
-                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/")
+        # gender
+        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/gender/fold_1/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/gender/",
+                               fold="fold_1/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/gender/fold_2/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/gender/",
+                               fold="fold_2/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/gender/fold_3/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/gender/",
+                               fold="fold_3/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/gender/fold_4/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/gender/",
+                               fold="fold_4/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/gender/fold_5/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/gender/",
+                               fold="fold_5/")
+        # highschool
+        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/highschool/fold_1/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/highschool/",
+                               fold="fold_1/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/highschool/fold_2/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/highschool/",
+                               fold="fold_2/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/highschool/fold_3/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/highschool/",
+                               fold="fold_3/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/highschool/fold_4/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/highschool/",
+                               fold="fold_4/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/ChileSAT/highschool/fold_5/",
+                               "../../Meike-FairnessInL2R-Code/octave-src/sample/ChileUni/NoSemi/highschool/",
+                               fold="fold_5/")
     elif args.create == ['lsat']:
-        createAndRankLSATData()
-        convertFAIRPicklesToCSV("../results/rankingDumps/LSAT/",
-                               "../../Meike-FairnessInL2R-Code/octave-src/sample/LawStudents/")
+#         createAndRankLSATData()
+        convertFAIRPicklesToCSV("../results/rankingDumps/LSAT/gender/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/LawStudents/gender/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/LSAT/race_asian/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/LawStudents/race_asian/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/LSAT/race_black/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/LawStudents/race_black/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/LSAT/race_hispanic/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/LawStudents/race_hispanic/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/LSAT/race_mexican/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/LawStudents/race_mexican/")
+        convertFAIRPicklesToCSV("../results/rankingDumps/LSAT/race_puertorican/",
+                                "../../Meike-FairnessInL2R-Code/octave-src/sample/LawStudents/race_puertorican/")
     elif args.create == ['trec']:
-#         createAndRankTRECData()
+        createAndRankTRECData()
         convertFAIRPicklesToCSV("../results/rankingDumps/TREC/fold_1/",
                                 "../../Meike-FairnessInL2R-Code/octave-src/sample/TREC/",
                                 fold="fold_1/")
@@ -245,16 +285,15 @@ def createAndRankSATData():
 
 
 def createAndRankLSATData():
-    k = 1500
-    pairsOfPAndAlpha = [(0.1, 0.0122),
-                        (0.2, 0.0101),
-                        (0.3, 0.0092),
-                        (0.4, 0.0088),
-                        (0.5, 0.0084),
-                        (0.6, 0.0085),
-                        (0.7, 0.0084),
-                        (0.8, 0.0084),
-                        (0.9, 0.0096)]
+    pairsOfPAndAlpha = [(0.1, 0.0085),
+                        (0.2, 0.0072),
+                        (0.3, 0.00675),
+                        (0.4, 0.0065),
+                        (0.5, 0.00635),
+                        (0.6, 0.00625),
+                        (0.7, 0.0064),
+                        (0.8, 0.0067),
+                        (0.9, 0.0072)]
 
         # run with gender as protected attribute
     lsatGenderDir = '../rawData/LSAT/gender/'
@@ -270,7 +309,7 @@ def createAndRankLSATData():
 
                 rankAndDump(lsatData.protectedCandidates,
                             lsatData.nonprotectedCandidates,
-                            k,
+                            lsatData.length,
                             "LSAT_gender_",
                             resultDir,
                             pairsOfPAndAlpha)
@@ -289,7 +328,7 @@ def createAndRankLSATData():
 
                 rankAndDump(lsatData.protectedCandidates,
                             lsatData.nonprotectedCandidates,
-                            k,
+                            lsatData.length,
                             "LSAT_asian_",
                             resultDir,
                             pairsOfPAndAlpha)
@@ -309,7 +348,7 @@ def createAndRankLSATData():
 
                 rankAndDump(lsatData.protectedCandidates,
                             lsatData.nonprotectedCandidates,
-                            k,
+                            lsatData.length,
                             "LSAT_black_",
                             resultDir,
                             pairsOfPAndAlpha)
@@ -329,7 +368,7 @@ def createAndRankLSATData():
 
                 rankAndDump(lsatData.protectedCandidates,
                             lsatData.nonprotectedCandidates,
-                            k,
+                            lsatData.length,
                             "LSAT_hispanic_",
                             resultDir,
                             pairsOfPAndAlpha)
@@ -349,7 +388,7 @@ def createAndRankLSATData():
 
                 rankAndDump(lsatData.protectedCandidates,
                             lsatData.nonprotectedCandidates,
-                            k,
+                            lsatData.length,
                             "LSAT_mexican_",
                             resultDir,
                             pairsOfPAndAlpha)
@@ -369,14 +408,13 @@ def createAndRankLSATData():
 
                 rankAndDump(lsatData.protectedCandidates,
                             lsatData.nonprotectedCandidates,
-                            k,
+                            lsatData.length,
                             "LSAT_puertorican_",
                             resultDir,
                             pairsOfPAndAlpha)
 
 
 def createAndRankTRECData():
-    k = 400
     pairsOfPAndAlpha = [(0.1, 0.02838134765625),
                         (0.2, 0.020825195312500003),
                         (0.3, 0.01865234375),
@@ -403,14 +441,13 @@ def createAndRankTRECData():
 
                 rankAndDump(trecData.protectedCandidates,
                             trecData.nonprotectedCandidates,
-                            k,
+                            trecData.length,
                             "TREC_",
                             resultDir,
                             pairsOfPAndAlpha)
 
 
 def createAndRankChileData():
-    k = 500
     pairsOfPAndAlpha = [(0.1, 0.018249511718750003),
                         (0.2, 0.014404296875),
                         (0.3, 0.013012695312500001),
@@ -435,7 +472,7 @@ def createAndRankChileData():
 
                 rankAndDump(chileData.protectedCandidates,
                             chileData.nonprotectedCandidates,
-                            k,
+                            chileData.length,
                             "ChileSATGender_",
                             resultDir,
                             pairsOfPAndAlpha)
@@ -454,7 +491,7 @@ def createAndRankChileData():
 
                 rankAndDump(chileData.protectedCandidates,
                             chileData.nonprotectedCandidates,
-                            k,
+                            chileData.length,
                             "ChileSATHighschool_",
                             resultDir,
                             pairsOfPAndAlpha)

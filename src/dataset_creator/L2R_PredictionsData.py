@@ -28,6 +28,13 @@ class Creator():
         return self.__nonprotectedCandidates
 
     @property
+    def length(self):
+        '''
+        number of items in the data
+        '''
+        return self.__length
+
+    @property
     def query_id(self):
         '''
         int with query id of these candidates
@@ -38,6 +45,7 @@ class Creator():
         self.__data = pd.read_csv(path, sep=',', names=["query_id", "position", "score", "prot_attr"])
         self.__protectedCandidates = []
         self.__nonprotectedCandidates = []
+        self.__length = self.__data.shape[0]
         # make sure there is only one query per file
         if len(self.__data["query_id"].unique()) != 1:
             print(self.__data["query_id"])
