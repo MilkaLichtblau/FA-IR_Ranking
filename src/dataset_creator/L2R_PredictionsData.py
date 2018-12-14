@@ -38,6 +38,10 @@ class Creator():
         self.__data = pd.read_csv(path, sep=',', names=["query_id", "position", "score", "prot_attr"])
         self.__protectedCandidates = []
         self.__nonprotectedCandidates = []
+        # make sure there is only one query per file
+        if len(self.__data["query_id"].unique()) != 1:
+            print(self.__data["query_id"])
+            raise ValueError
         self.__query_id = self.__data["query_id"][0]
         self.__separateGroups(protAttr, protAttrName)
 

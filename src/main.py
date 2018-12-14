@@ -376,7 +376,7 @@ def createAndRankLSATData():
 
 
 def createAndRankTRECData():
-    k = 200
+    k = 400
     pairsOfPAndAlpha = [(0.1, 0.02838134765625),
                         (0.2, 0.020825195312500003),
                         (0.3, 0.01865234375),

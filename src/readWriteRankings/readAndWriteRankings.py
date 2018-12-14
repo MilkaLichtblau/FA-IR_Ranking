@@ -69,22 +69,25 @@ def loadPickleFromDisk(filename):
 
 
 def convertFAIRPicklesToCSV(sourceRootDir, destRootDir, fold=""):
-    # FIXME: es sind alle Queries in der Datei und zum Teil fehlen Leute, warum werden nicht nur die Queries aus fold1
-    # geschrieben?
+    resultFilenamesIveSeen = []
     for root, _, filenames in os.walk(sourceRootDir):
         for filename in filenames:
             if filename.endswith('.pickle') and "FairRanking" in filename and not "NotSelected" in filename:
                 # load candidate objects
                 rankedCandidates = loadPickleFromDisk(root + '/' + filename)
+#                 assert len(rankedCandidates) == 200
                 # write into csv file
                 destDir = destRootDir + fold + 'FA-IR/'
                 if not os.path.exists(destDir):
                     os.makedirs(destDir)
                 resultFilename = "p=" + re.findall(r'\d+', filename)[0] + "_predictions_SORTED.pred"
+                if resultFilename in resultFilenamesIveSeen:
+                    writeOrAppend = 'a'
+                else:
+                    resultFilenamesIveSeen.append(resultFilename)
+                    writeOrAppend = 'w'
                 destPath = destDir + resultFilename
-                print(root + '/' + filename)
-                print(destPath)
-                with open(destPath, 'a') as file:
+                with open(destPath, writeOrAppend) as file:
                     writer = csv.writer(file)
                     for candidate in rankedCandidates:
                         row = (int(candidate.stuffToSave.get("query_id")),
