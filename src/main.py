@@ -285,18 +285,13 @@ def createAndRankSATData():
 
 
 def createAndRankLSATData():
-    pairsOfPAndAlpha = [(0.1, 0.0085),
-                        (0.2, 0.0072),
-                        (0.3, 0.00675),
-                        (0.4, 0.0065),
-                        (0.5, 0.00635),
-                        (0.6, 0.00625),
-                        (0.7, 0.0064),
-                        (0.8, 0.0067),
-                        (0.9, 0.0072)]
 
         # run with gender as protected attribute
     lsatGenderDir = '../rawData/LSAT/gender/'
+    p = 0.44
+    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
+                        (p, 0.0065),
+                        (p + 0.1, 0.00635)]
     for root, _, filenames in os.walk(lsatGenderDir):
         for filename in filenames:
             path = os.path.join(root, filename)
@@ -316,6 +311,10 @@ def createAndRankLSATData():
 
     # run with different races as protected attribute
     lsatRaceDir = '../rawData/LSAT/race_asian/'
+    p = 0.44
+    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
+                        (p, 0.0065),
+                        (p + 0.1, 0.00635)]
     for root, _, filenames in os.walk(lsatRaceDir):
         for filename in filenames:
             path = os.path.join(root, filename)
@@ -336,6 +335,10 @@ def createAndRankLSATData():
     #----------------------------------------------------------------
 
     lsatRaceDir = '../rawData/LSAT/race_black/'
+    p = 0.44
+    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
+                        (p, 0.0065),
+                        (p + 0.1, 0.00635)]
     for root, _, filenames in os.walk(lsatRaceDir):
         for filename in filenames:
             path = os.path.join(root, filename)
@@ -356,6 +359,10 @@ def createAndRankLSATData():
     #----------------------------------------------------------------
 
     lsatRaceDir = '../rawData/LSAT/race_hispanic/'
+    p = 0.44
+    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
+                        (p, 0.0065),
+                        (p + 0.1, 0.00635)]
     for root, _, filenames in os.walk(lsatRaceDir):
         for filename in filenames:
             path = os.path.join(root, filename)
@@ -376,6 +383,10 @@ def createAndRankLSATData():
     #----------------------------------------------------------------
 
     lsatRaceDir = '../rawData/LSAT/race_mexican/'
+    p = 0.44
+    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
+                        (p, 0.0065),
+                        (p + 0.1, 0.00635)]
     for root, _, filenames in os.walk(lsatRaceDir):
         for filename in filenames:
             path = os.path.join(root, filename)
@@ -396,6 +407,10 @@ def createAndRankLSATData():
     #----------------------------------------------------------------
 
     lsatRaceDir = '../rawData/LSAT/race_puertorican/'
+    p = 0.44
+    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
+                        (p, 0.0065),
+                        (p + 0.1, 0.00635)]
     for root, _, filenames in os.walk(lsatRaceDir):
         for filename in filenames:
             path = os.path.join(root, filename)
@@ -415,15 +430,10 @@ def createAndRankLSATData():
 
 
 def createAndRankTRECData():
-    pairsOfPAndAlpha = [(0.1, 0.02838134765625),
-                        (0.2, 0.020825195312500003),
-                        (0.3, 0.01865234375),
-                        (0.4, 0.016796875000000003),
-                        (0.5, 0.0156494140625),
-                        (0.6, 0.015771484375),
-                        (0.7, 0.0156494140625),
-                        (0.8, 0.016894531250000004),
-                        (0.9, 0.01793212890625)]
+    p = 0.12
+    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
+                        (p, 0.0065),
+                        (p + 0.1, 0.00635)]
 
     # run with gender as protected attribute
     trecDir = '../rawData/TREC/'
@@ -448,18 +458,12 @@ def createAndRankTRECData():
 
 
 def createAndRankChileData():
-    pairsOfPAndAlpha = [(0.1, 0.018249511718750003),
-                        (0.2, 0.014404296875),
-                        (0.3, 0.013012695312500001),
-                        (0.4, 0.01220855712890625),
-                        (0.5, 0.011315917968750002),
-                        (0.6, 0.011480712890625),
-                        (0.7, 0.011066436767578125),
-                        (0.8, 0.011614990234375),
-                        (0.9, 0.012792968750000001)]
-
     # run with gender as protected attribute
     chileGenderDir = '../rawData/ChileUniversitySAT/NoSemiprivateSchools/gender/'
+    p = 0.44
+    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
+                        (p, 0.0065),
+                        (p + 0.1, 0.00635)]
     for root, _, filenames in os.walk(chileGenderDir):
         for filename in filenames:
             path = os.path.join(root, filename)
@@ -479,6 +483,10 @@ def createAndRankChileData():
 
     # run with highschool type as protected attribute
     chileHighschoolDir = '../rawData/ChileUniversitySAT/NoSemiprivateSchools/highschool/'
+    p = 0.44
+    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
+                        (p, 0.0065),
+                        (p + 0.1, 0.00635)]
     for root, _, filenames in os.walk(chileHighschoolDir):
         for filename in filenames:
             path = os.path.join(root, filename)
