@@ -309,31 +309,6 @@ def createAndRankLSATData():
                             resultDir,
                             pairsOfPAndAlpha)
 
-    # run with different races as protected attribute
-    lsatRaceDir = '../rawData/LSAT/race_asian/'
-    p = 0.44
-    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
-                        (p, 0.0065),
-                        (p + 0.1, 0.00635)]
-    for root, _, filenames in os.walk(lsatRaceDir):
-        for filename in filenames:
-            path = os.path.join(root, filename)
-            if filename.endswith('SORTED.pred') and os.path.isfile(path):
-                print("reading: " + filename + "\nfrom: " + root)
-
-                lsatData = L2R_PredictionsData.Creator(path, 1, 'asian')
-
-                resultDir = "../results/rankingDumps/LSAT/race_asian/" + root.replace(lsatRaceDir, "")
-
-                rankAndDump(lsatData.protectedCandidates,
-                            lsatData.nonprotectedCandidates,
-                            lsatData.length,
-                            "LSAT_asian_",
-                            resultDir,
-                            pairsOfPAndAlpha)
-
-    #----------------------------------------------------------------
-
     lsatRaceDir = '../rawData/LSAT/race_black/'
     p = 0.0638977635782748
     pairsOfPAndAlpha = [(p, 0.0065),
@@ -352,78 +327,6 @@ def createAndRankLSATData():
                             lsatData.nonprotectedCandidates,
                             lsatData.length,
                             "LSAT_black_",
-                            resultDir,
-                            pairsOfPAndAlpha)
-
-    #----------------------------------------------------------------
-
-    lsatRaceDir = '../rawData/LSAT/race_hispanic/'
-    p = 0.44
-    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
-                        (p, 0.0065),
-                        (p + 0.1, 0.00635)]
-    for root, _, filenames in os.walk(lsatRaceDir):
-        for filename in filenames:
-            path = os.path.join(root, filename)
-            if filename.endswith('SORTED.pred') and os.path.isfile(path):
-                print("reading: " + filename + "\nfrom: " + root)
-
-                lsatData = L2R_PredictionsData.Creator(path, 1, 'hispanic')
-
-                resultDir = "../results/rankingDumps/LSAT/race_hispanic/" + root.replace(lsatRaceDir, "")
-
-                rankAndDump(lsatData.protectedCandidates,
-                            lsatData.nonprotectedCandidates,
-                            lsatData.length,
-                            "LSAT_hispanic_",
-                            resultDir,
-                            pairsOfPAndAlpha)
-
-    #----------------------------------------------------------------
-
-    lsatRaceDir = '../rawData/LSAT/race_mexican/'
-    p = 0.44
-    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
-                        (p, 0.0065),
-                        (p + 0.1, 0.00635)]
-    for root, _, filenames in os.walk(lsatRaceDir):
-        for filename in filenames:
-            path = os.path.join(root, filename)
-            if filename.endswith('SORTED.pred') and os.path.isfile(path):
-                print("reading: " + filename + "\nfrom: " + root)
-
-                lsatData = L2R_PredictionsData.Creator(path, 1, 'mexican')
-
-                resultDir = "../results/rankingDumps/LSAT/race_mexican/" + root.replace(lsatRaceDir, "")
-
-                rankAndDump(lsatData.protectedCandidates,
-                            lsatData.nonprotectedCandidates,
-                            lsatData.length,
-                            "LSAT_mexican_",
-                            resultDir,
-                            pairsOfPAndAlpha)
-
-    #----------------------------------------------------------------
-
-    lsatRaceDir = '../rawData/LSAT/race_puertorican/'
-    p = 0.44
-    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
-                        (p, 0.0065),
-                        (p + 0.1, 0.00635)]
-    for root, _, filenames in os.walk(lsatRaceDir):
-        for filename in filenames:
-            path = os.path.join(root, filename)
-            if filename.endswith('SORTED.pred') and os.path.isfile(path):
-                print("reading: " + filename + "\nfrom: " + root)
-
-                lsatData = L2R_PredictionsData.Creator(path, 1, 'puertorican')
-
-                resultDir = "../results/rankingDumps/LSAT/race_puertorican/" + root.replace(lsatRaceDir, "")
-
-                rankAndDump(lsatData.protectedCandidates,
-                            lsatData.nonprotectedCandidates,
-                            lsatData.length,
-                            "LSAT_puertorican_",
                             resultDir,
                             pairsOfPAndAlpha)
 
