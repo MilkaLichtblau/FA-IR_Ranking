@@ -46,7 +46,6 @@ def feldmanRanking(protectedCandidates, nonProtectedCandidates, k):
     protectedQualifications = [protectedCandidates[i].qualification for i in range(len(protectedCandidates))]
     nonProtectedQualifications = [nonProtectedCandidates[i].qualification for i in range(len(nonProtectedCandidates))]
 
-
     # create same distribution for protected and non-protected candidates
     for i, candidate in enumerate(protectedCandidates):
         if i >= k:
@@ -98,9 +97,8 @@ def buildFairRanking(k, protectedCandidates, nonProtectedCandidates, minProp, al
     the left-over candidates that were not selected into the ranking, sorted color-blindly
     """
 
-
     result = []
-    gft = FairnessInRankingsTester(minProp, alpha, k, correctedAlpha=True)
+    gft = FairnessInRankingsTester(minProp, alpha, k)
     countProtected = 0
 
     idxProtected = 0
@@ -146,6 +144,4 @@ def __mergeTwoRankings(ranking1, ranking2):
     result = ranking1 + ranking2
     result.sort(key=lambda candidate: candidate.originalQualification, reverse=True)
     return result
-
-
 

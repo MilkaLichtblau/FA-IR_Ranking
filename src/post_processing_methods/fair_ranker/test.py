@@ -7,6 +7,7 @@ from scipy.stats import binom
 from utilsAndConstants.utils import countProtected
 from post_processing_methods.fair_ranker.alpha_adjustment import AlphaAdjustment
 
+
 class FairnessInRankingsTester():
     """
     implementation of the statistical significance test that decides if a ranking has a fair representation
@@ -27,13 +28,11 @@ class FairnessInRankingsTester():
     def candidates_needed(self):
         return self.__candidatesNeeded
 
-
     @property
     def minimal_proportion(self):
         return self.__minProp
 
-
-    def __init__(self, minProp, alpha, k, correctedAlpha):
+    def __init__(self, minProp, alpha, k, correctAlpha=False):
         """
 
         @param minProp : float
@@ -46,17 +45,15 @@ class FairnessInRankingsTester():
         @param k : int
             the expected length of the ranked output
 
-        @param correctedAlpha : bool
-        FIXME: guck nochmal, warum man die Korrektur überhaupt nicht wollen würde
-            tells if model adjustment shall be used or not
+        @param correctAlpha : bool
+            tells if model adjustment shall be used or not, default is false
         """
         self.__minProp = minProp
         self.__alpha = alpha
-        if correctedAlpha:
+        if correctAlpha:
             self.__candidatesNeeded = self.__candidates_needed_with_correction(k)
         else:
             self.__candidatesNeeded = self.__calculate_protected_needed_at_each_position(k)
-
 
     def ranked_group_fairness_condition(self, ranking):
         """
@@ -84,7 +81,6 @@ class FairnessInRankingsTester():
 
         return 0, True
 
-
     def fair_representation_condition(self, ranking):
         """
         checks if a given ranking with tau_p protected candidates fairly represents the protected group. A
@@ -109,7 +105,6 @@ class FairnessInRankingsTester():
         else:
             return True
 
-
     def __calculate_protected_needed_at_each_position(self, k):
         result = []
 
@@ -122,7 +117,6 @@ class FairnessInRankingsTester():
                 result.append(int(numProtCandidates))
 
         return result
-
 
     def __candidates_needed_with_correction(self, k):
         fc = AlphaAdjustment(k, self.__minProp, self.__alpha)

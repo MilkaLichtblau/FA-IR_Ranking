@@ -68,7 +68,7 @@ def loadPickleFromDisk(filename):
     return data
 
 
-def convertFAIRPicklesToCSV(sourceRootDir, destRootDir, fold=""):
+def convertFAIRPicklesToCSVForL2R(sourceRootDir, destRootDir, fold=""):
     resultFilenamesIveSeen = []
     for root, _, filenames in os.walk(sourceRootDir):
         for filename in filenames:
@@ -80,7 +80,7 @@ def convertFAIRPicklesToCSV(sourceRootDir, destRootDir, fold=""):
                 destDir = destRootDir + fold + 'FA-IR/'
                 if not os.path.exists(destDir):
                     os.makedirs(destDir)
-                resultFilename = "p=" + re.findall(r'\d+', filename)[0] + "_predictions_SORTED.pred"
+                resultFilename = "p=" + re.findall(r'\d+.\d+', filename)[0] + "_predictions_SORTED.pred"
                 if resultFilename in resultFilenamesIveSeen:
                     writeOrAppend = 'a'
                 else:
