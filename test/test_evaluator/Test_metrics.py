@@ -62,13 +62,13 @@ class TestMetrics(unittest.TestCase):
 
 
     def __createFairRanking(self):
-        fairRanking = []
+        buildFairRanking = []
         for i in range(1000, 0, -1):
             if i % 2 == 1:
-                fairRanking.append(Candidate(i, ["Female"]))
+                buildFairRanking.append(Candidate(i, ["Female"]))
             else:
-                fairRanking.append(Candidate(i, []))
-        return fairRanking
+                buildFairRanking.append(Candidate(i, []))
+        return buildFairRanking
 
 
     def __createUnfairRanking(self):

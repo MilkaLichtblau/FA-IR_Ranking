@@ -60,10 +60,10 @@ def feldmanRanking(protectedCandidates, nonProtectedCandidates, k):
         candidate.qualification = score
 
     # create a colorblind ranking
-    return fairRanking(k, protectedCandidates, nonProtectedCandidates, ESSENTIALLY_ZERO, 0.1)
+    return buildFairRanking(k, protectedCandidates, nonProtectedCandidates, ESSENTIALLY_ZERO, 0.1)
 
 
-def fairRanking(k, protectedCandidates, nonProtectedCandidates, minProp, alpha):
+def buildFairRanking(k, protectedCandidates, nonProtectedCandidates, minProp, alpha):
     """
     creates a ranked output that satisfies the fairness definition in :class:'FairnessInRankingsTester'
     if k is larger than one of the candidate lists we have available, the ranking is filled up with

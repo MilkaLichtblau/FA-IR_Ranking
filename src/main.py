@@ -7,7 +7,7 @@ import os
 import argparse
 
 from readWriteRankings.readAndWriteRankings import writePickleToDisk, convertFAIRPicklesToCSV
-from post_processing_methods.fair_ranker.create import fairRanking
+from post_processing_methods.fair_ranker.create import buildFairRanking
 from utilsAndConstants.constants import ESSENTIALLY_ZERO
 from utilsAndConstants.utils import setMemoryLimit
 from dataset_creator import *
@@ -332,7 +332,7 @@ def createAndRankLSATData():
 
 
 def createAndRankTRECData():
-    p = 0.12
+    p = 0.105
     pairsOfPAndAlpha = [(p - 0.1, 0.00675),
                         (p, 0.0065),
                         (p + 0.1, 0.00635)]
@@ -360,12 +360,23 @@ def createAndRankTRECData():
 
 
 def createAndRankChileData():
+    psAndAlphasPerQuery = {'1' : [(0.039293139293139, 0.0),
+                                  (0.139293139293139, 0.0),
+                                  (0.239293139293139, 0.0)],
+                           '2' : [(0.076352705410822, 0.0),
+                                  (0.176352705410822, 0.0),
+                                  (0.276352705410822, 0.0)],
+                           '3' : [(0.127272727272727, 0.0),
+                                  (0.227272727272727, 0.0),
+                                  (0.327272727272727, 0.0)],
+                           '4' : [(0.095011337868481, 0.0),
+                                  (0.195011337868481, 0.0),
+                                  (0.295011337868481, 0.0)],
+                           '5' : [(0.173076923076923, 0.0),
+                                  (0.273076923076923, 0.0),
+                                  (0.373076923076923, 0.0)]}
     # run with gender as protected attribute
     chileGenderDir = '../rawData/ChileUniversitySAT/NoSemiprivateSchools/gender/'
-    p = 0.44
-    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
-                        (p, 0.0065),
-                        (p + 0.1, 0.00635)]
     for root, _, filenames in os.walk(chileGenderDir):
         for filename in filenames:
             path = os.path.join(root, filename)
@@ -373,7 +384,7 @@ def createAndRankChileData():
                 print("reading: " + filename + "\nfrom: " + root)
 
                 chileData = L2R_PredictionsData.Creator(path, 1, 'female')
-
+                pairsOfPAndAlpha = psAndAlphasPerQuery.get(chileData.query_id)
                 resultDir = "../results/rankingDumps/ChileSAT/gender/" + root.replace(chileGenderDir, "")
 
                 rankAndDump(chileData.protectedCandidates,
@@ -385,10 +396,21 @@ def createAndRankChileData():
 
     # run with highschool type as protected attribute
     chileHighschoolDir = '../rawData/ChileUniversitySAT/NoSemiprivateSchools/highschool/'
-    p = 0.44
-    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
-                        (p, 0.0065),
-                        (p + 0.1, 0.00635)]
+    psAndAlphasPerQuery = {'1' : [(0.216008316008316, 0.0),
+                                  (0.316008316008316, 0.0),
+                                  (0.416008316008316, 0.0)],
+                           '2' : [(0.250701402805611, 0.0),
+                                  (0.350701402805611, 0.0),
+                                  (0.450701402805611, 0.0)],
+                           '3' : [(0.250649350649351, 0.0),
+                                  (0.350649350649351, 0.0),
+                                  (0.450649350649351, 0.0)],
+                           '4' : [(0.253741496598639, 0.0),
+                                  (0.353741496598639, 0.0),
+                                  (0.453741496598639, 0.0)],
+                           '5' : [(0.271153846153846, 0.0),
+                                  (0.371153846153846, 0.0),
+                                  (0.471153846153846, 0.0)]}
     for root, _, filenames in os.walk(chileHighschoolDir):
         for filename in filenames:
             path = os.path.join(root, filename)
@@ -396,6 +418,7 @@ def createAndRankChileData():
                 print("reading: " + filename + "\nfrom: " + root)
 
                 chileData = L2R_PredictionsData.Creator(path, 1, 'publicSchool')
+                pairsOfPAndAlpha = psAndAlphasPerQuery.get(chileData.query_id)
 
                 resultDir = "../results/rankingDumps/ChileSAT/highschool/" + root.replace(chileHighschoolDir, "")
 
@@ -433,57 +456,23 @@ def rankAndDump(protected, nonProtected, k, dataSetName, directory, pairsOfPAndA
         os.makedirs(os.getcwd() + '/' + directory + '/')
 
     print("colorblind ranking", end='', flush=True)
-    colorblindRanking, colorblindNotSelected = fairRanking(k, protected, nonProtected, ESSENTIALLY_ZERO, 0.1)
+    colorblindRanking, colorblindNotSelected = buildFairRanking(k, protected, nonProtected, ESSENTIALLY_ZERO, 0.1)
+    writePickleToDisk(colorblindRanking, os.getcwd() + '/' + directory + '/' + dataSetName + 'ColorblindRanking.pickle')
+    writePickleToDisk(colorblindNotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'ColorblindRankingNotSelected.pickle')
     print(" [Done]")
 
     print("fair rankings", end='', flush=True)
-    pair01 = [item for item in pairsOfPAndAlpha if item[0] == 0.1][0]
-    fairRanking01, fair01NotSelected = fairRanking(k, protected, nonProtected, pair01[0], pair01[1])
-    pair02 = [item for item in pairsOfPAndAlpha if item[0] == 0.2][0]
-    fairRanking02, fair02NotSelected = fairRanking(k, protected, nonProtected, pair02[0], pair02[1])
-    pair03 = [item for item in pairsOfPAndAlpha if item[0] == 0.3][0]
-    fairRanking03, fair03NotSelected = fairRanking(k, protected, nonProtected, pair03[0], pair03[1])
-    pair04 = [item for item in pairsOfPAndAlpha if item[0] == 0.4][0]
-    fairRanking04, fair04NotSelected = fairRanking(k, protected, nonProtected, pair04[0], pair04[1])
-    pair05 = [item for item in pairsOfPAndAlpha if item[0] == 0.5][0]
-    fairRanking05, fair05NotSelected = fairRanking(k, protected, nonProtected, pair05[0], pair05[1])
-    pair06 = [item for item in pairsOfPAndAlpha if item[0] == 0.6][0]
-    fairRanking06, fair06NotSelected = fairRanking(k, protected, nonProtected, pair06[0], pair06[1])
-    pair07 = [item for item in pairsOfPAndAlpha if item[0] == 0.7][0]
-    fairRanking07, fair07NotSelected = fairRanking(k, protected, nonProtected, pair07[0], pair07[1])
-    pair08 = [item for item in pairsOfPAndAlpha if item[0] == 0.8][0]
-    fairRanking08, fair08NotSelected = fairRanking(k, protected, nonProtected, pair08[0], pair08[1])
-    pair09 = [item for item in pairsOfPAndAlpha if item[0] == 0.9][0]
-    fairRanking09, fair09NotSelected = fairRanking(k, protected, nonProtected, pair09[0], pair09[1])
+    for p, alpha in pairsOfPAndAlpha:
+        print('p=' + p + '; alpha=' + alpha)
+        fairRanking, fairNotSelected = buildFairRanking(k, protected, nonProtected, p, alpha)
+        writePickleToDisk(fairRanking, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking_p=' + p + '.pickle')
+        writePickleToDisk(fairNotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'NotSelected_p=' + p + '.pickle')
     print(" [Done]")
 
     print("feldman ranking", end='', flush=True)
     feldmanRanking, feldmanNotSelected = fair_ranker.create.feldmanRanking(protected, nonProtected, k)
-    print(" [Done]")
-
-    print("Write rankings to disk", end='', flush=True)
-    writePickleToDisk(colorblindRanking, os.getcwd() + '/' + directory + '/' + dataSetName + 'ColorblindRanking.pickle')
-    writePickleToDisk(colorblindNotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'ColorblindRankingNotSelected.pickle')
     writePickleToDisk(feldmanRanking, os.getcwd() + '/' + directory + '/' + dataSetName + 'FeldmanRanking.pickle')
     writePickleToDisk(feldmanNotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FeldmanRankingNotSelected.pickle')
-    writePickleToDisk(fairRanking01, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking01PercentProtected.pickle')
-    writePickleToDisk(fair01NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking01NotSelected.pickle')
-    writePickleToDisk(fairRanking02, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking02PercentProtected.pickle')
-    writePickleToDisk(fair02NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking02NotSelected.pickle')
-    writePickleToDisk(fairRanking03, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking03PercentProtected.pickle')
-    writePickleToDisk(fair03NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking03NotSelected.pickle')
-    writePickleToDisk(fairRanking04, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking04PercentProtected.pickle')
-    writePickleToDisk(fair04NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking04NotSelected.pickle')
-    writePickleToDisk(fairRanking05, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking05PercentProtected.pickle')
-    writePickleToDisk(fair05NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking05NotSelected.pickle')
-    writePickleToDisk(fairRanking06, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking06PercentProtected.pickle')
-    writePickleToDisk(fair06NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking06NotSelected.pickle')
-    writePickleToDisk(fairRanking07, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking07PercentProtected.pickle')
-    writePickleToDisk(fair07NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking07NotSelected.pickle')
-    writePickleToDisk(fairRanking08, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking08PercentProtected.pickle')
-    writePickleToDisk(fair08NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking08NotSelected.pickle')
-    writePickleToDisk(fairRanking09, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking09PercentProtected.pickle')
-    writePickleToDisk(fair09NotSelected, os.getcwd() + '/' + directory + '/' + dataSetName + 'FairRanking09NotSelected.pickle')
     print(" [Done]")
 
 

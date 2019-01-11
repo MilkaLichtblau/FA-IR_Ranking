@@ -5,7 +5,7 @@ Created on Jan 18, 2017
 '''
 import unittest
 from dataset_creator.candidate import Candidate
-from post_processing_methods.fair_ranker.create import fairRanking
+from post_processing_methods.fair_ranker.create import buildFairRanking
 from post_processing_methods.fair_ranker.test import FairnessInRankingsTester
 from utilsAndConstants import constants
 
@@ -42,7 +42,7 @@ class Test_create_FAIR_rankings(unittest.TestCase):
 
         minProp = constants.ESSENTIALLY_ZERO
         sigma = 0.1
-        ranking = fairRanking(self.__k, self.__protectedCandidates,
+        ranking = buildFairRanking(self.__k, self.__protectedCandidates,
                                         self.__nonProtectedCandidates, minProp, sigma)[0]
 
         predecessor = ranking[0]
@@ -58,7 +58,7 @@ class Test_create_FAIR_rankings(unittest.TestCase):
     def test_CreateFairRankingOnlyProtected(self):
         minProp = constants.ESSENTIALLY_ONE
         sigma = 0.1
-        ranking = fairRanking(self.__k, self.__protectedCandidates,
+        ranking = buildFairRanking(self.__k, self.__protectedCandidates,
                                         self.__nonProtectedCandidates, minProp, sigma)[0]
 
         predecessor = ranking[0]
@@ -74,7 +74,7 @@ class Test_create_FAIR_rankings(unittest.TestCase):
     def test_CreateFairRankingHalfHalf(self):
         minProp = 0.5
         sigma = 0.1
-        ranking = fairRanking(self.__k, self.__protectedCandidates,
+        ranking = buildFairRanking(self.__k, self.__protectedCandidates,
                                         self.__nonProtectedCandidates, minProp, sigma)[0]
 
         tester = FairnessInRankingsTester(minProp, sigma, self.__k, False)
@@ -109,7 +109,7 @@ class Test_create_FAIR_rankings(unittest.TestCase):
         # non-protected
         minProp = 0.5
         sigma = 0.1
-        ranking = fairRanking(self.__k, self.__protectedCandidates, self.__nonProtectedCandidates,
+        ranking = buildFairRanking(self.__k, self.__protectedCandidates, self.__nonProtectedCandidates,
                                         minProp, sigma)[0]
 
         predecessor = ranking[0]
