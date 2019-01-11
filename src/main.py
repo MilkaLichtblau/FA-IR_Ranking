@@ -288,7 +288,7 @@ def createAndRankLSATData():
 
         # run with gender as protected attribute
     lsatGenderDir = '../rawData/LSAT/gender/'
-    p = 0.44
+    p = 0.437177280550775
     pairsOfPAndAlpha = [(p - 0.1, 0.00675),
                         (p, 0.0065),
                         (p + 0.1, 0.00635)]
@@ -335,9 +335,8 @@ def createAndRankLSATData():
     #----------------------------------------------------------------
 
     lsatRaceDir = '../rawData/LSAT/race_black/'
-    p = 0.44
-    pairsOfPAndAlpha = [(p - 0.1, 0.00675),
-                        (p, 0.0065),
+    p = 0.0638977635782748
+    pairsOfPAndAlpha = [(p, 0.0065),
                         (p + 0.1, 0.00635)]
     for root, _, filenames in os.walk(lsatRaceDir):
         for filename in filenames:
